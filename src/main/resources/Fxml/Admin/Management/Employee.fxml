@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="820.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.aptech.Controller.Admin.Management.EmployeeController">
+    <ListView fx:id="employee_lv" layoutX="17.0" layoutY="12.0" prefHeight="799.0" prefWidth="600.0" style="-fx-background-color: #CCC;" />
+    <VBox layoutX="631.0" layoutY="13.0" prefHeight="799.0" prefWidth="454.0" spacing="20.0" style="-fx-background-color: #CCC;">
+        <HBox prefHeight="63.0" prefWidth="454.0">
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" top="20.0" />
+            </VBox.margin>
+            <VBox prefHeight="100.0" prefWidth="178.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="First Name" />
+                <TextField fx:id="fName_tf" />
+            </VBox>
+            <VBox layoutX="10.0" layoutY="10.0" prefHeight="66.0" prefWidth="151.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mid Name" />
+                <TextField fx:id="mName_tf" />
+            </VBox>
+            <VBox layoutX="188.0" layoutY="10.0" prefHeight="100.0" prefWidth="178.0">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Last Name" />
+                <TextField fx:id="lName_tf" />
+            </VBox>
+        </HBox>
+        <VBox layoutX="10.0" layoutY="353.0" prefHeight="67.0" prefWidth="454.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Dob:" />
+            <DatePicker fx:id="dob_dp" />
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+        </VBox>
+        <VBox layoutX="10.0" layoutY="366.0" prefHeight="67.0" prefWidth="454.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Address:" />
+            <TextField fx:id="address_tf" />
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+        </VBox>
+        <VBox layoutX="10.0" layoutY="443.0" prefHeight="67.0" prefWidth="454.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Citizen identification :" />
+            <TextField fx:id="identification_tf" />
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+        </VBox>
+        <VBox layoutX="10.0" layoutY="520.0" prefHeight="67.0" prefWidth="454.0">
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Phone number :" />
+            <TextField fx:id="phoneNumber_tf" />
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+        </VBox>
+        <VBox layoutX="20.0" layoutY="354.0" prefHeight="67.0" prefWidth="454.0">
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Email :" />
+            <TextField fx:id="email_tf" />
+        </VBox>
+        <VBox layoutX="10.0" layoutY="441.0" prefHeight="67.0" prefWidth="454.0">
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Positions :" />
+            <ChoiceBox fx:id="positions_cb" prefHeight="26.0" prefWidth="188.0" />
+        </VBox>
+        <HBox prefHeight="77.0" prefWidth="461.0" spacing="50.0">
+            <Button fx:id="save_btn" mnemonicParsing="false" text="Save" />
+            <Button fx:id="update_btn" mnemonicParsing="false" text="Update" />
+            <VBox.margin>
+                <Insets left="10.0" right="10.0" />
+            </VBox.margin>
+        </HBox>
+    </VBox>
+</AnchorPane>

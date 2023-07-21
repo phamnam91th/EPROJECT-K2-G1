@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
+
+<AnchorPane prefHeight="900.0" prefWidth="200.0" styleClass="menu_container" stylesheets="@../../Style/AdminMenu.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.aptech.Controller.Admin.AdminMenuController">
+   <VBox layoutX="25.0" prefHeight="106.0" prefWidth="150.0" AnchorPane.bottomAnchor="794.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <ImageView fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+         <VBox.margin>
+            <Insets top="20.0" />
+         </VBox.margin>
+         <Image url="@../../Image/logo.png" />
+      </ImageView>
+   </VBox>
+   <VBox layoutX="1.0" layoutY="190.0" prefHeight="451.0" prefWidth="208.0" styleClass="section">
+      <Button fx:id="dashboard_btn" mnemonicParsing="false" text="Dashboard">
+         <graphic>
+            <FontAwesomeIcon glyphName="DASHBOARD" size="20" />
+         </graphic></Button>
+      <Button fx:id="management_btn" mnemonicParsing="false" text="Management">
+         <graphic>
+            <FontAwesomeIcon glyphName="COGS" size="20" />
+         </graphic></Button>
+      <Button fx:id="task_btn" mnemonicParsing="false" text="Task">
+         <graphic>
+            <FontAwesomeIcon glyphName="TRAIN" size="20" />
+         </graphic></Button>
+      <Button fx:id="ticket_btn" mnemonicParsing="false" text="Ticket">
+         <graphic>
+            <FontAwesomeIcon glyphName="TICKET" size="20" />
+         </graphic></Button>
+      <Button fx:id="report_btn" mnemonicParsing="false" text="Report">
+         <graphic>
+            <FontAwesomeIcon glyphName="PRINT" size="20" />
+         </graphic></Button>
+   </VBox>
+   <Line endX="187.0" endY="570.0" layoutX="2.0" layoutY="82.0" startX="17.0" startY="570.0" />
+   <VBox layoutX="1.0" layoutY="665.0" prefHeight="200.0" prefWidth="208.0" styleClass="footer">
+      <Button fx:id="logout_btn" mnemonicParsing="false" text="Logout">
+         <graphic>
+            <FontAwesomeIcon glyphName="SIGN_OUT" size="20" />
+         </graphic>
+      </Button>
+   </VBox>
+</AnchorPane>

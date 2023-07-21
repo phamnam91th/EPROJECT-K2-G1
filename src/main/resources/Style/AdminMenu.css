@@ -1,0 +1,43 @@
+.menu_container {
+    -fx-background-color: #CCC;
+    -fx-alignment: center;
+}
+
+FontAwesomeIcon {
+    -fx-fill: #d83ff1;
+}
+
+.section {
+    -fx-spacing: 25;
+    -fx-alignment: center;
+}
+.section Button {
+    -fx-pref-width: 170;
+    -fx-pref-height: 40;
+    -fx-alignment: center_left;
+    -fx-background-color: #132A13;
+    -fx-text-fill: #FFF;
+    -fx-font-size: 1.1em;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);
+}
+.footer {
+    -fx-alignment: top_center;
+}
+.footer Button {
+    -fx-pref-width: 170;
+    -fx-pref-height: 40;
+    -fx-background-color: #8d3e01;
+    -fx-text-fill: #FFF;
+    -fx-font-size: 1.1em;
+    -fx-font-weight: bold;
+    -fx-alignment: center;
+}
+
+.footer Button FontAwesomeIcon {
+    -fx-fill: #132A13;
+}
+
+Button:hover {
+    -fx-cursor: hand;
+}

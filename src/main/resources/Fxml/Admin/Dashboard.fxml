@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIcon?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.chart.StackedBarChart?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="900.0" prefWidth="1100.0" styleClass="dashboard_container" stylesheets="@../../Style/Dashboard.css" xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.aptech.Controller.Admin.DashboardController">
+    <HBox layoutY="18.0" prefHeight="130.0" prefWidth="1100.0" spacing="20.0">
+        <AnchorPane prefHeight="130.0" prefWidth="250.0">
+            <HBox.margin>
+                <Insets left="20.0" />
+            </HBox.margin>
+            <Text fill="#02ff13" layoutX="124.0" layoutY="46.0" strokeType="OUTSIDE" strokeWidth="0.0" text="WORKING">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Text>
+            <FontAwesomeIcon fill="#650d0d" glyphName="AUTOMOBILE" layoutX="10.0" layoutY="48.0" size="30" />
+            <Label alignment="CENTER" layoutX="54.0" layoutY="10.0" prefHeight="55.0" prefWidth="55.0" text="10" textFill="#03f803">
+                <font>
+                    <Font name="Calibri Bold" size="48.0" />
+                </font>
+            </Label>
+            <Text fill="#dd3d03" layoutX="132.0" layoutY="102.0" strokeType="OUTSIDE" strokeWidth="0.0" text="PARKING">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Text>
+            <Label alignment="CENTER" layoutX="69.0" layoutY="65.0" prefHeight="55.0" prefWidth="46.0" text="0">
+                <font>
+                    <Font name="Calibri Bold" size="48.0" />
+                </font>
+            </Label>
+            <FontAwesomeIcon fill="#650d0d" glyphName="TREE" layoutX="15.0" layoutY="103.0" size="30" />
+        </AnchorPane>
+        <AnchorPane prefHeight="130.0" prefWidth="250.0">
+            <Label alignment="CENTER" layoutX="67.0" layoutY="24.0" prefHeight="55.0" prefWidth="177.0" text="5400" textFill="WHITE">
+                <font>
+                    <Font name="Calibri Bold" size="48.0" />
+                </font>
+            </Label>
+            <FontAwesomeIcon fill="WHITE" glyphName="DOLLAR" layoutX="8.0" layoutY="93.0" size="80" />
+            <Text fill="WHITE" layoutX="82.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Today's Income">
+                <font>
+                    <Font name="System Bold" size="20.0" />
+                </font>
+            </Text>
+        </AnchorPane>
+        <AnchorPane prefHeight="130.0" prefWidth="250.0">
+            <HBox.margin>
+                <Insets />
+            </HBox.margin>
+            <FontAwesomeIcon fill="WHITE" glyphName="TICKET" layoutX="1.0" layoutY="93.0" size="80" />
+            <Text fill="#ffcd05" layoutX="87.0" layoutY="112.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket Pending" wrappingWidth="156.0">
+                <font>
+                    <Font name="System Bold" size="20.0" />
+                </font>
+            </Text>
+            <Label alignment="CENTER" layoutX="86.0" layoutY="24.0" prefHeight="55.0" prefWidth="156.0" text="50" textFill="WHITE">
+                <font>
+                    <Font name="Calibri Bold" size="48.0" />
+                </font>
+            </Label>
+        </AnchorPane>
+        <AnchorPane layoutX="559.0" layoutY="10.0" prefHeight="130.0" prefWidth="250.0">
+            <HBox.margin>
+                <Insets right="20.0" />
+            </HBox.margin>
+            <FontAwesomeIcon fill="WHITE" glyphName="TICKET" layoutX="1.0" layoutY="93.0" size="80" />
+            <Text fill="#08f500" layoutX="94.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ticket Confirm">
+                <font>
+                    <Font name="System Bold" size="20.0" />
+                </font>
+            </Text>
+            <Label alignment="CENTER" layoutX="89.0" layoutY="25.0" prefHeight="55.0" prefWidth="156.0" text="230" textFill="WHITE">
+                <font>
+                    <Font name="Calibri Bold" size="48.0" />
+                </font>
+            </Label>
+        </AnchorPane>
+    </HBox>
+    <StackedBarChart fx:id="stackChart" layoutX="5.0" layoutY="193.0" prefHeight="315.0" prefWidth="1090.0">
+        <xAxis>
+            <CategoryAxis side="BOTTOM" fx:id="x" />
+        </xAxis>
+        <yAxis>
+            <NumberAxis fx:id="y" side="LEFT" />
+        </yAxis>
+    </StackedBarChart>
+    <PieChart fx:id="myPieChart" layoutX="14.0" layoutY="538.0" prefHeight="348.0" prefWidth="399.0" />
+   <LineChart fx:id="myLineChart" layoutX="413.0" layoutY="538.0" prefHeight="348.0" prefWidth="679.0">
+     <xAxis>
+       <CategoryAxis side="BOTTOM" fx:id="xLine" />
+     </xAxis>
+     <yAxis>
+       <NumberAxis fx:id="yLine" side="LEFT" />
+     </yAxis>
+   </LineChart>
+</AnchorPane>

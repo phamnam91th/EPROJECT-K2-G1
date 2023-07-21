@@ -1,0 +1,8 @@
+.dashboard_container {
+    -fx-background-color: #FFF;
+}
+
+.dashboard_container HBox AnchorPane {
+    -fx-background-radius: 10;
+    -fx-background-color: linear-gradient(to bottom right, #4694bb, #2a5178);
+}

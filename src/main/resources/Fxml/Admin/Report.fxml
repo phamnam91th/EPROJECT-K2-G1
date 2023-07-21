@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="900.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.6"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="vn.aptech.Controller.Admin.ReportController">
+   <Text layoutX="530.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report"/>
+</AnchorPane>
