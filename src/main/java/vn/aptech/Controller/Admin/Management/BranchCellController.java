@@ -3,46 +3,55 @@ package vn.aptech.Controller.Admin.Management;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import vn.aptech.Model.Employee;
+import vn.aptech.Model.Branch;
 import vn.aptech.Model.Model;
 
 import javax.persistence.EntityManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class EmployeeCellController implements Initializable {
-    public Label code_lb;
-    public Label fName_lb;
-    public Label lName_lb;
-    public Label phone_lb;
+public class BranchCellController implements Initializable {
     public Button del_btn;
+    public Label address_lb;
+    public Label email_lb;
 
-    private final Employee employee;
+    public Label hotline_lb;
 
-    public EmployeeCellController(Employee employee) {
-        this.employee = employee;
+    public Label name_lb;
+
+    private final Branch branch;
+
+    public BranchCellController(Branch branch) {
+        this.branch = branch;
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        code_lb.setText(employee.getCode());
-        fName_lb.setText(employee.getfName());
-        lName_lb.setText(employee.getlName());
-        phone_lb.setText(employee.getPhone());
+        address_lb.setText(branch.getAddress());
+        email_lb.setText(branch.getEmail());
+        hotline_lb.setText(branch.getHotline());
+        name_lb.setText(branch.getName());
 
         del_btn.setOnAction(actionEvent -> {
             Model.getInstance().getData().getConnect();
             EntityManager em = Model.getInstance().getData().getEm();
             try {
                 em.getTransaction().begin();
-                em.remove(em.find(Employee.class, employee.getId()));
+                Branch branch1 = em.find(Branch.class, branch.getId());
+                em.remove(branch1);
                 em.getTransaction().commit();
-            } catch (Exception e) {
+            }catch (Exception e) {
                 e.printStackTrace();
-            } finally {
+            }finally {
                 Model.getInstance().getData().closeConnect();
             }
-            EmployeeController.getEmployeeList().remove(employee);
+            BranchController.getBranchObservableList().remove(branch);
         });
+
+    }
+
+    public static void main(String[] args) {
+
     }
 }

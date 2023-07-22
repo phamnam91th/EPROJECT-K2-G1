@@ -12,6 +12,7 @@
         <class>vn.aptech.Model.TypeCar</class>
         <class>vn.aptech.Model.Users</class>
         <class>vn.aptech.Model.Employee</class>
+        <class>vn.aptech.Model.Test</class>
         <properties>
             <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/projectk2"/>
             <property name="toplink.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

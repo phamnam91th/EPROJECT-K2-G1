@@ -2,6 +2,7 @@ package vn.aptech.Controller.Admin;
 
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
 import vn.aptech.Model.Model;
 import vn.aptech.Views.AdminMenuOptions;
@@ -17,6 +18,7 @@ public class AdminMenuController implements Initializable {
     public Button report_btn;
     public Button logout_btn;
     public Button task_btn;
+    public Label account_lb;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {

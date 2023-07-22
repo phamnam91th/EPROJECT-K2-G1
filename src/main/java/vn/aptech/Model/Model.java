@@ -21,6 +21,10 @@ public class Model {
         return model;
     }
 
+    public static void setModel(Model model) {
+        Model.model = model;
+    }
+
     public ViewFactory getViewFactory() {
         return viewFactory;
     }

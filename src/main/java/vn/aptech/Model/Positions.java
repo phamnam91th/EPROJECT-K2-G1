@@ -75,4 +75,15 @@ public class Positions {
     public int hashCode() {
         return Objects.hash(id, name, flag, createAt, updateAt);
     }
+
+    @Override
+    public String toString() {
+        return "Positions{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", flag='" + flag + '\'' +
+                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                '}';
+    }
 }

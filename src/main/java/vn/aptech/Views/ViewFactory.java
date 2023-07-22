@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
@@ -212,7 +213,8 @@ public class ViewFactory {
         stage.initStyle(StageStyle.TRANSPARENT);
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.setTitle("MB-BANK");
+        stage.setTitle("APP MANAGEMENT");
+        stage.getIcons().add(new Image(String.valueOf(getClass().getResource("/Image/logo.png"))));
         stage.show();
     }
 
