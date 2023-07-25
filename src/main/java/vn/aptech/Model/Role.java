@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "role")
+@Table(name = "role", schema = "projectk2")
 public class Role {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

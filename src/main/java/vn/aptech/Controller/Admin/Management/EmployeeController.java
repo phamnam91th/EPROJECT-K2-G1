@@ -1,7 +1,5 @@
 package vn.aptech.Controller.Admin.Management;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -10,16 +8,13 @@ import javafx.scene.control.*;
 import vn.aptech.Model.*;
 import vn.aptech.Views.EmployeeCellFactory;
 
-import javax.persistence.Entity;
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.ResourceBundle;
 
 public class EmployeeController implements Initializable {
@@ -38,28 +33,40 @@ public class EmployeeController implements Initializable {
     public Button clear_btn;
     public TextField code_tf;
 
-    private static ObservableList<Employee> employeeList;
+    private static ObservableList<Employee> employeeObservableList;
     private static ObservableList<String> positions;
     private static ObservableList<Positions> positionsObservableList;
 
-    public static ObservableList<Employee> getEmployeeList() {
-        return employeeList;
+    public static ObservableList<Employee> getEmployeeObservableList() {
+        return employeeObservableList;
     }
+
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        positionsObservableList = Model.getInstance().getData().getPositionsList();
-        employeeList = Model.getInstance().getData().getEmployeeList();
+        System.out.println("Employee");
+        employeeObservableList  = FXCollections.observableArrayList();
+        Model.getInstance().getData().getObservableList("employee").forEach(s -> {
+            employeeObservableList.add((Employee) s);
+        });
+        positionsObservableList  = FXCollections.observableArrayList();
+        Model.getInstance().getData().getObservableList("positions").forEach(s -> {
+            positionsObservableList.add((Positions) s);
+        });
+
+
         employee_lv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        employee_lv.setItems(employeeList);
-        
-        employeeList.addListener((ListChangeListener<Employee>) change -> {
-            employee_lv.setItems(employeeList);
+        employee_lv.setItems(employeeObservableList);
+
+
+        employeeObservableList.addListener((ListChangeListener<Employee>) change -> {
+            employee_lv.setItems(employeeObservableList);
         });
         
         
         employee_lv.setCellFactory(new EmployeeCellFactory());
-        positions = getPositionsListName();
+        positions = Model.getInstance().getData().getListName("positions", "name");
         positions_cb.setItems(positions);
         employee_lv.getSelectionModel().selectedItemProperty().addListener((observableValue, employee, t1) -> {
             fName_tf.setText(t1.getfName());
@@ -96,8 +103,9 @@ public class EmployeeController implements Initializable {
             Employee employee  = new Employee();
             setEmployee(employee, "new");
 
-            Model.getInstance().getData().addEmployee(employee);
-            employeeList.add(employee);
+//            Model.getInstance().getData().addEmployee(employee);
+            Model.getInstance().getData().add(employee);
+            employeeObservableList.add(employee);
         });
 
         update_btn.setOnAction(actionEvent -> {
@@ -108,14 +116,16 @@ public class EmployeeController implements Initializable {
                 em.getTransaction().begin();
                 employee = em.find(Employee.class, employee_lv.getSelectionModel().getSelectedItem().getId());
                 setEmployee(employee, "update");
+                em.merge(employee);
                 em.getTransaction().commit();
             }catch (Exception e){
                 e.printStackTrace();
             }finally {
                 Model.getInstance().getData().closeConnect();
             }
-            employeeList.remove(employee_lv.getSelectionModel().getSelectedItem());
-            employeeList.add(employee);
+            int index = employeeObservableList.indexOf(employee_lv.getSelectionModel().getSelectedItem());
+            employeeObservableList.remove(employee_lv.getSelectionModel().getSelectedItem());
+            employeeObservableList.add(index,employee);
         });
 
 
@@ -133,7 +143,6 @@ public class EmployeeController implements Initializable {
         employee.setEmail(email_tf.getText());
         String positionsName = positions_cb.getValue();
         employee.setPositionsId(getPositionsId(positionsName));
-//        employee.setPositionsId(1);
         employee.setFlag("0");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -142,10 +151,6 @@ public class EmployeeController implements Initializable {
         } else {
             employee.setUpdateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
         }
-    }
-
-    public ObservableList<Positions> getPositionsObservableList() {
-        return FXCollections.observableArrayList(Model.getInstance().getData().getPositionsList());
     }
 
     public int getPositionIndex(int positionsId) {
@@ -170,22 +175,6 @@ public class EmployeeController implements Initializable {
         return id;
     }
 
-    public ObservableList<String> getPositionsListName() {
-        ObservableList<String> strings = FXCollections.observableArrayList();
-        ObservableList<Positions> positionsObservableList = getPositionsObservableList();
-        positionsObservableList.forEach(s -> {
-            strings.add(s.getName());
-        });
-        return strings;
-    }
-
-
-
-
-    public static void main(String[] args) {
-        EmployeeController controller = new EmployeeController();
-        controller.getPositionsListName().forEach(System.out::println);
-    }
 
     public static LocalDate LOCAL_DATE(String dateString) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy");

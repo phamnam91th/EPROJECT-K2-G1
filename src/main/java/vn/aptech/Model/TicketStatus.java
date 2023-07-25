@@ -4,8 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
-@Table(name = "ticket_status", schema = "projectk2", catalog = "")
+@Entity(name = "ticket_status")
+@Table(name = "ticket_status", schema = "projectk2")
 public class TicketStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

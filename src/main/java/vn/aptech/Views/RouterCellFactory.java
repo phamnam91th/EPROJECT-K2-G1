@@ -4,22 +4,22 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.util.Callback;
-import vn.aptech.Controller.Admin.Management.UserCellController;
-import vn.aptech.Model.Users;
+import vn.aptech.Controller.Admin.Management.RouterCellController;
+import vn.aptech.Model.RouterList;
 
-public class UserCellFactory implements Callback<ListView<Users>, ListCell<Users>> {
+public class RouterCellFactory implements Callback<ListView<RouterList>, ListCell<RouterList>> {
     @Override
-    public ListCell<Users> call(ListView<Users> usersListView) {
+    public ListCell<RouterList> call(ListView<RouterList> routerListListView) {
         return new ListCell<>(){
             @Override
-            public void updateItem(Users user, boolean empty) {
-                super.updateItem(user, empty);
+            public void updateItem(RouterList routerList, boolean empty) {
+                super.updateItem(routerList, empty);
                 if(empty) {
                     setText(null);
                     setGraphic(null);
                 } else {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Admin/Management/UserCell.fxml"));
-                    UserCellController controller = new UserCellController(user);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Admin/Management/RouterCell.fxml"));
+                    RouterCellController controller = new RouterCellController(routerList);
                     loader.setController(controller);
                     setText(null);
                     try {

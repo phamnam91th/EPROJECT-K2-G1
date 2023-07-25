@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "users")
+@Table(name = "users", schema = "projectk2")
 public class Users {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -118,5 +119,20 @@ public class Users {
     @Override
     public int hashCode() {
         return Objects.hash(id, userName, password, roleId, employeeId, employeeCreate, flag, createAt, updateAt);
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", userName='" + userName + '\'' +
+                ", password='" + password + '\'' +
+                ", roleId=" + roleId +
+                ", employeeId=" + employeeId +
+                ", employeeCreate=" + employeeCreate +
+                ", flag='" + flag + '\'' +
+                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                '}';
     }
 }

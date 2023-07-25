@@ -4,9 +4,9 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity(name = "branch")
-@Table(name = "branch", schema = "projectk2")
-public class Branch {
+@Entity(name = "task_status")
+@Table(name = "task_status", schema = "projectk2")
+public class TaskStatus {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     @Column(name = "id")
@@ -14,15 +14,6 @@ public class Branch {
     @Basic
     @Column(name = "name")
     private String name;
-    @Basic
-    @Column(name = "address")
-    private String address;
-    @Basic
-    @Column(name = "hotline")
-    private String hotline;
-    @Basic
-    @Column(name = "email")
-    private String email;
     @Basic
     @Column(name = "flag")
     private String flag;
@@ -47,30 +38,6 @@ public class Branch {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getHotline() {
-        return hotline;
-    }
-
-    public void setHotline(String hotline) {
-        this.hotline = hotline;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
     }
 
     public String getFlag() {
@@ -101,23 +68,20 @@ public class Branch {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Branch branch = (Branch) o;
-        return id == branch.id && Objects.equals(name, branch.name) && Objects.equals(address, branch.address) && Objects.equals(hotline, branch.hotline) && Objects.equals(email, branch.email) && Objects.equals(flag, branch.flag) && Objects.equals(createAt, branch.createAt) && Objects.equals(updateAt, branch.updateAt);
+        TaskStatus that = (TaskStatus) o;
+        return id == that.id && Objects.equals(name, that.name) && Objects.equals(flag, that.flag) && Objects.equals(createAt, that.createAt) && Objects.equals(updateAt, that.updateAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, address, hotline, email, flag, createAt, updateAt);
+        return Objects.hash(id, name, flag, createAt, updateAt);
     }
 
     @Override
     public String toString() {
-        return "Branch{" +
+        return "TaskStatus{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", hotline='" + hotline + '\'' +
-                ", email='" + email + '\'' +
                 ", flag='" + flag + '\'' +
                 ", createAt=" + createAt +
                 ", updateAt=" + updateAt +

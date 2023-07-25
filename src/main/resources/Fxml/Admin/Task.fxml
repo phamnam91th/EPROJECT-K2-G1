@@ -15,109 +15,135 @@
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="900.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.6"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="vn.aptech.Controller.Admin.TaskController">
-   <VBox layoutX="224.0" layoutY="121.0" prefHeight="900.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0"
-         AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+<AnchorPane prefHeight="900.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.aptech.Controller.Admin.TaskController">
+   <VBox layoutX="224.0" layoutY="121.0" prefHeight="900.0" prefWidth="1100.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
       <HBox prefHeight="100.0" prefWidth="200.0">
          <VBox prefHeight="80.0" prefWidth="180.0">
             <HBox.margin>
-               <Insets left="10.0" right="20.0" top="20.0"/>
+               <Insets left="10.0" right="20.0" top="20.0" />
             </HBox.margin>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Code"/>
-            <TextField prefHeight="26.0" prefWidth="175.0"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Code" />
+            <TextField fx:id="s_code_tf" prefHeight="26.0" prefWidth="175.0" />
          </VBox>
          <VBox layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="180.0">
             <HBox.margin>
-               <Insets top="20.0"/>
+               <Insets top="20.0" />
             </HBox.margin>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select car :"/>
-            <ChoiceBox prefHeight="26.0" prefWidth="160.0"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select car :" />
+            <ChoiceBox fx:id="s_select_car_cb" prefHeight="26.0" prefWidth="160.0" />
          </VBox>
          <VBox layoutX="237.0" layoutY="10.0" prefHeight="80.0" prefWidth="180.0">
             <HBox.margin>
-               <Insets top="20.0"/>
+               <Insets top="20.0" />
             </HBox.margin>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select driver :"/>
-            <ChoiceBox prefHeight="26.0" prefWidth="160.0"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select driver :" />
+            <ChoiceBox fx:id="s_select_driver_cb" prefHeight="26.0" prefWidth="160.0" />
          </VBox>
          <VBox layoutX="464.0" layoutY="10.0" prefHeight="80.0" prefWidth="180.0">
             <HBox.margin>
-               <Insets top="20.0"/>
+               <Insets top="20.0" />
             </HBox.margin>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select router :"/>
-            <ChoiceBox prefHeight="26.0" prefWidth="160.0"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select router :" />
+            <ChoiceBox fx:id="s_select_router_cb" prefHeight="26.0" prefWidth="160.0" />
          </VBox>
          <VBox layoutX="577.0" layoutY="30.0" prefHeight="100.0" prefWidth="180.0">
             <HBox.margin>
-               <Insets top="20.0"/>
+               <Insets top="20.0" />
             </HBox.margin>
-            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select day :"/>
-            <DatePicker prefHeight="26.0" prefWidth="160.0"/>
+            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select day :" />
+            <DatePicker fx:id="s_select_day_dp" prefHeight="26.0" prefWidth="160.0" />
          </VBox>
          <VBox alignment="CENTER" prefHeight="100.0" prefWidth="201.0">
-            <Button mnemonicParsing="false" prefHeight="48.0" prefWidth="85.0" text="Search">
+            <Button fx:id="search_btn" mnemonicParsing="false" prefHeight="48.0" prefWidth="85.0" text="Search">
                <graphic>
-                  <FontAwesomeIcon glyphName="SEARCH" size="20"/>
+                  <FontAwesomeIcon glyphName="SEARCH" size="20" />
                </graphic>
             </Button>
          </VBox>
       </HBox>
       <Pane prefHeight="600.0" prefWidth="1100.0">
-         <TableView layoutY="-4.0" prefHeight="600.0" prefWidth="1100.0">
+         <TableView fx:id="taskList_tv" layoutY="-4.0" prefHeight="600.0" prefWidth="1100.0">
             <columns>
-               <TableColumn prefWidth="82.0" text="ID"/>
-               <TableColumn prefWidth="172.0" text="CODE"/>
-               <TableColumn prefWidth="257.0" text="CAR LICENSE PLATES"/>
-               <TableColumn prefWidth="212.0" text="DRIVER NAME"/>
-               <TableColumn prefWidth="209.0" text="DATE ACTIVE"/>
-               <TableColumn prefWidth="167.0" text="STATUS"/>
+               <TableColumn fx:id="id_col" prefWidth="82.0" text="ID" />
+               <TableColumn fx:id="code_col" prefWidth="301.0" text="CODE" />
+               <TableColumn fx:id="router_code_col" prefWidth="187.0" text="ROUTER CODE" />
+               <TableColumn fx:id="driver_name_col" prefWidth="171.0" text="DRIVER NAME" />
+               <TableColumn fx:id="date_active_col" prefWidth="143.0" text="DATE ACTIVE" />
+               <TableColumn fx:id="status_col" prefWidth="126.0" text="STATUS" />
+               <TableColumn fx:id="action_col" prefWidth="89.0" text="ACTION" />
             </columns>
          </TableView>
       </Pane>
       <VBox alignment="CENTER" prefHeight="50.0" prefWidth="100.0">
-         <Line endX="999.2929077148438" endY="-7.248734474182129" startX="19.239013671875"
-               startY="-7.248687744140625" stroke="#0000006b"/>
+         <Line endX="999.2929077148438" endY="-7.248734474182129" startX="-82.35899353027344" startY="-7.24953556060791" stroke="#0000006b" />
       </VBox>
       <HBox prefHeight="150.0" prefWidth="1100.0">
-         <VBox prefHeight="193.0" prefWidth="451.0">
-            <VBox prefHeight="117.0" prefWidth="431.0">
+         <VBox prefHeight="150.0" prefWidth="270.0">
+            <VBox prefHeight="79.0" prefWidth="226.0">
                <VBox.margin>
-                  <Insets left="20.0"/>
+                  <Insets left="20.0" />
                </VBox.margin>
                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select Car :">
                   <VBox.margin>
-                     <Insets top="10.0"/>
+                     <Insets top="10.0" />
                   </VBox.margin>
                </Text>
-               <ChoiceBox prefHeight="26.0" prefWidth="309.0"/>
+               <ChoiceBox fx:id="m_select_car_cb" prefHeight="26.0" prefWidth="309.0" />
             </VBox>
-            <VBox layoutX="10.0" layoutY="10.0" prefHeight="109.0" prefWidth="431.0">
+            <VBox layoutX="10.0" layoutY="10.0" prefHeight="76.0" prefWidth="217.0">
                <VBox.margin>
-                  <Insets left="20.0"/>
+                  <Insets left="20.0" />
                </VBox.margin>
-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select router: "/>
-               <ChoiceBox prefHeight="26.0" prefWidth="310.0"/>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select router: " />
+               <ChoiceBox fx:id="m_select_router_cb" prefHeight="26.0" prefWidth="310.0" />
             </VBox>
          </VBox>
-         <VBox prefHeight="193.0" prefWidth="417.0">
+         <VBox prefHeight="193.0" prefWidth="270.0">
             <VBox prefHeight="115.0" prefWidth="417.0">
                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Slect drive :">
                   <VBox.margin>
-                     <Insets top="10.0"/>
+                     <Insets top="10.0" />
                   </VBox.margin>
                </Text>
-               <ChoiceBox prefHeight="26.0" prefWidth="333.0"/>
+               <ChoiceBox fx:id="m_select_driver_cb" prefHeight="26.0" prefWidth="333.0" />
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
             </VBox>
             <VBox layoutX="10.0" layoutY="10.0" prefHeight="109.0" prefWidth="417.0">
-               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select date active :"/>
-               <DatePicker prefHeight="26.0" prefWidth="334.0"/>
+               <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Select date active :" />
+               <DatePicker fx:id="m_date_active_dp" prefHeight="26.0" prefWidth="334.0" />
+               <VBox.margin>
+                  <Insets left="20.0" />
+               </VBox.margin>
             </VBox>
          </VBox>
-         <VBox alignment="CENTER" prefHeight="198.0" prefWidth="232.0" spacing="20.0">
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Save"/>
-            <Button mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Update"/>
+         <VBox layoutX="260.0" layoutY="10.0" prefHeight="193.0" prefWidth="270.0">
+            <children>
+               <VBox prefHeight="115.0" prefWidth="417.0">
+                  <children>
+                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Slect Status :">
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </Text>
+                     <ChoiceBox fx:id="m_select_status_cb" prefHeight="26.0" prefWidth="333.0" />
+                  </children>
+                  <VBox.margin>
+                     <Insets left="20.0" />
+                  </VBox.margin>
+               </VBox>
+               <VBox layoutX="10.0" layoutY="10.0" prefHeight="109.0" prefWidth="417.0">
+                  <VBox.margin>
+                     <Insets left="20.0" />
+                  </VBox.margin>
+               </VBox>
+            </children>
+         </VBox>
+         <VBox alignment="CENTER" prefHeight="150.0" prefWidth="350.0" spacing="20.0">
+            <Button fx:id="save_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Save" />
+            <Button fx:id="update_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Update" />
+            <Button fx:id="delete_btn" layoutX="74.0" layoutY="95.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Delete" />
          </VBox>
       </HBox>
    </VBox>

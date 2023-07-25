@@ -12,8 +12,8 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="820.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.aptech.Controller.Admin.Management.EmployeeController">
-    <ListView fx:id="employee_lv" layoutX="17.0" layoutY="12.0" prefHeight="799.0" prefWidth="600.0" style="-fx-background-color: #CCC;" />
-    <VBox layoutX="631.0" layoutY="13.0" prefHeight="799.0" prefWidth="454.0" spacing="20.0" style="-fx-background-color: #CCC;">
+    <ListView fx:id="employee_lv" layoutX="17.0" layoutY="12.0" prefHeight="799.0" prefWidth="615.0" style="-fx-background-color: #CCC;" />
+    <VBox layoutX="645.0" layoutY="13.0" prefHeight="799.0" prefWidth="445.0" spacing="20.0" style="-fx-background-color: #CCC;">
         <HBox prefHeight="63.0" prefWidth="454.0">
             <VBox.margin>
                 <Insets left="10.0" right="10.0" top="20.0" />

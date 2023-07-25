@@ -5,8 +5,8 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
-@Table(name = "list_car", schema = "projectk2", catalog = "")
+@Entity(name = "list_car")
+@Table(name = "list_car", schema = "projectk2")
 public class ListCar {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

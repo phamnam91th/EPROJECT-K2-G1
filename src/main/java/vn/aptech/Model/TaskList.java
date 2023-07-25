@@ -5,8 +5,8 @@ import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
-@Table(name = "task_list", schema = "projectk2", catalog = "")
+@Entity(name = "task_list")
+@Table(name = "task_list", schema = "projectk2")
 public class TaskList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -29,7 +29,7 @@ public class TaskList {
     private Date dateApply;
     @Basic
     @Column(name = "status")
-    private String status;
+    private int status;
     @Basic
     @Column(name = "flag")
     private String flag;
@@ -88,11 +88,11 @@ public class TaskList {
         this.dateApply = dateApply;
     }
 
-    public String getStatus() {
+    public int getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(int status) {
         this.status = status;
     }
 

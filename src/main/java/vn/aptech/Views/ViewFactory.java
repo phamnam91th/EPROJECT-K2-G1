@@ -203,7 +203,7 @@ public class ViewFactory {
         root.setOnMouseDragged((MouseEvent event) ->{
             stage.setX(event.getScreenX() - x);
             stage.setY(event.getScreenY() - y);
-            stage.setOpacity(.8);
+//            stage.setOpacity(.8);
         });
 
         root.setOnMouseReleased((MouseEvent event) ->{

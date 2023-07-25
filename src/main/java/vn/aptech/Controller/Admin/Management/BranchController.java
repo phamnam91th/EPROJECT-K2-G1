@@ -1,6 +1,6 @@
 package vn.aptech.Controller.Admin.Management;
 
-import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -18,14 +18,14 @@ import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
 
 public class BranchController implements Initializable {
-    public  ListView<Branch> branchList_lv;
+    public ListView<Branch> branchList_lv;
     public TextField name_tf;
     public TextField address_tf;
     public TextField hotline_tf;
     public TextField email_tf;
     public Button save_btn;
     public Button update_btn;
-    private static  ObservableList<Branch> branchObservableList;
+    private static ObservableList<Branch> branchObservableList;
     public Button clear_btn;
 
     public static ObservableList<Branch> getBranchObservableList() {
@@ -34,7 +34,12 @@ public class BranchController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        branchObservableList = Model.getInstance().getData().getBranchObservableList();
+        System.out.println("Branch");
+        branchObservableList = FXCollections.observableArrayList();
+        Model.getInstance().getData().getObservableList("branch").forEach(s -> {
+            branchObservableList.add((Branch) s);
+        });
+
         branchList_lv.setItems(branchObservableList);
         branchList_lv.setCellFactory(new BranchCellFactory());
 
@@ -53,22 +58,9 @@ public class BranchController implements Initializable {
 
         save_btn.setOnAction(actionEvent -> {
             Branch branch = new Branch();
-            Model.getInstance().getData().getConnect();
-            EntityManager em = Model.getInstance().getData().getEm();
-            try {
-                em.getTransaction().begin();
-                setBranch(branch,"new");
-                em.persist(branch);
-                em.getTransaction().commit();
-            }catch (Exception e) {
-                e.printStackTrace();
-            }finally {
-                Model.getInstance().getData().closeConnect();
-            }
+            setBranch(branch, "new");
+            Model.getInstance().getData().add(branch);
             branchObservableList.add(branch);
-//            branchObservableList = Model.getInstance().getData().getBranchObservableList();
-//            branchList_lv.setItems(branchObservableList);
-
         });
 
         update_btn.setOnAction(actionEvent -> {
@@ -78,15 +70,13 @@ public class BranchController implements Initializable {
             try {
                 em.getTransaction().begin();
                 branch = em.find(Branch.class, branchList_lv.getSelectionModel().getSelectedItem().getId());
-                setBranch(branch,"update");
+                setBranch(branch, "update");
                 em.getTransaction().commit();
-            }catch (Exception e) {
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 Model.getInstance().getData().closeConnect();
             }
-//            branchObservableList = Model.getInstance().getData().getBranchObservableList();
-//            branchList_lv.setItems(branchObservableList);
             branchObservableList.remove(branchList_lv.getSelectionModel().getSelectedItem());
             branchObservableList.add(branch);
 
@@ -100,7 +90,7 @@ public class BranchController implements Initializable {
         });
     }
 
-    public void setBranch(Branch branch,String type) {
+    public void setBranch(Branch branch, String type) {
         branch.setName(name_tf.getText());
         branch.setAddress(address_tf.getText());
         branch.setEmail(email_tf.getText());
@@ -108,10 +98,12 @@ public class BranchController implements Initializable {
         branch.setFlag("0");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        if(type.equals("new")) {
+        if (type.equals("new")) {
             branch.setCreateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
-        }else {
+        } else {
             branch.setUpdateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
         }
     }
+
+
 }

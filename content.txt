@@ -1,0 +1,83 @@
+Quản lý doanh nghiệp vận tải hành khách
+
+- hãng xe có 10 xe khách giường nằm 36 chỗ hoạt động theo các tuyến cố định:
+    + Thanh Hoa <-> Ha Noi (4 xe)
+    + Bac Giang <-> Ha Noi (3 xe)
+    + Thai Binh <-> Ha Noi (3 xe)
+- Phan bo nhan su trong cong ty :
+    + 1 Giam doc
+    + 1 ke toan
+    + 1 quan ly nhan su
+    + 2 nhan vien van phong
+    + 13 tai xe
+    + 1 tap vu
+
+-Chi nhanh van phong :
+    + Tru so chinh o Ha Noi, cac chi nhanh khac o Thanh Hoa, Bac Giang, Thai Binh.
+- Vận hành:
+   Ca sáng:
+        + Hà Nội - Thanh Hóa : 2 xe
+        + Thanh Hóa - Hà Nội : 2 xe
+        + Hà Nội - Bắc Giang : 2 xe
+        + Bắc Giang - Hà Nội : 1 xe
+        + Hà Nội - Thái Bình : 2 xe
+   Các tuyến xe :
+   Điểm xuất phát   |   Điểm đến  |   Thời gian xuất phát  |   Thời gian tới bến  |  số luọng xe
+   ---------------------------------------------------------------------------------------------
+   Ha Noi               Thanh Hoa       7:00                     9:30                 1
+   Thanh Hoa            Ha Noi          7:00                     9:30                 1
+   Hà Nội               Bắc Giang       7:00                     9:45                 1
+   Bắc Giang            Hà Nội          7:00                     9:45                 1
+   Hà Nội               Thái Bình       7:00                    10:00                 1
+   Thái Bình            Hà Nội          7:00                    10:00                 1
+
+   Ha Noi               Thanh Hoa      10:00                    12:30                 1
+   Thanh Hoa            Ha Noi         10:00                    12:00                 1
+   Hà Nội               Bắc Giang      10:00                    12:45                 1
+   Hà Nội               Thái Bình      10:00                    10:00                 1
+
+   Ha Noi               Thanh Hoa      14:00                    16:30                 1
+   Thanh Hoa            Ha Noi         14:00                    16:30                 1
+   Hà Nội               Bắc Giang      14:00                    16:45                 1
+   Bắc Giang            Hà Nội         14:00                    16:45                 1
+   Hà Nội               Thái Bình      14:00                    17:00                 1
+   Thái Bình            Hà Nội         14:00                    17:00                 1
+
+   Ha Noi               Thanh Hoa      17:00                    19:30                 1
+   Thanh Hoa            Ha Noi         17:00                    29:00                 1
+   Hà Nội               Bắc Giang      17:00                    29:45                 1
+   Hà Nội               Thái Bình      17:00                    20:00                 1
+
+- Hình thức đặt vé
+    + đặt vé qua website công ty.
+    + gọi điện thoại trực tiếp tới tổng đài.
+
+- Các chức năng ứng dụng:
+    + Quản lý nhân viên : thông tin nhân viên, chấm công ...
+    + Quản lý danh sách xe hoạt động.
+    + Quản lý danh sách tài xế.
+    + Quản lý danh sách hành khách đặt vé hàng ngày.
+    + Xuất báo cáo chấm công hàng tháng.
+    + Xuất báo cáo doanh thu hàng tháng.(từng xe và tất cả các xe)
+
+
+database:projectk2
+role (admin, user)
+user (danh sách tài khoản đăng nhập ứng dụng)
+employee (danh sách nhân viên văn phòng)
+brand (danh sách các chi nhánh công ty)
+driver (danh sách tài xế)
+car_list (danh sách thông tin của toàn bộ xe chở khách)
+router_list (danh sách các tuyến xe hoạt động trong ngày)
+ticket_list(danh sách đặt vé xe: id, customer name, customer phone, router_list_id, date,  )
+
+Layout
+    + Admin layout
+      Admin menu (Dashboard, Management, Router, Ticket, Report, Logout).
+        Dashboard:
+            - So xe dang hoat dong.
+            - Tong so ve ban trong thang.
+            -
+
+
+

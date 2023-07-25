@@ -4,7 +4,8 @@ import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
+@Entity(name = "ticket")
+@Table(name = "ticket", schema = "projectk2")
 public class Ticket {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -19,6 +20,9 @@ public class Ticket {
     @Basic
     @Column(name = "customer_phone")
     private String customerPhone;
+    @Basic
+    @Column(name = "number_of_ticket")
+    private int numberOfTicket;
     @Basic
     @Column(name = "branch_id")
     private int branchId;
@@ -71,6 +75,14 @@ public class Ticket {
 
     public void setCustomerPhone(String customerPhone) {
         this.customerPhone = customerPhone;
+    }
+
+    public int getNumberOfTicket() {
+        return numberOfTicket;
+    }
+
+    public void setNumberOfTicket(int numberOfTicket) {
+        this.numberOfTicket = numberOfTicket;
     }
 
     public int getBranchId() {
@@ -134,11 +146,11 @@ public class Ticket {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Ticket ticket = (Ticket) o;
-        return id == ticket.id && branchId == ticket.branchId && taskListId == ticket.taskListId && employeeId == ticket.employeeId && status == ticket.status && Objects.equals(code, ticket.code) && Objects.equals(customerName, ticket.customerName) && Objects.equals(customerPhone, ticket.customerPhone) && Objects.equals(flag, ticket.flag) && Objects.equals(createAt, ticket.createAt) && Objects.equals(updateAt, ticket.updateAt);
+        return id == ticket.id && numberOfTicket == ticket.numberOfTicket && branchId == ticket.branchId && taskListId == ticket.taskListId && employeeId == ticket.employeeId && status == ticket.status && Objects.equals(code, ticket.code) && Objects.equals(customerName, ticket.customerName) && Objects.equals(customerPhone, ticket.customerPhone) && Objects.equals(flag, ticket.flag) && Objects.equals(createAt, ticket.createAt) && Objects.equals(updateAt, ticket.updateAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, code, customerName, customerPhone, branchId, taskListId, employeeId, status, flag, createAt, updateAt);
+        return Objects.hash(id, code, customerName, customerPhone, numberOfTicket, branchId, taskListId, employeeId, status, flag, createAt, updateAt);
     }
 }

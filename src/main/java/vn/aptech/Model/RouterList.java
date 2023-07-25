@@ -5,8 +5,8 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-@Entity
-@Table(name = "router_list", schema = "projectk2", catalog = "")
+@Entity(name = "router_list")
+@Table(name = "router_list", schema = "projectk2")
 public class RouterList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
@@ -131,5 +131,21 @@ public class RouterList {
     @Override
     public int hashCode() {
         return Objects.hash(id, code, startPoint, destination, startTime, endTime, price, flag, createAt, updateAt);
+    }
+
+    @Override
+    public String toString() {
+        return "RouterList{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", startPoint=" + startPoint +
+                ", destination=" + destination +
+                ", startTime=" + startTime +
+                ", endTime=" + endTime +
+                ", price=" + price +
+                ", flag='" + flag + '\'' +
+                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                '}';
     }
 }

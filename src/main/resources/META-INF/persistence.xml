@@ -6,13 +6,14 @@
         <class>vn.aptech.Model.Positions</class>
         <class>vn.aptech.Model.Role</class>
         <class>vn.aptech.Model.RouterList</class>
-        <class>vn.aptech.Model.TaskList</class>
-        <class>vn.aptech.Model.Ticket</class>
         <class>vn.aptech.Model.TicketStatus</class>
         <class>vn.aptech.Model.TypeCar</class>
         <class>vn.aptech.Model.Users</class>
         <class>vn.aptech.Model.Employee</class>
         <class>vn.aptech.Model.Test</class>
+        <class>vn.aptech.Model.Ticket</class>
+        <class>vn.aptech.Model.TaskStatus</class>
+        <class>vn.aptech.Model.TaskList</class>
         <properties>
             <property name="toplink.jdbc.url" value="jdbc:mysql://localhost:3306/projectk2"/>
             <property name="toplink.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>
@@ -20,6 +21,7 @@
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/projectk2"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
             <property name="hibernate.connection.username" value="root"/>
+            <property name="hibernate.show_sql" value="true"/>
             <property name="openjpa.ConnectionURL" value="jdbc:mysql://localhost:3306/projectk2"/>
             <property name="openjpa.ConnectionDriverName" value="com.mysql.cj.jdbc.Driver"/>
             <property name="openjpa.ConnectionUserName" value="root"/>

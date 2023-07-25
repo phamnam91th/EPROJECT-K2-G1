@@ -2,16 +2,18 @@ package vn.aptech.Model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import org.hibernate.type.ObjectType;
 
-import javax.persistence.*;
+import java.lang.Object;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
+import javax.persistence.*;
+import javax.xml.bind.DatatypeConverter;
+
+
 public class Data {
-    // Employee
-//    public Data() {
-//        emf = Persistence.createEntityManagerFactory("default");
-//        em=emf.createEntityManager();
-//    }
     private  EntityManagerFactory emf;
     private  EntityManager em;
 
@@ -33,98 +35,122 @@ public class Data {
     }
 
 
+    // Encode password
+    public String getEncodePassword(String password) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(password.getBytes());
+        byte[] digest = md.digest();
+        return DatatypeConverter.printHexBinary(digest).toUpperCase();
+    }
+
+
+    // CRUD
+    public boolean add(Object T) {
+        boolean flag = false;
+        getConnect();
+        try{
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+            em.persist(T);
+            transaction.commit();
+            flag = true;
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnect();
+        }
+        return flag;
+    }
+
+    public  void update(Object T, int id) {
+        getConnect();
+        try{
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+            Object T1 = em.find(T.getClass(), id);
+            em.merge(T1);
+            transaction.commit();
+            System.out.println("update success");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnect();
+        }
+    }
+
+//    convert method following to generic mothod :
+    public  void updateItem(Ticket T, int id, String content) {
+        getConnect();
+        try{
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+            Ticket ticket = em.find(T.getClass(), id);
+            ticket.setCode(content);
+            em.merge(ticket);
+            transaction.commit();
+            System.out.println("update success");
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnect();
+        }
+    }
+
+    public void delete(Object T, int id) {
+        getConnect();
+        try{
+            EntityTransaction transaction = em.getTransaction();
+            transaction.begin();
+            Object T1 = em.find(T.getClass(), id);
+            em.remove(T1);
+            transaction.commit();
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnect();
+        }
+    }
+
+    public ObservableList<Object> getObservableList(String tableName) {
+        ObservableList<Object> ObservableList  = null;
+        getConnect();
+        try{
+            Query q = em.createQuery("select s from "+ tableName +" s");
+            ObservableList = FXCollections.observableArrayList(q.getResultList());
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnect();
+        }
+        return ObservableList;
+    }
+    public ObservableList<String> getListName(String tableName, String col) {
+        ObservableList<String> ObservableList  = null;
+        getConnect();
+        try{
+            Query q = em.createQuery("select s."+ col +" from "+ tableName +" s");
+            ObservableList = FXCollections.observableArrayList(q.getResultList());
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            closeConnect();
+        }
+        return ObservableList;
+    }
+
     // Employee
-    public ObservableList<Employee> getEmployeeList() {
-        ObservableList<Employee> employeeList = null;
-        getConnect();
-        try{
-            Query q = em.createNativeQuery("select * from employee", Employee.class);
-            employeeList = FXCollections.observableArrayList(q.getResultList());
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            closeConnect();
-        }
-        return employeeList;
-    }
-
-
-    public void addEmployee(Employee employee) {
-        getConnect();
-        try{
-            EntityTransaction transaction = em.getTransaction();
-            transaction.begin();
-            em.persist(employee);
-            transaction.commit();
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            closeConnect();
-        }
-    }
-
-    public void updateEmployee(Employee employee) {
-        getConnect();
-        try{
-            EntityTransaction transaction = em.getTransaction();
-            transaction.begin();
-            Employee employee1 = em.find(Employee.class, employee.getId());
-
-
-            transaction.commit();
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            closeConnect();
-        }
-    }
 
     // Positions
-    public ObservableList<Positions> getPositionsList() {
-        ObservableList<Positions> positionsList = null;
-        getConnect();
-        try{
-            Query q = em.createNativeQuery("select * from positions", Positions.class);
-            positionsList = FXCollections.observableArrayList(q.getResultList());
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            closeConnect();
-        }
-        return positionsList;
-    }
-
-
 
     // Branch
-    public ObservableList<Branch> getBranchObservableList() {
-        ObservableList<Branch> branchObservableList = null;
-        getConnect();
-        try{
-            Query q = em.createNativeQuery("select * from branch", Branch.class);
-            branchObservableList = FXCollections.observableArrayList(q.getResultList());
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            closeConnect();
-        }
-        return branchObservableList;
-    }
 
     // Role
-    public ObservableList<Role> getRoleObservableList() {
-        ObservableList<Role> roleObservableList  = null;
-        getConnect();
-        try{
-            Query q = em.createNativeQuery("select * from role", Role.class);
-            roleObservableList = FXCollections.observableArrayList(q.getResultList());
-        }catch (Exception e){
-            e.printStackTrace();
-        }finally {
-            closeConnect();
-        }
-        return roleObservableList;
-    }
+
+    // User
+
+    // ROuter list
+
+    // Task list
 
 
 }

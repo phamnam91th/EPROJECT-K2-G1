@@ -31,18 +31,8 @@ public class EmployeeCellController implements Initializable {
         phone_lb.setText(employee.getPhone());
 
         del_btn.setOnAction(actionEvent -> {
-            Model.getInstance().getData().getConnect();
-            EntityManager em = Model.getInstance().getData().getEm();
-            try {
-                em.getTransaction().begin();
-                em.remove(em.find(Employee.class, employee.getId()));
-                em.getTransaction().commit();
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                Model.getInstance().getData().closeConnect();
-            }
-            EmployeeController.getEmployeeList().remove(employee);
+            Model.getInstance().getData().delete(employee, employee.getId());
+            EmployeeController.getEmployeeObservableList().remove(employee);
         });
     }
 }

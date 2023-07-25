@@ -1,7 +1,10 @@
 package vn.aptech.Controller.Admin.Management;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
+import vn.aptech.Model.Branch;
+import vn.aptech.Model.Model;
 import vn.aptech.Model.Role;
 
 import java.net.URL;
@@ -21,6 +24,33 @@ public class RoleController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        System.out.println("Role");
+        roleObservableList  = FXCollections.observableArrayList();
+        Model.getInstance().getData().getObservableList("role").forEach(s -> {
+            roleObservableList.add((Role) s);
+        });
 
+        roleListName = Model.getInstance().getData().getListName("role", "name");
+
+    }
+
+    public static Role idToRole(int id) {
+        Role role = null;
+        for(Role r: roleObservableList) {
+            if(id == r.getId()) {
+                role = r;
+            }
+        }
+        return role;
+    }
+
+    public static Role nameToId(String name) {
+        Role role = null;
+        for(Role r: roleObservableList) {
+            if(name.equals(r.getName())) {
+                role = r;
+            }
+        }
+        return role;
     }
 }
