@@ -5,8 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import vn.aptech.Model.Employee;
 import vn.aptech.Model.Model;
-
-import javax.persistence.EntityManager;
 import java.net.URL;
 import java.util.ResourceBundle;
 

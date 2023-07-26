@@ -19,6 +19,7 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class UserController implements Initializable {
     public ListView<Users> listUser_lv;
@@ -163,6 +164,15 @@ public class UserController implements Initializable {
         } else {
             user.setUpdateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
         }
+    }
+
+    public <T,V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
+        for (T item : itemList) {
+            if (predicate.test(item)) {
+                return item;
+            }
+        }
+        return null;
     }
 
     public static Employee idToEmployee(int id) {

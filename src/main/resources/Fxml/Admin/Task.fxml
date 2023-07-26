@@ -140,10 +140,22 @@
                </VBox>
             </children>
          </VBox>
-         <VBox alignment="CENTER" prefHeight="150.0" prefWidth="350.0" spacing="20.0">
+         <VBox alignment="CENTER" prefHeight="150.0" prefWidth="158.0" spacing="20.0">
             <Button fx:id="save_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Save" />
             <Button fx:id="update_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Update" />
             <Button fx:id="delete_btn" layoutX="74.0" layoutY="95.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Delete" />
+         </VBox>
+         <VBox alignment="TOP_CENTER" layoutX="820.0" layoutY="10.0" prefHeight="150.0" prefWidth="134.0" spacing="20.0">
+            <children>
+               <Button fx:id="refresh" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Refresh">
+                  <VBox.margin>
+                     <Insets top="9.0" />
+                  </VBox.margin>
+                  <graphic>
+                     <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" size="20" />
+                  </graphic>
+               </Button>
+            </children>
          </VBox>
       </HBox>
    </VBox>

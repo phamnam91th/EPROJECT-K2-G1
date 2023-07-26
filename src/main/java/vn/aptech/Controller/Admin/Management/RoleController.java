@@ -3,7 +3,6 @@ package vn.aptech.Controller.Admin.Management;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
-import vn.aptech.Model.Branch;
 import vn.aptech.Model.Model;
 import vn.aptech.Model.Role;
 
@@ -34,23 +33,4 @@ public class RoleController implements Initializable {
 
     }
 
-    public static Role idToRole(int id) {
-        Role role = null;
-        for(Role r: roleObservableList) {
-            if(id == r.getId()) {
-                role = r;
-            }
-        }
-        return role;
-    }
-
-    public static Role nameToId(String name) {
-        Role role = null;
-        for(Role r: roleObservableList) {
-            if(name.equals(r.getName())) {
-                role = r;
-            }
-        }
-        return role;
-    }
 }

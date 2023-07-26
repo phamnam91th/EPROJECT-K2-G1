@@ -2,22 +2,20 @@ package vn.aptech.Model;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import org.hibernate.type.ObjectType;
 
 import java.lang.Object;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
 import javax.persistence.*;
 import javax.xml.bind.DatatypeConverter;
 
 
 public class Data {
-    private  EntityManagerFactory emf;
-    private  EntityManager em;
+    private EntityManagerFactory emf;
+    private EntityManager em;
 
-    public  EntityManagerFactory getEmf() {
+    public EntityManagerFactory getEmf() {
         return emf;
     }
 
@@ -25,10 +23,14 @@ public class Data {
         return em;
     }
 
+    public Data() {
+    }
+
     public void getConnect() {
         emf = Persistence.createEntityManagerFactory("default");
         em = emf.createEntityManager();
     }
+
     public void closeConnect() {
         em.close();
         emf.close();
@@ -48,40 +50,42 @@ public class Data {
     public boolean add(Object T) {
         boolean flag = false;
         getConnect();
-        try{
+        try {
             EntityTransaction transaction = em.getTransaction();
             transaction.begin();
             em.persist(T);
             transaction.commit();
             flag = true;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             closeConnect();
         }
         return flag;
     }
 
-    public  void update(Object T, int id) {
+    public void update(Object T, int id) {
         getConnect();
-        try{
+        try {
             EntityTransaction transaction = em.getTransaction();
             transaction.begin();
             Object T1 = em.find(T.getClass(), id);
             em.merge(T1);
             transaction.commit();
             System.out.println("update success");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             closeConnect();
         }
     }
 
-//    convert method following to generic mothod :
-    public  void updateItem(Ticket T, int id, String content) {
+    //    convert method following to generic mothod :
+    public void updateItem(Ticket T, int id, String content) {
+
         getConnect();
-        try{
+
+        try {
             EntityTransaction transaction = em.getTransaction();
             transaction.begin();
             Ticket ticket = em.find(T.getClass(), id);
@@ -89,50 +93,65 @@ public class Data {
             em.merge(ticket);
             transaction.commit();
             System.out.println("update success");
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             closeConnect();
         }
     }
 
     public void delete(Object T, int id) {
         getConnect();
-        try{
+        try {
             EntityTransaction transaction = em.getTransaction();
             transaction.begin();
             Object T1 = em.find(T.getClass(), id);
             em.remove(T1);
             transaction.commit();
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             closeConnect();
         }
     }
 
-    public ObservableList<Object> getObservableList(String tableName) {
-        ObservableList<Object> ObservableList  = null;
+//    public ObservableList<Object> getObservableList(String tableName) {
+//        ObservableList<Object> ObservableList = null;
+//        getConnect();
+//        try {
+//            Query q = em.createQuery("select s from " + tableName + " s");
+//            ObservableList = FXCollections.observableArrayList(q.getResultList());
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            closeConnect();
+//        }
+//        return ObservableList;
+//    }
+
+    public <T> ObservableList<T> getObservableList(String tableName) {
         getConnect();
-        try{
-            Query q = em.createQuery("select s from "+ tableName +" s");
-            ObservableList = FXCollections.observableArrayList(q.getResultList());
-        }catch (Exception e){
+        ObservableList<T> observableList = FXCollections.observableArrayList();
+        try {
+            Query q = em.createQuery("select s from " + tableName + " s");
+            observableList = FXCollections.observableArrayList(q.getResultList());
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             closeConnect();
         }
-        return ObservableList;
+        return observableList;
     }
+
     public ObservableList<String> getListName(String tableName, String col) {
-        ObservableList<String> ObservableList  = null;
+        ObservableList<String> ObservableList = null;
         getConnect();
-        try{
-            Query q = em.createQuery("select s."+ col +" from "+ tableName +" s");
+        try {
+            Query q = em.createQuery("select s." + col + " from " + tableName + " s");
             ObservableList = FXCollections.observableArrayList(q.getResultList());
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
-        }finally {
+        } finally {
             closeConnect();
         }
         return ObservableList;
@@ -151,6 +170,25 @@ public class Data {
     // ROuter list
 
     // Task list
+    public static void main(String[] args) {
+        Data data   = new Data();
+        data.getConnect();
+        try {
+//            String str = "where b.id=1";
+//            Query q = data.getEm().createQuery("select b from branch b "+ str);
+//            List<Branch> branchObservableList = q.getResultList();
+//            branchObservableList.forEach(System.out::println);
+            ObservableList<Branch> branchObservableList = data.getObservableList("branch");
+            for (Branch branch : branchObservableList) {
+                System.out.println(branch);
+            }
 
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            data.closeConnect();
+        }
+    }
 
 }

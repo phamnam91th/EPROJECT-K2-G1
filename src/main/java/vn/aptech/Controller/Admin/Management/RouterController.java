@@ -9,7 +9,6 @@ import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 import vn.aptech.Model.Branch;
-import vn.aptech.Model.Employee;
 import vn.aptech.Model.Model;
 import vn.aptech.Model.RouterList;
 import vn.aptech.Views.RouterCellFactory;
@@ -57,16 +56,8 @@ public class RouterController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Router");
-        routerListObservableList  = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("router_list").forEach(s -> {
-            routerListObservableList.add((RouterList) s);
-        });
-
-        branchObservableList = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("branch").forEach(s -> {
-            branchObservableList.add((Branch) s);
-        });
-
+        routerListObservableList  = Model.getInstance().getData().getObservableList("router_list");
+        branchObservableList = Model.getInstance().getData().getObservableList("branch");
         branchListName = Model.getInstance().getData().getListName("branch", "name");
 
         router_lv.setItems(routerListObservableList);
@@ -80,8 +71,8 @@ public class RouterController implements Initializable {
 
         router_lv.getSelectionModel().selectedItemProperty().addListener((observableValue, routerList, t1) -> {
             code_tf.setText(t1.getCode());
-            startPoint_cb.setValue(findItemById(t1.getStartPoint(), branchObservableList, branch -> branch.getId() == t1.getStartPoint()).getName());
-            destination_cb.setValue(findItemById(t1.getStartPoint(), branchObservableList, branch -> branch.getId() == t1.getDestination()).getName());
+            startPoint_cb.setValue(findItem(t1.getStartPoint(), branchObservableList, branch -> branch.getId() == t1.getStartPoint()).getName());
+            destination_cb.setValue(findItem(t1.getStartPoint(), branchObservableList, branch -> branch.getId() == t1.getDestination()).getName());
             startAt_tf.setText(t1.getStartTime().toString());
             endAt_tf.setText(t1.getEndTime().toString());
             price_tf.setText(String.valueOf(t1.getPrice()));
@@ -126,8 +117,8 @@ public class RouterController implements Initializable {
 
     public void setRouter(RouterList router, String type) {
         router.setCode(code_tf.getText());
-        router.setStartPoint(findItemByName(startPoint_cb.getValue(), branchObservableList, car->car.getName().equals(startPoint_cb.getValue())).getId());
-        router.setDestination(findItemByName(destination_cb.getValue(), branchObservableList, car->car.getName().equals(destination_cb.getValue())).getId());
+        router.setStartPoint(findItem(startPoint_cb.getValue(), branchObservableList, car->car.getName().equals(startPoint_cb.getValue())).getId());
+        router.setDestination(findItem(destination_cb.getValue(), branchObservableList, car->car.getName().equals(destination_cb.getValue())).getId());
         String[] startTime = startAt_tf.getText().split(":");
         Time st = new Time(Integer.parseInt(startTime[0]),Integer.parseInt(startTime[1]),Integer.parseInt(startTime[2]));
         router.setStartTime(st);
@@ -146,7 +137,8 @@ public class RouterController implements Initializable {
 
     }
 
-    public <T> T findItemById(int id, ObservableList<T> itemList, Predicate<T> predicate) {
+
+    public <T,V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
         for (T item : itemList) {
             if (predicate.test(item)) {
                 return item;
@@ -155,12 +147,5 @@ public class RouterController implements Initializable {
         return null;
     }
 
-    public <T> T findItemByName(String name, ObservableList<T> itemList, Predicate<T> predicate) {
-        for (T item : itemList) {
-            if (predicate.test(item)) {
-                return item;
-            }
-        }
-        return null;
-    }
+
 }

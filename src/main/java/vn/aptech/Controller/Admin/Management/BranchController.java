@@ -35,11 +35,7 @@ public class BranchController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Branch");
-        branchObservableList = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("branch").forEach(s -> {
-            branchObservableList.add((Branch) s);
-        });
-
+        branchObservableList = Model.getInstance().getData().getObservableList("branch");
         branchList_lv.setItems(branchObservableList);
         branchList_lv.setCellFactory(new BranchCellFactory());
 

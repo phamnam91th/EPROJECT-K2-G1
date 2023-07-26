@@ -46,25 +46,16 @@ public class EmployeeController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Employee");
-        employeeObservableList  = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("employee").forEach(s -> {
-            employeeObservableList.add((Employee) s);
-        });
-        positionsObservableList  = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("positions").forEach(s -> {
-            positionsObservableList.add((Positions) s);
-        });
-
+        employeeObservableList  = Model.getInstance().getData().getObservableList("employee");
+        positionsObservableList  = Model.getInstance().getData().getObservableList("positions");
 
         employee_lv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
         employee_lv.setItems(employeeObservableList);
 
-
         employeeObservableList.addListener((ListChangeListener<Employee>) change -> {
             employee_lv.setItems(employeeObservableList);
         });
-        
-        
+
         employee_lv.setCellFactory(new EmployeeCellFactory());
         positions = Model.getInstance().getData().getListName("positions", "name");
         positions_cb.setItems(positions);

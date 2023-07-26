@@ -4,21 +4,19 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-
 import javafx.util.Callback;
 import vn.aptech.Model.*;
-
 import javax.persistence.EntityManager;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -58,38 +56,23 @@ public class TaskController implements Initializable {
     private static ObservableList<String> listUsersName;
     private static ObservableList<TaskStatus> taskStatusObservableList;
     private static ObservableList<String> listTaskStatusName;
+    public Button refresh;
 
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        taskListObservableList = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("task_list").forEach(s -> {
-            taskListObservableList.add((TaskList) s);
-        });
+        taskListObservableList = Model.getInstance().getData().getObservableList("task_list");
+        FXCollections.reverse(taskListObservableList);
+        listCarObservableList = Model.getInstance().getData().getObservableList("list_car");
+        routerListObservableList = Model.getInstance().getData().getObservableList("router_list");
+        usersObservableList = Model.getInstance().getData().getObservableList("users");
+        taskStatusObservableList = Model.getInstance().getData().getObservableList("task_status");
 
-        listCarObservableList = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("list_car").forEach(s -> {
-            listCarObservableList.add((ListCar) s);
-        });
-        listCarName = Model.getInstance().getData().getListName("list_car", "licensePlates");
-        listRouterCode = Model.getInstance().getData().getListName("router_list", "code");
-        listUsersName = Model.getInstance().getData().getListName("users", "userName");
-        listTaskStatusName = Model.getInstance().getData().getListName("task_status", "name");
-
-        routerListObservableList = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("router_list").forEach(s -> {
-            routerListObservableList.add((RouterList) s);
-        });
-
-        usersObservableList = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("users").forEach(s -> {
-            usersObservableList.add((Users) s);
-        });
-
-        taskStatusObservableList = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("task_status").forEach(s -> {
-            taskStatusObservableList.add((TaskStatus) s);
-        });
+        List<String> listCar = listCarObservableList.stream().map(ListCar::getLicensePlates).toList();
+        listCarName = FXCollections.observableArrayList(listCar);
+        listRouterCode = FXCollections.observableArrayList(routerListObservableList.stream().map(RouterList::getCode).toList());
+        listUsersName = FXCollections.observableArrayList(usersObservableList.stream().map(Users::getUserName).toList());
+        listTaskStatusName = FXCollections.observableArrayList(taskStatusObservableList.stream().map(TaskStatus::getName).toList());
 
         id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
         code_col.setCellValueFactory(new PropertyValueFactory<>("code"));
@@ -103,16 +86,18 @@ public class TaskController implements Initializable {
         m_select_router_cb.setItems(listRouterCode);
         m_select_driver_cb.setItems(listUsersName);
         m_select_status_cb.setItems(listTaskStatusName);
+
         taskList_tv.setItems(taskListObservableList);
+
 
         taskListObservableList.addListener((ListChangeListener<TaskList>) change -> taskList_tv.setItems(taskListObservableList));
 
         taskList_tv.getSelectionModel().selectedItemProperty().addListener((observableValue, taskList, t1) -> {
-            m_select_car_cb.setValue(findItemById(t1.getListCarId(), listCarObservableList, car -> car.getId() == t1.getListCarId()).getLicensePlates());
-            m_select_driver_cb.setValue(findItemById(t1.getUserId(), usersObservableList, user -> user.getId() == t1.getUserId()).getUserName());
-            m_select_router_cb.setValue(findItemById(t1.getRouterListId(), routerListObservableList, router -> router.getId() == t1.getRouterListId()).getCode());
+            m_select_car_cb.setValue(findItem(t1.getListCarId(), listCarObservableList, car -> car.getId() == t1.getListCarId()).getLicensePlates());
+            m_select_driver_cb.setValue(findItem(t1.getUserId(), usersObservableList, user -> user.getId() == t1.getUserId()).getUserName());
+            m_select_router_cb.setValue(findItem(t1.getRouterListId(), routerListObservableList, router -> router.getId() == t1.getRouterListId()).getCode());
             m_date_active_dp.setValue(t1.getDateApply().toLocalDate());
-            m_select_status_cb.setValue(findItemById(t1.getStatus(), taskStatusObservableList, status -> status.getId() == t1.getStatus()).getName());
+            m_select_status_cb.setValue(findItem(t1.getStatus(), taskStatusObservableList, status -> status.getId() == t1.getStatus()).getName());
         });
 
         save_btn.setOnAction(actionEvent -> {
@@ -148,18 +133,33 @@ public class TaskController implements Initializable {
             taskListObservableList.remove(task);
         });
 
+        refresh.setOnAction(actionEvent -> {
+            int n = taskListObservableList.size();
+            if (n > 0) {
+                taskListObservableList.subList(0, n).clear();
+            }
+            Model.getInstance().getData().getObservableList("task_list").forEach(s -> {
+                taskListObservableList.add((TaskList) s);
+            });
+            FXCollections.reverse(taskListObservableList);
+        });
 
+        search_btn.setOnAction(actionEvent -> {
+
+
+
+        });
     }
 
     public void setTasList(TaskList taskList, String type) {
-        ListCar listCar = findItemByName(m_select_car_cb.getValue(), listCarObservableList, car->car.getLicensePlates().equals(m_select_car_cb.getValue()));
+        ListCar listCar = findItem(m_select_car_cb.getValue(), listCarObservableList, car->car.getLicensePlates().equals(m_select_car_cb.getValue()));
         taskList.setListCarId(listCar.getId());
-        RouterList router = findItemByName(m_select_router_cb.getValue(), routerListObservableList, rt -> rt.getCode().equals(m_select_router_cb.getValue()));
+        RouterList router = findItem(m_select_router_cb.getValue(), routerListObservableList, rt -> rt.getCode().equals(m_select_router_cb.getValue()));
         taskList.setRouterListId(router.getId());
         taskList.setDateApply(Date.valueOf(m_date_active_dp.getValue()));
-        TaskStatus status = findItemByName(m_select_status_cb.getValue(), taskStatusObservableList, stt -> stt.getName().equals(m_select_status_cb.getValue()));
+        TaskStatus status = findItem(m_select_status_cb.getValue(), taskStatusObservableList, stt -> stt.getName().equals(m_select_status_cb.getValue()));
         taskList.setStatus(status.getId());
-        Users user = findItemByName(m_select_driver_cb.getValue(), usersObservableList, item -> item.getUserName().equals(m_select_driver_cb.getValue()));
+        Users user = findItem(m_select_driver_cb.getValue(), usersObservableList, item -> item.getUserName().equals(m_select_driver_cb.getValue()));
         taskList.setUserId(user.getId());
         String code = m_select_car_cb.getValue() + "/" + m_date_active_dp.getValue() + "/" + m_select_router_cb.getValue() + "/" + m_select_driver_cb.getValue();
         taskList.setCode(code);
@@ -180,7 +180,9 @@ public class TaskController implements Initializable {
                 if (!empty) {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getStatus();
-                    setText(findItemById(id, taskStatusObservableList, status -> status.getId() == id).getName());
+                    setText(findItem(id, taskStatusObservableList, status -> status.getId() == id).getName());
+                }else {
+                    setText("");
                 }
             }
         });
@@ -193,7 +195,9 @@ public class TaskController implements Initializable {
                 if (!empty) {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getUserId();
-                    setText(findItemById(id, usersObservableList, user -> user.getId() == id).getUserName());
+                    setText(findItem(id, usersObservableList, user -> user.getId() == id).getUserName());
+                }else {
+                    setText("");
                 }
             }
         });
@@ -206,7 +210,9 @@ public class TaskController implements Initializable {
                 if (!empty) {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getRouterListId();
-                    setText(findItemById(id, routerListObservableList, router -> router.getId() == id).getCode());
+                    setText(findItem(id, routerListObservableList, router -> router.getId() == id).getCode());
+                }else {
+                    setText("");
                 }
             }
         });
@@ -231,28 +237,20 @@ public class TaskController implements Initializable {
                         imageView.setImage(image);
                         setStyle("-fx-alignment: center");
                         setGraphic(imageView);
-                    } else {
+                    } else if(stt == 3){
                         Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Image/3.png")));
                         imageView.setImage(image);
                         setStyle("-fx-alignment: center");
                         setGraphic(imageView);
                     }
+                } else {
+                    setGraphic(null);
                 }
             }
         });
     }
 
-    //The following two methods can be combined into one common method:
-    public <T> T findItemById(int id, ObservableList<T> itemList, Predicate<T> predicate) {
-        for (T item : itemList) {
-            if (predicate.test(item)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    public <T> T findItemByName(String name, ObservableList<T> itemList, Predicate<T> predicate) {
+    public <T,V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
         for (T item : itemList) {
             if (predicate.test(item)) {
                 return item;
@@ -293,5 +291,13 @@ public class TaskController implements Initializable {
         colBtn.setCellFactory(cellFactory);
     }
 
-
+    public static void main(String[] args) {
+        TaskController controller = new TaskController();
+        routerListObservableList = FXCollections.observableArrayList();
+        Model.getInstance().getData().getObservableList("router_list").forEach(s -> {
+            routerListObservableList.add((RouterList) s);
+        });
+        RouterList t =  controller.findItem("HN-TH-09", routerListObservableList, router -> router.getCode().equals("HN-TH-09"));
+        System.out.println(t);
+    }
 }
