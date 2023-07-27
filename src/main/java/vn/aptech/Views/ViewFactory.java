@@ -19,6 +19,8 @@ import java.io.IOException;
 public class ViewFactory {
 
     private AccountType loginAccountType;
+    // loading
+    private AnchorPane loadingView;
     // Admin View
     private final ObjectProperty<AdminMenuOptions> adminSelectMenuItem;
     private AnchorPane dashboardView;
@@ -117,6 +119,10 @@ public class ViewFactory {
         return reportView;
     }
 
+    public void showLoading() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Admin/Loading.fxml"));
+        createStage(loader);
+    }
 
 
     // show login window
@@ -131,6 +137,17 @@ public class ViewFactory {
         AdminController controller = new AdminController();
         loader.setController(controller);
         createStage(loader);
+    }
+    // Loading view
+    public AnchorPane getLoadingView() {
+        if (loadingView == null) {
+            try {
+                loadingView = new FXMLLoader(getClass().getResource("/Fxml/Admin/Loading.fxml")).load();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return loadingView;
     }
 
     // Management view section

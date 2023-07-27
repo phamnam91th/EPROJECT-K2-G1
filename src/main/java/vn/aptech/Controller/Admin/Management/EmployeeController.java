@@ -1,10 +1,9 @@
 package vn.aptech.Controller.Admin.Management;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import vn.aptech.Controller.Admin.DashboardController;
 import vn.aptech.Model.*;
 import vn.aptech.Views.EmployeeCellFactory;
 
@@ -33,32 +32,20 @@ public class EmployeeController implements Initializable {
     public Button clear_btn;
     public TextField code_tf;
 
-    private static ObservableList<Employee> employeeObservableList;
-    private static ObservableList<String> positions;
-    private static ObservableList<Positions> positionsObservableList;
-
-    public static ObservableList<Employee> getEmployeeObservableList() {
-        return employeeObservableList;
-    }
-
-
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Employee");
-        employeeObservableList  = Model.getInstance().getData().getObservableList("employee");
-        positionsObservableList  = Model.getInstance().getData().getObservableList("positions");
 
         employee_lv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        employee_lv.setItems(employeeObservableList);
+        employee_lv.setItems(DashboardController.getEmployeeObservableList());
 
-        employeeObservableList.addListener((ListChangeListener<Employee>) change -> {
-            employee_lv.setItems(employeeObservableList);
+        DashboardController.getEmployeeObservableList().addListener((ListChangeListener<Employee>) change -> {
+            employee_lv.setItems(DashboardController.getEmployeeObservableList());
         });
 
         employee_lv.setCellFactory(new EmployeeCellFactory());
-        positions = Model.getInstance().getData().getListName("positions", "name");
-        positions_cb.setItems(positions);
+        positions_cb.setItems(DashboardController.getPositionsListName());
         employee_lv.getSelectionModel().selectedItemProperty().addListener((observableValue, employee, t1) -> {
             fName_tf.setText(t1.getfName());
             mName_tf.setText(t1.getmName());
@@ -71,8 +58,8 @@ public class EmployeeController implements Initializable {
             email_tf.setText(t1.getEmail());
             code_tf.setText(t1.getCode());
 
-            positions_cb.setItems(positions);
-            positions_cb.setValue(positions.get(getPositionIndex(t1.getPositionsId())));
+            positions_cb.setItems(DashboardController.getPositionsListName());
+            positions_cb.setValue(DashboardController.getPositionsListName().get(getPositionIndex(t1.getPositionsId())));
         });
 
 
@@ -86,8 +73,8 @@ public class EmployeeController implements Initializable {
             phoneNumber_tf.setText("");
             email_tf.setText("");
             code_tf.setText("");
-            positions_cb.setItems(positions);
-            positions_cb.setValue(positions.get(0));
+            positions_cb.setItems(DashboardController.getPositionsListName());
+            positions_cb.setValue(DashboardController.getPositionsListName().get(0));
         });
 
         save_btn.setOnAction(actionEvent -> {
@@ -96,7 +83,7 @@ public class EmployeeController implements Initializable {
 
 //            Model.getInstance().getData().addEmployee(employee);
             Model.getInstance().getData().add(employee);
-            employeeObservableList.add(employee);
+            DashboardController.getEmployeeObservableList().add(employee);
         });
 
         update_btn.setOnAction(actionEvent -> {
@@ -114,9 +101,9 @@ public class EmployeeController implements Initializable {
             }finally {
                 Model.getInstance().getData().closeConnect();
             }
-            int index = employeeObservableList.indexOf(employee_lv.getSelectionModel().getSelectedItem());
-            employeeObservableList.remove(employee_lv.getSelectionModel().getSelectedItem());
-            employeeObservableList.add(index,employee);
+            int index = DashboardController.getEmployeeObservableList().indexOf(employee_lv.getSelectionModel().getSelectedItem());
+            DashboardController.getEmployeeObservableList().remove(employee_lv.getSelectionModel().getSelectedItem());
+            DashboardController.getEmployeeObservableList().add(index,employee);
         });
 
 
@@ -146,8 +133,8 @@ public class EmployeeController implements Initializable {
 
     public int getPositionIndex(int positionsId) {
         int index = 0;
-        for(int i=0; i<positionsObservableList.size(); i++) {
-            if(positionsId == positionsObservableList.get(i).getId()) {
+        for(int i=0; i<DashboardController.getPositionsObservableList().size(); i++) {
+            if(positionsId == DashboardController.getPositionsObservableList().get(i).getId()) {
                 index = i;
                 break;
             }
@@ -157,9 +144,9 @@ public class EmployeeController implements Initializable {
 
     public int getPositionsId(String name) {
         int id = 0;
-        for(int i=0; i<positionsObservableList.size(); i++) {
-            if(name.equals(positionsObservableList.get(i).getName())) {
-                id = positionsObservableList.get(i).getId();
+        for(int i=0; i<DashboardController.getPositionsObservableList().size(); i++) {
+            if(name.equals(DashboardController.getPositionsObservableList().get(i).getName())) {
+                id = DashboardController.getPositionsObservableList().get(i).getId();
                 break;
             }
         }

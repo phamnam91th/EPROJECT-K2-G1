@@ -3,6 +3,7 @@ package vn.aptech.Controller.Admin.Management;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import vn.aptech.Controller.Admin.DashboardController;
 import vn.aptech.Model.Employee;
 import vn.aptech.Model.Model;
 import java.net.URL;
@@ -30,7 +31,7 @@ public class EmployeeCellController implements Initializable {
 
         del_btn.setOnAction(actionEvent -> {
             Model.getInstance().getData().delete(employee, employee.getId());
-            EmployeeController.getEmployeeObservableList().remove(employee);
+            DashboardController.getEmployeeObservableList().remove(employee);
         });
     }
 }

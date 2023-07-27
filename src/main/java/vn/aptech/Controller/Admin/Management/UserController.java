@@ -8,6 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import vn.aptech.Controller.Admin.DashboardController;
 import vn.aptech.Model.*;
 import vn.aptech.Views.UserCellFactory;
 
@@ -31,67 +32,29 @@ public class UserController implements Initializable {
     public Button save_btn;
     public Button update_btn;
     public Button clear_btn;
-    private static ObservableList<Employee> employeeObservableList;
-    private static ObservableList<Role> roleObservableList;
-    private static ObservableList<Users> usersObservableList;
-    private static ObservableList<String> userListName;
-    private static ObservableList<String> employeeListName;
-    private static ObservableList<String> roleListName;
-
-    public static ObservableList<Users> getUsersObservableList() {
-        return usersObservableList;
-    }
-
-    public static ObservableList<String> getUserListName() {
-        return userListName;
-    }
-
-    public static ObservableList<String> getEmployeeListName() {
-        return employeeListName;
-    }
-
-    public static ObservableList<String> getRoleListName() {
-        return roleListName;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("User");
         clear_btn.setDisable(true);
-        usersObservableList  = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("users").forEach(s -> {
-            usersObservableList.add((Users) s);
-        });
 
-        employeeObservableList  = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("employee").forEach(s -> {
-            employeeObservableList.add((Employee) s);
-        });
-
-        roleObservableList  = FXCollections.observableArrayList();
-        Model.getInstance().getData().getObservableList("role").forEach(s -> {
-            roleObservableList.add((Role) s);
-        });
-
-        employeeListName = FXCollections.observableArrayList();
-        employeeObservableList.forEach(s -> {
+        ObservableList<String> employeeListName = FXCollections.observableArrayList();
+        DashboardController.getEmployeeObservableList().forEach(s -> {
             employeeListName.add(s.getCode()+"-"+s.getlName()+" "+s.getfName());
         });
 
 //        employeeListName = Model.getInstance().getData().getListName("employee", "lName");
-        userListName = Model.getInstance().getData().getListName("users", "userName");
-        roleListName = Model.getInstance().getData().getListName("role", "name");
 
-        listUser_lv.setItems(usersObservableList);
+        listUser_lv.setItems(DashboardController.getUsersObservableList());
         listUser_lv.setCellFactory(new UserCellFactory());
 
-        usersObservableList.addListener((ListChangeListener<Users>) change -> {
-            listUser_lv.setItems(usersObservableList);
+        DashboardController.getUsersObservableList().addListener((ListChangeListener<Users>) change -> {
+            listUser_lv.setItems(DashboardController.getUsersObservableList());
         });
 
         employeeName_cb.setItems(employeeListName);
         employeeCreate_cb.setItems(employeeListName);
-        role_cb.setItems(roleListName);
+        role_cb.setItems(DashboardController.getRoleListName());
 
         listUser_lv.getSelectionModel().selectedItemProperty().addListener((observableValue, users, t1) -> {
             userName_tf.setText(t1.getUserName());
@@ -100,7 +63,7 @@ public class UserController implements Initializable {
             employeeName_cb.setValue(idToEmployee(t1.getEmployeeId()).getCode() + "-" + idToEmployee(t1.getEmployeeId()).getlName());
             employeeCreate_cb.setItems(employeeListName);
             employeeCreate_cb.setValue(idToEmployee(t1.getEmployeeCreate()).getCode() + "-" + idToEmployee(t1.getEmployeeCreate()).getlName());
-            role_cb.setItems(roleListName);
+            role_cb.setItems(DashboardController.getRoleListName());
             role_cb.setValue(idToRole(t1.getRoleId()).getName());
         });
 
@@ -112,7 +75,7 @@ public class UserController implements Initializable {
                 throw new RuntimeException(e);
             }
             if( Model.getInstance().getData().add(users)) {
-                usersObservableList.add(users);
+                DashboardController.getUsersObservableList().add(users);
             }
         });
 
@@ -121,7 +84,7 @@ public class UserController implements Initializable {
             password_tf.setText("");
             employeeName_cb.setItems(employeeListName);
             employeeCreate_cb.setItems(employeeListName);
-            role_cb.setItems(roleListName);
+            role_cb.setItems(DashboardController.getRoleListName());
             employeeCreate_cb.setValue(null);
             employeeName_cb.setValue(null);
             role_cb.setValue(null);
@@ -131,7 +94,7 @@ public class UserController implements Initializable {
             Model.getInstance().getData().getConnect();
             EntityManager em = Model.getInstance().getData().getEm();
             Users user = null;
-            int index = usersObservableList.indexOf(listUser_lv.getSelectionModel().getSelectedItem());
+            int index = DashboardController.getUsersObservableList().indexOf(listUser_lv.getSelectionModel().getSelectedItem());
             try{
                 em.getTransaction().begin();
                 user = em.find(Users.class, listUser_lv.getSelectionModel().getSelectedItem().getId());
@@ -143,8 +106,8 @@ public class UserController implements Initializable {
             }finally {
                 Model.getInstance().getData().closeConnect();
             }
-            usersObservableList.remove(index);
-            usersObservableList.add(index,user);
+            DashboardController.getUsersObservableList().remove(index);
+            DashboardController.getUsersObservableList().add(index,user);
         });
 
 
@@ -177,7 +140,7 @@ public class UserController implements Initializable {
 
     public static Employee idToEmployee(int id) {
         Employee employee = null;
-        for(Employee e: employeeObservableList) {
+        for(Employee e: DashboardController.getEmployeeObservableList()) {
             if(id == e.getId()) {
                 employee = e;
             }
@@ -188,7 +151,7 @@ public class UserController implements Initializable {
     public static Employee codeAndNameToId(String codeAndName) {
         Employee employee = new Employee();
         String code = codeAndName.split("-")[0];
-        for(Employee e: employeeObservableList) {
+        for(Employee e: DashboardController.getEmployeeObservableList()) {
             if(code.equals(e.getCode())) {
                 employee = e;
             }
@@ -198,7 +161,7 @@ public class UserController implements Initializable {
 
     public static Role idToRole(int id) {
         Role role = null;
-        for(Role r: roleObservableList) {
+        for(Role r: DashboardController.getRoleObservableList()) {
             if(id == r.getId()) {
                 role = r;
             }
@@ -208,7 +171,7 @@ public class UserController implements Initializable {
 
     public static Role nameToId(String name) {
         Role role = null;
-        for(Role r: roleObservableList) {
+        for(Role r: DashboardController.getRoleObservableList()) {
             if(name.equals(r.getName())) {
                 role = r;
             }

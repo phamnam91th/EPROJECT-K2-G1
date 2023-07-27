@@ -1,12 +1,11 @@
 package vn.aptech.Controller.Admin.Management;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
+import vn.aptech.Controller.Admin.DashboardController;
 import vn.aptech.Model.Branch;
 import vn.aptech.Model.Model;
 import vn.aptech.Views.BranchCellFactory;
@@ -25,22 +24,18 @@ public class BranchController implements Initializable {
     public TextField email_tf;
     public Button save_btn;
     public Button update_btn;
-    private static ObservableList<Branch> branchObservableList;
     public Button clear_btn;
 
-    public static ObservableList<Branch> getBranchObservableList() {
-        return branchObservableList;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Branch");
-        branchObservableList = Model.getInstance().getData().getObservableList("branch");
-        branchList_lv.setItems(branchObservableList);
+
+        branchList_lv.setItems(DashboardController.getBranchObservableList());
         branchList_lv.setCellFactory(new BranchCellFactory());
 
-        branchObservableList.addListener(((ListChangeListener<Branch>) change -> {
-            branchList_lv.setItems(branchObservableList);
+        DashboardController.getBranchObservableList().addListener(((ListChangeListener<Branch>) change -> {
+            branchList_lv.setItems(DashboardController.getBranchObservableList());
             System.out.println("change");
         }));
 
@@ -56,7 +51,7 @@ public class BranchController implements Initializable {
             Branch branch = new Branch();
             setBranch(branch, "new");
             Model.getInstance().getData().add(branch);
-            branchObservableList.add(branch);
+            DashboardController.getBranchObservableList().add(branch);
         });
 
         update_btn.setOnAction(actionEvent -> {
@@ -73,8 +68,8 @@ public class BranchController implements Initializable {
             } finally {
                 Model.getInstance().getData().closeConnect();
             }
-            branchObservableList.remove(branchList_lv.getSelectionModel().getSelectedItem());
-            branchObservableList.add(branch);
+            DashboardController.getBranchObservableList().remove(branchList_lv.getSelectionModel().getSelectedItem());
+            DashboardController.getBranchObservableList().add(branch);
 
         });
 

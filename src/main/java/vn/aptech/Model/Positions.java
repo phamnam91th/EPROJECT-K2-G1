@@ -5,7 +5,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity(name = "positions")
-@Table(name = "positions", schema = "projectk2")
+@Table(name = "positions", schema = "digishop_project_k2_g1")
 public class Positions {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

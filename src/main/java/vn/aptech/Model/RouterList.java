@@ -6,7 +6,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 @Entity(name = "router_list")
-@Table(name = "router_list", schema = "projectk2")
+@Table(name = "router_list", schema = "digishop_project_k2_g1")
 public class RouterList {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id

@@ -1,6 +1,5 @@
 package vn.aptech.Controller.Admin.Management;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
@@ -8,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import vn.aptech.Model.Branch;
+import vn.aptech.Controller.Admin.DashboardController;
 import vn.aptech.Model.Model;
 import vn.aptech.Model.RouterList;
 import vn.aptech.Views.RouterCellFactory;
@@ -32,47 +31,25 @@ public class RouterController implements Initializable {
     public Button save_btn;
     public Button update_btn;
     public Button clear_btn;
-    private static ObservableList<RouterList> routerListObservableList;
-    private static ObservableList<String> routerListName;
-    private static ObservableList<Branch> branchObservableList;
-    private static ObservableList<String> branchListName;
 
-    public static ObservableList<RouterList> getRouterListObservableList() {
-        return routerListObservableList;
-    }
-
-    public static ObservableList<String> getRouterListName() {
-        return routerListName;
-    }
-
-    public static ObservableList<Branch> getBranchObservableList() {
-        return branchObservableList;
-    }
-
-    public static ObservableList<String> getBranchListName() {
-        return branchListName;
-    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Router");
-        routerListObservableList  = Model.getInstance().getData().getObservableList("router_list");
-        branchObservableList = Model.getInstance().getData().getObservableList("branch");
-        branchListName = Model.getInstance().getData().getListName("branch", "name");
 
-        router_lv.setItems(routerListObservableList);
+        router_lv.setItems(DashboardController.getRouterListObservableList());
         router_lv.setCellFactory(new RouterCellFactory());
-        startPoint_cb.setItems(branchListName);
-        destination_cb.setItems(branchListName);
+        startPoint_cb.setItems(DashboardController.getBranchListName());
+        destination_cb.setItems(DashboardController.getBranchListName());
 
-        routerListObservableList.addListener((ListChangeListener<RouterList>) change -> {
-            router_lv.setItems(routerListObservableList);
+        DashboardController.getRouterListObservableList().addListener((ListChangeListener<RouterList>) change -> {
+            router_lv.setItems(DashboardController.getRouterListObservableList());
         });
 
         router_lv.getSelectionModel().selectedItemProperty().addListener((observableValue, routerList, t1) -> {
             code_tf.setText(t1.getCode());
-            startPoint_cb.setValue(findItem(t1.getStartPoint(), branchObservableList, branch -> branch.getId() == t1.getStartPoint()).getName());
-            destination_cb.setValue(findItem(t1.getStartPoint(), branchObservableList, branch -> branch.getId() == t1.getDestination()).getName());
+            startPoint_cb.setValue(findItem(t1.getStartPoint(), DashboardController.getBranchObservableList(), branch -> branch.getId() == t1.getStartPoint()).getName());
+            destination_cb.setValue(findItem(t1.getStartPoint(), DashboardController.getBranchObservableList(), branch -> branch.getId() == t1.getDestination()).getName());
             startAt_tf.setText(t1.getStartTime().toString());
             endAt_tf.setText(t1.getEndTime().toString());
             price_tf.setText(String.valueOf(t1.getPrice()));
@@ -82,7 +59,7 @@ public class RouterController implements Initializable {
             RouterList router = new RouterList();
             setRouter(router,"new");
             Model.getInstance().getData().add(router);
-            routerListObservableList.add(router);
+            DashboardController.getRouterListObservableList().add(router);
         });
 
         clear_btn.setOnAction(actionEvent -> {
@@ -109,16 +86,16 @@ public class RouterController implements Initializable {
             }finally {
                 Model.getInstance().getData().closeConnect();
             }
-            routerListObservableList.remove(router_lv.getSelectionModel().getSelectedItem());
-            routerListObservableList.add(router);
+            DashboardController.getRouterListObservableList().remove(router_lv.getSelectionModel().getSelectedItem());
+            DashboardController.getRouterListObservableList().add(router);
         });
 
     }
 
     public void setRouter(RouterList router, String type) {
         router.setCode(code_tf.getText());
-        router.setStartPoint(findItem(startPoint_cb.getValue(), branchObservableList, car->car.getName().equals(startPoint_cb.getValue())).getId());
-        router.setDestination(findItem(destination_cb.getValue(), branchObservableList, car->car.getName().equals(destination_cb.getValue())).getId());
+        router.setStartPoint(findItem(startPoint_cb.getValue(), DashboardController.getBranchObservableList(), car->car.getName().equals(startPoint_cb.getValue())).getId());
+        router.setDestination(findItem(destination_cb.getValue(), DashboardController.getBranchObservableList(), car->car.getName().equals(destination_cb.getValue())).getId());
         String[] startTime = startAt_tf.getText().split(":");
         Time st = new Time(Integer.parseInt(startTime[0]),Integer.parseInt(startTime[1]),Integer.parseInt(startTime[2]));
         router.setStartTime(st);
