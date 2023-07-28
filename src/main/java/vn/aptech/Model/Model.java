@@ -1,5 +1,7 @@
 package vn.aptech.Model;
 
+import com.sun.javafx.iio.ImageStorage;
+import com.sun.javafx.iio.ImageStorageException;
 import vn.aptech.Views.AccountType;
 import vn.aptech.Views.ViewFactory;
 

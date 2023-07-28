@@ -4,7 +4,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import vn.aptech.Controller.Admin.DashboardController;
+import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.Model;
 import vn.aptech.Model.RouterList;
 import java.net.URL;
@@ -26,13 +26,13 @@ public class RouterCellController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         code_lb.setText(routerList.getCode());
-        startPoint_lb.setText(findItemById(routerList.getStartPoint(), DashboardController.getBranchObservableList(), branch -> branch.getId() == routerList.getStartPoint()).getName());
-        destination_lb.setText(findItemById(routerList.getStartPoint(), DashboardController.getBranchObservableList(), branch -> branch.getId() == routerList.getDestination()).getName());
+        startPoint_lb.setText(findItemById(routerList.getStartPoint(), LoginController.getBranchObservableList(), branch -> branch.getId() == routerList.getStartPoint()).getName());
+        destination_lb.setText(findItemById(routerList.getStartPoint(), LoginController.getBranchObservableList(), branch -> branch.getId() == routerList.getDestination()).getName());
         startAt_lb.setText(routerList.getStartTime().toString());
 
         del_btn.setOnAction(actionEvent -> {
             Model.getInstance().getData().delete(routerList, routerList.getId());
-            DashboardController.getBranchObservableList().remove(routerList);
+            LoginController.getBranchObservableList().remove(routerList);
         });
     }
 

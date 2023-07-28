@@ -5,5 +5,6 @@ public enum AdminMenuOptions {
     MANAGEMENT,
     TASK,
     TICKET,
-    REPORT
+    REPORT,
+    BROWSER
 }

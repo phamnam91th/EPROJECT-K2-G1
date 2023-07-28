@@ -3,7 +3,7 @@ package vn.aptech.Controller.Admin.Management;
 import javafx.collections.ListChangeListener;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import vn.aptech.Controller.Admin.DashboardController;
+import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.*;
 import vn.aptech.Views.EmployeeCellFactory;
 
@@ -38,14 +38,14 @@ public class EmployeeController implements Initializable {
         System.out.println("Employee");
 
         employee_lv.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-        employee_lv.setItems(DashboardController.getEmployeeObservableList());
+        employee_lv.setItems(LoginController.getEmployeeObservableList());
 
-        DashboardController.getEmployeeObservableList().addListener((ListChangeListener<Employee>) change -> {
-            employee_lv.setItems(DashboardController.getEmployeeObservableList());
+        LoginController.getEmployeeObservableList().addListener((ListChangeListener<Employee>) change -> {
+            employee_lv.setItems(LoginController.getEmployeeObservableList());
         });
 
         employee_lv.setCellFactory(new EmployeeCellFactory());
-        positions_cb.setItems(DashboardController.getPositionsListName());
+        positions_cb.setItems(LoginController.getPositionsListName());
         employee_lv.getSelectionModel().selectedItemProperty().addListener((observableValue, employee, t1) -> {
             fName_tf.setText(t1.getfName());
             mName_tf.setText(t1.getmName());
@@ -58,8 +58,8 @@ public class EmployeeController implements Initializable {
             email_tf.setText(t1.getEmail());
             code_tf.setText(t1.getCode());
 
-            positions_cb.setItems(DashboardController.getPositionsListName());
-            positions_cb.setValue(DashboardController.getPositionsListName().get(getPositionIndex(t1.getPositionsId())));
+            positions_cb.setItems(LoginController.getPositionsListName());
+            positions_cb.setValue(LoginController.getPositionsListName().get(getPositionIndex(t1.getPositionsId())));
         });
 
 
@@ -73,8 +73,8 @@ public class EmployeeController implements Initializable {
             phoneNumber_tf.setText("");
             email_tf.setText("");
             code_tf.setText("");
-            positions_cb.setItems(DashboardController.getPositionsListName());
-            positions_cb.setValue(DashboardController.getPositionsListName().get(0));
+            positions_cb.setItems(LoginController.getPositionsListName());
+            positions_cb.setValue(LoginController.getPositionsListName().get(0));
         });
 
         save_btn.setOnAction(actionEvent -> {
@@ -83,7 +83,7 @@ public class EmployeeController implements Initializable {
 
 //            Model.getInstance().getData().addEmployee(employee);
             Model.getInstance().getData().add(employee);
-            DashboardController.getEmployeeObservableList().add(employee);
+            LoginController.getEmployeeObservableList().add(employee);
         });
 
         update_btn.setOnAction(actionEvent -> {
@@ -101,9 +101,9 @@ public class EmployeeController implements Initializable {
             }finally {
                 Model.getInstance().getData().closeConnect();
             }
-            int index = DashboardController.getEmployeeObservableList().indexOf(employee_lv.getSelectionModel().getSelectedItem());
-            DashboardController.getEmployeeObservableList().remove(employee_lv.getSelectionModel().getSelectedItem());
-            DashboardController.getEmployeeObservableList().add(index,employee);
+            int index = LoginController.getEmployeeObservableList().indexOf(employee_lv.getSelectionModel().getSelectedItem());
+            LoginController.getEmployeeObservableList().remove(employee_lv.getSelectionModel().getSelectedItem());
+            LoginController.getEmployeeObservableList().add(index,employee);
         });
 
 
@@ -133,8 +133,8 @@ public class EmployeeController implements Initializable {
 
     public int getPositionIndex(int positionsId) {
         int index = 0;
-        for(int i=0; i<DashboardController.getPositionsObservableList().size(); i++) {
-            if(positionsId == DashboardController.getPositionsObservableList().get(i).getId()) {
+        for(int i=0; i<LoginController.getPositionsObservableList().size(); i++) {
+            if(positionsId == LoginController.getPositionsObservableList().get(i).getId()) {
                 index = i;
                 break;
             }
@@ -144,9 +144,9 @@ public class EmployeeController implements Initializable {
 
     public int getPositionsId(String name) {
         int id = 0;
-        for(int i=0; i<DashboardController.getPositionsObservableList().size(); i++) {
-            if(name.equals(DashboardController.getPositionsObservableList().get(i).getName())) {
-                id = DashboardController.getPositionsObservableList().get(i).getId();
+        for(int i=0; i<LoginController.getPositionsObservableList().size(); i++) {
+            if(name.equals(LoginController.getPositionsObservableList().get(i).getName())) {
+                id = LoginController.getPositionsObservableList().get(i).getId();
                 break;
             }
         }

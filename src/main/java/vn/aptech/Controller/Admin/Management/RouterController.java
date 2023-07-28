@@ -7,7 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import vn.aptech.Controller.Admin.DashboardController;
+import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.Model;
 import vn.aptech.Model.RouterList;
 import vn.aptech.Views.RouterCellFactory;
@@ -37,19 +37,19 @@ public class RouterController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Router");
 
-        router_lv.setItems(DashboardController.getRouterListObservableList());
+        router_lv.setItems(LoginController.getRouterListObservableList());
         router_lv.setCellFactory(new RouterCellFactory());
-        startPoint_cb.setItems(DashboardController.getBranchListName());
-        destination_cb.setItems(DashboardController.getBranchListName());
+        startPoint_cb.setItems(LoginController.getBranchListName());
+        destination_cb.setItems(LoginController.getBranchListName());
 
-        DashboardController.getRouterListObservableList().addListener((ListChangeListener<RouterList>) change -> {
-            router_lv.setItems(DashboardController.getRouterListObservableList());
+        LoginController.getRouterListObservableList().addListener((ListChangeListener<RouterList>) change -> {
+            router_lv.setItems(LoginController.getRouterListObservableList());
         });
 
         router_lv.getSelectionModel().selectedItemProperty().addListener((observableValue, routerList, t1) -> {
             code_tf.setText(t1.getCode());
-            startPoint_cb.setValue(findItem(t1.getStartPoint(), DashboardController.getBranchObservableList(), branch -> branch.getId() == t1.getStartPoint()).getName());
-            destination_cb.setValue(findItem(t1.getStartPoint(), DashboardController.getBranchObservableList(), branch -> branch.getId() == t1.getDestination()).getName());
+            startPoint_cb.setValue(findItem(t1.getStartPoint(), LoginController.getBranchObservableList(), branch -> branch.getId() == t1.getStartPoint()).getName());
+            destination_cb.setValue(findItem(t1.getStartPoint(), LoginController.getBranchObservableList(), branch -> branch.getId() == t1.getDestination()).getName());
             startAt_tf.setText(t1.getStartTime().toString());
             endAt_tf.setText(t1.getEndTime().toString());
             price_tf.setText(String.valueOf(t1.getPrice()));
@@ -59,7 +59,7 @@ public class RouterController implements Initializable {
             RouterList router = new RouterList();
             setRouter(router,"new");
             Model.getInstance().getData().add(router);
-            DashboardController.getRouterListObservableList().add(router);
+            LoginController.getRouterListObservableList().add(router);
         });
 
         clear_btn.setOnAction(actionEvent -> {
@@ -86,16 +86,16 @@ public class RouterController implements Initializable {
             }finally {
                 Model.getInstance().getData().closeConnect();
             }
-            DashboardController.getRouterListObservableList().remove(router_lv.getSelectionModel().getSelectedItem());
-            DashboardController.getRouterListObservableList().add(router);
+            LoginController.getRouterListObservableList().remove(router_lv.getSelectionModel().getSelectedItem());
+            LoginController.getRouterListObservableList().add(router);
         });
 
     }
 
     public void setRouter(RouterList router, String type) {
         router.setCode(code_tf.getText());
-        router.setStartPoint(findItem(startPoint_cb.getValue(), DashboardController.getBranchObservableList(), car->car.getName().equals(startPoint_cb.getValue())).getId());
-        router.setDestination(findItem(destination_cb.getValue(), DashboardController.getBranchObservableList(), car->car.getName().equals(destination_cb.getValue())).getId());
+        router.setStartPoint(findItem(startPoint_cb.getValue(), LoginController.getBranchObservableList(), car->car.getName().equals(startPoint_cb.getValue())).getId());
+        router.setDestination(findItem(destination_cb.getValue(), LoginController.getBranchObservableList(), car->car.getName().equals(destination_cb.getValue())).getId());
         String[] startTime = startAt_tf.getText().split(":");
         Time st = new Time(Integer.parseInt(startTime[0]),Integer.parseInt(startTime[1]),Integer.parseInt(startTime[2]));
         router.setStartTime(st);

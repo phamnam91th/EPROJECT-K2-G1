@@ -129,11 +129,11 @@ public class Data {
 //        return ObservableList;
 //    }
 
-    public <T> ObservableList<T> getObservableList(String tableName) {
+    public <T> ObservableList<T> getObservableList(String sql) {
         getConnect();
         ObservableList<T> observableList = FXCollections.observableArrayList();
         try {
-            Query q = em.createQuery("select s from " + tableName + " s");
+            Query q = em.createQuery(sql);
             observableList = FXCollections.observableArrayList(q.getResultList());
         } catch (Exception e) {
             e.printStackTrace();
@@ -157,6 +157,36 @@ public class Data {
         return ObservableList;
     }
 
+    public <T> T getSignleResult(String code) {
+        getConnect();
+        T result = null;
+        try {
+            TypedQuery<T> q = (TypedQuery<T>) em.createQuery(code);
+            result = q.getSingleResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeConnect();
+        }
+        return result;
+    }
+
+    public <T> T getListResult(String code) {
+        getConnect();
+        T result = null;
+        try {
+            TypedQuery<T> q = (TypedQuery<T>) em.createQuery(code);
+            result = (T) q.getResultList();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            closeConnect();
+        }
+        return result;
+    }
+
+
+
     // Employee
 
     // Positions
@@ -178,12 +208,20 @@ public class Data {
 //            Query q = data.getEm().createQuery("select b from branch b "+ str);
 //            List<Branch> branchObservableList = q.getResultList();
 //            branchObservableList.forEach(System.out::println);
-            ObservableList<Branch> branchObservableList = data.getObservableList("branch");
-            for (Branch branch : branchObservableList) {
-                System.out.println(branch);
-            }
-
-
+//            ObservableList<Branch> branchObservableList = data.getObservableList("branch");
+//            for (Branch branch : branchObservableList) {
+//                System.out.println(branch);
+//            }
+//            ObservableList<String> list;
+//            list = data.getResult("select s.name from task_status s");
+//            System.out.println(list);
+//            TypedQuery<Long> q = data.em.createQuery("select count(s.status) from task_list s where s.status = 2", Long.class);
+//            Long s = q.getSingleResult();
+//            System.out.println(s);
+//            Long s = data.getResult("select count(s.status) from task_list s where s.status = 2");
+//            System.out.println(s);
+            List<String> name = data.getListResult("select s.code from task_list s where s.status = 2");
+            System.out.println(name);
         } catch (Exception e) {
             e.printStackTrace();
         } finally {

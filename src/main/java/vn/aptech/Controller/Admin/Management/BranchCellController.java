@@ -4,6 +4,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import vn.aptech.Controller.Admin.DashboardController;
+import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.Branch;
 import vn.aptech.Model.Model;
 
@@ -35,7 +36,7 @@ public class BranchCellController implements Initializable {
 
         del_btn.setOnAction(actionEvent -> {
             Model.getInstance().getData().delete(branch, branch.getId());
-            DashboardController.getBranchObservableList().remove(branch);
+            LoginController.getBranchObservableList().remove(branch);
         });
 
     }

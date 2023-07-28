@@ -5,7 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import vn.aptech.Controller.Admin.DashboardController;
+import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.Branch;
 import vn.aptech.Model.Model;
 import vn.aptech.Views.BranchCellFactory;
@@ -31,11 +31,11 @@ public class BranchController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("Branch");
 
-        branchList_lv.setItems(DashboardController.getBranchObservableList());
+        branchList_lv.setItems(LoginController.getBranchObservableList());
         branchList_lv.setCellFactory(new BranchCellFactory());
 
-        DashboardController.getBranchObservableList().addListener(((ListChangeListener<Branch>) change -> {
-            branchList_lv.setItems(DashboardController.getBranchObservableList());
+        LoginController.getBranchObservableList().addListener(((ListChangeListener<Branch>) change -> {
+            branchList_lv.setItems(LoginController.getBranchObservableList());
             System.out.println("change");
         }));
 
@@ -51,7 +51,7 @@ public class BranchController implements Initializable {
             Branch branch = new Branch();
             setBranch(branch, "new");
             Model.getInstance().getData().add(branch);
-            DashboardController.getBranchObservableList().add(branch);
+            LoginController.getBranchObservableList().add(branch);
         });
 
         update_btn.setOnAction(actionEvent -> {
@@ -68,8 +68,8 @@ public class BranchController implements Initializable {
             } finally {
                 Model.getInstance().getData().closeConnect();
             }
-            DashboardController.getBranchObservableList().remove(branchList_lv.getSelectionModel().getSelectedItem());
-            DashboardController.getBranchObservableList().add(branch);
+            LoginController.getBranchObservableList().remove(branchList_lv.getSelectionModel().getSelectedItem());
+            LoginController.getBranchObservableList().add(branch);
 
         });
 

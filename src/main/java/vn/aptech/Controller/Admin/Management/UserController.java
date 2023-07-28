@@ -8,7 +8,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
-import vn.aptech.Controller.Admin.DashboardController;
+import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.*;
 import vn.aptech.Views.UserCellFactory;
 
@@ -39,22 +39,22 @@ public class UserController implements Initializable {
         clear_btn.setDisable(true);
 
         ObservableList<String> employeeListName = FXCollections.observableArrayList();
-        DashboardController.getEmployeeObservableList().forEach(s -> {
+        LoginController.getEmployeeObservableList().forEach(s -> {
             employeeListName.add(s.getCode()+"-"+s.getlName()+" "+s.getfName());
         });
 
 //        employeeListName = Model.getInstance().getData().getListName("employee", "lName");
 
-        listUser_lv.setItems(DashboardController.getUsersObservableList());
+        listUser_lv.setItems(LoginController.getUsersObservableList());
         listUser_lv.setCellFactory(new UserCellFactory());
 
-        DashboardController.getUsersObservableList().addListener((ListChangeListener<Users>) change -> {
-            listUser_lv.setItems(DashboardController.getUsersObservableList());
+        LoginController.getUsersObservableList().addListener((ListChangeListener<Users>) change -> {
+            listUser_lv.setItems(LoginController.getUsersObservableList());
         });
 
         employeeName_cb.setItems(employeeListName);
         employeeCreate_cb.setItems(employeeListName);
-        role_cb.setItems(DashboardController.getRoleListName());
+        role_cb.setItems(LoginController.getRoleListName());
 
         listUser_lv.getSelectionModel().selectedItemProperty().addListener((observableValue, users, t1) -> {
             userName_tf.setText(t1.getUserName());
@@ -63,7 +63,7 @@ public class UserController implements Initializable {
             employeeName_cb.setValue(idToEmployee(t1.getEmployeeId()).getCode() + "-" + idToEmployee(t1.getEmployeeId()).getlName());
             employeeCreate_cb.setItems(employeeListName);
             employeeCreate_cb.setValue(idToEmployee(t1.getEmployeeCreate()).getCode() + "-" + idToEmployee(t1.getEmployeeCreate()).getlName());
-            role_cb.setItems(DashboardController.getRoleListName());
+            role_cb.setItems(LoginController.getRoleListName());
             role_cb.setValue(idToRole(t1.getRoleId()).getName());
         });
 
@@ -75,7 +75,7 @@ public class UserController implements Initializable {
                 throw new RuntimeException(e);
             }
             if( Model.getInstance().getData().add(users)) {
-                DashboardController.getUsersObservableList().add(users);
+                LoginController.getUsersObservableList().add(users);
             }
         });
 
@@ -84,7 +84,7 @@ public class UserController implements Initializable {
             password_tf.setText("");
             employeeName_cb.setItems(employeeListName);
             employeeCreate_cb.setItems(employeeListName);
-            role_cb.setItems(DashboardController.getRoleListName());
+            role_cb.setItems(LoginController.getRoleListName());
             employeeCreate_cb.setValue(null);
             employeeName_cb.setValue(null);
             role_cb.setValue(null);
@@ -94,7 +94,7 @@ public class UserController implements Initializable {
             Model.getInstance().getData().getConnect();
             EntityManager em = Model.getInstance().getData().getEm();
             Users user = null;
-            int index = DashboardController.getUsersObservableList().indexOf(listUser_lv.getSelectionModel().getSelectedItem());
+            int index = LoginController.getUsersObservableList().indexOf(listUser_lv.getSelectionModel().getSelectedItem());
             try{
                 em.getTransaction().begin();
                 user = em.find(Users.class, listUser_lv.getSelectionModel().getSelectedItem().getId());
@@ -106,8 +106,8 @@ public class UserController implements Initializable {
             }finally {
                 Model.getInstance().getData().closeConnect();
             }
-            DashboardController.getUsersObservableList().remove(index);
-            DashboardController.getUsersObservableList().add(index,user);
+            LoginController.getUsersObservableList().remove(index);
+            LoginController.getUsersObservableList().add(index,user);
         });
 
 
@@ -140,7 +140,7 @@ public class UserController implements Initializable {
 
     public static Employee idToEmployee(int id) {
         Employee employee = null;
-        for(Employee e: DashboardController.getEmployeeObservableList()) {
+        for(Employee e: LoginController.getEmployeeObservableList()) {
             if(id == e.getId()) {
                 employee = e;
             }
@@ -151,7 +151,7 @@ public class UserController implements Initializable {
     public static Employee codeAndNameToId(String codeAndName) {
         Employee employee = new Employee();
         String code = codeAndName.split("-")[0];
-        for(Employee e: DashboardController.getEmployeeObservableList()) {
+        for(Employee e: LoginController.getEmployeeObservableList()) {
             if(code.equals(e.getCode())) {
                 employee = e;
             }
@@ -161,7 +161,7 @@ public class UserController implements Initializable {
 
     public static Role idToRole(int id) {
         Role role = null;
-        for(Role r: DashboardController.getRoleObservableList()) {
+        for(Role r: LoginController.getRoleObservableList()) {
             if(id == r.getId()) {
                 role = r;
             }
@@ -171,7 +171,7 @@ public class UserController implements Initializable {
 
     public static Role nameToId(String name) {
         Role role = null;
-        for(Role r: DashboardController.getRoleObservableList()) {
+        for(Role r: LoginController.getRoleObservableList()) {
             if(name.equals(r.getName())) {
                 role = r;
             }

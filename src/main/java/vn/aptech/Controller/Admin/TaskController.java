@@ -10,6 +10,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Callback;
+import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.*;
 import javax.persistence.EntityManager;
 import java.net.URL;
@@ -61,36 +62,36 @@ public class TaskController implements Initializable {
         showRouterCol();
         showActionCol();
 
-        m_select_car_cb.setItems(DashboardController.getCarListName());
-        m_select_router_cb.setItems(DashboardController.getRouterListCode());
-        m_select_driver_cb.setItems(DashboardController.getUsersListName());
-        m_select_status_cb.setItems(DashboardController.getTaskStatusListName());
+        m_select_car_cb.setItems(LoginController.getCarListName());
+        m_select_router_cb.setItems(LoginController.getRouterListCode());
+        m_select_driver_cb.setItems(LoginController.getUsersListName());
+        m_select_status_cb.setItems(LoginController.getTaskStatusListName());
 
-        taskList_tv.setItems(DashboardController.getTaskListObservableList());
+        taskList_tv.setItems(LoginController.getTaskListObservableList());
 
 
-        DashboardController.getTaskListObservableList().addListener((ListChangeListener<TaskList>) change -> taskList_tv.setItems(DashboardController.getTaskListObservableList()));
+        LoginController.getTaskListObservableList().addListener((ListChangeListener<TaskList>) change -> taskList_tv.setItems(LoginController.getTaskListObservableList()));
 
         taskList_tv.getSelectionModel().selectedItemProperty().addListener((observableValue, taskList, t1) -> {
-            m_select_car_cb.setValue(findItem(t1.getListCarId(), DashboardController.getListCarObservableList(), car -> car.getId() == t1.getListCarId()).getLicensePlates());
-            m_select_driver_cb.setValue(findItem(t1.getUserId(), DashboardController.getUsersObservableList(), user -> user.getId() == t1.getUserId()).getUserName());
-            m_select_router_cb.setValue(findItem(t1.getRouterListId(), DashboardController.getRouterListObservableList(), router -> router.getId() == t1.getRouterListId()).getCode());
+            m_select_car_cb.setValue(findItem(t1.getListCarId(), LoginController.getListCarObservableList(), car -> car.getId() == t1.getListCarId()).getLicensePlates());
+            m_select_driver_cb.setValue(findItem(t1.getUserId(), LoginController.getUsersObservableList(), user -> user.getId() == t1.getUserId()).getUserName());
+            m_select_router_cb.setValue(findItem(t1.getRouterListId(), LoginController.getRouterListObservableList(), router -> router.getId() == t1.getRouterListId()).getCode());
             m_date_active_dp.setValue(t1.getDateApply().toLocalDate());
-            m_select_status_cb.setValue(findItem(t1.getStatus(), DashboardController.getTaskStatusObservableList(), status -> status.getId() == t1.getStatus()).getName());
+            m_select_status_cb.setValue(findItem(t1.getStatus(), LoginController.getTaskStatusObservableList(), status -> status.getId() == t1.getStatus()).getName());
         });
 
         save_btn.setOnAction(actionEvent -> {
             TaskList task = new TaskList();
             setTasList(task, "new");
             Model.getInstance().getData().add(task);
-            DashboardController.getTaskListObservableList().add(task);
+            LoginController.getTaskListObservableList().add(0,task);
         });
 
         update_btn.setOnAction(actionEvent -> {
             Model.getInstance().getData().getConnect();
             EntityManager em = Model.getInstance().getData().getEm();
             TaskList task = null;
-            int index = DashboardController.getTaskListObservableList().indexOf(taskList_tv.getSelectionModel().getSelectedItem());
+            int index = LoginController.getTaskListObservableList().indexOf(taskList_tv.getSelectionModel().getSelectedItem());
             try{
                 em.getTransaction().begin();
                 task = em.find(TaskList.class, taskList_tv.getSelectionModel().getSelectedItem().getId());
@@ -102,25 +103,24 @@ public class TaskController implements Initializable {
             }finally {
                 Model.getInstance().getData().closeConnect();
             }
-            DashboardController.getTaskListObservableList().remove(index);
-            DashboardController.getTaskListObservableList().add(index,task);
+            LoginController.getTaskListObservableList().remove(index);
+            LoginController.getTaskListObservableList().add(index,task);
         });
 
         delete_btn.setOnAction(actionEvent -> {
             TaskList task = taskList_tv.getSelectionModel().getSelectedItem();
             Model.getInstance().getData().delete(task, task.getId());
-            DashboardController.getTaskListObservableList().remove(task);
+            LoginController.getTaskListObservableList().remove(task);
         });
 
         refresh.setOnAction(actionEvent -> {
-            int n = DashboardController.getTaskListObservableList().size();
+            int n = LoginController.getTaskListObservableList().size();
             if (n > 0) {
-                DashboardController.getTaskListObservableList().subList(0, n).clear();
+                LoginController.getTaskListObservableList().subList(0, n).clear();
             }
-            Model.getInstance().getData().getObservableList("task_list").forEach(s -> {
-                DashboardController.getTaskListObservableList().add((TaskList) s);
+            Model.getInstance().getData().getObservableList("select tl from task_list tl order by tl.id DESC").forEach(s -> {
+                LoginController.getTaskListObservableList().add((TaskList) s);
             });
-            FXCollections.reverse(DashboardController.getTaskListObservableList());
         });
 
         search_btn.setOnAction(actionEvent -> {
@@ -131,14 +131,14 @@ public class TaskController implements Initializable {
     }
 
     public void setTasList(TaskList taskList, String type) {
-        ListCar listCar = findItem(m_select_car_cb.getValue(), DashboardController.getListCarObservableList(), car->car.getLicensePlates().equals(m_select_car_cb.getValue()));
+        ListCar listCar = findItem(m_select_car_cb.getValue(), LoginController.getListCarObservableList(), car->car.getLicensePlates().equals(m_select_car_cb.getValue()));
         taskList.setListCarId(listCar.getId());
-        RouterList router = findItem(m_select_router_cb.getValue(), DashboardController.getRouterListObservableList(), rt -> rt.getCode().equals(m_select_router_cb.getValue()));
+        RouterList router = findItem(m_select_router_cb.getValue(), LoginController.getRouterListObservableList(), rt -> rt.getCode().equals(m_select_router_cb.getValue()));
         taskList.setRouterListId(router.getId());
         taskList.setDateApply(Date.valueOf(m_date_active_dp.getValue()));
-        TaskStatus status = findItem(m_select_status_cb.getValue(), DashboardController.getTaskStatusObservableList(), stt -> stt.getName().equals(m_select_status_cb.getValue()));
+        TaskStatus status = findItem(m_select_status_cb.getValue(), LoginController.getTaskStatusObservableList(), stt -> stt.getName().equals(m_select_status_cb.getValue()));
         taskList.setStatus(status.getId());
-        Users user = findItem(m_select_driver_cb.getValue(), DashboardController.getUsersObservableList(), item -> item.getUserName().equals(m_select_driver_cb.getValue()));
+        Users user = findItem(m_select_driver_cb.getValue(), LoginController.getUsersObservableList(), item -> item.getUserName().equals(m_select_driver_cb.getValue()));
         taskList.setUserId(user.getId());
         String code = m_select_car_cb.getValue() + "/" + m_date_active_dp.getValue() + "/" + m_select_router_cb.getValue() + "/" + m_select_driver_cb.getValue();
         taskList.setCode(code);
@@ -159,7 +159,7 @@ public class TaskController implements Initializable {
                 if (!empty) {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getStatus();
-                    setText(findItem(id, DashboardController.getTaskStatusObservableList(), status -> status.getId() == id).getName());
+                    setText(findItem(id, LoginController.getTaskStatusObservableList(), status -> status.getId() == id).getName());
                 }else {
                     setText("");
                 }
@@ -174,7 +174,7 @@ public class TaskController implements Initializable {
                 if (!empty) {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getUserId();
-                    setText(findItem(id, DashboardController.getUsersObservableList(), user -> user.getId() == id).getUserName());
+                    setText(findItem(id, LoginController.getUsersObservableList(), user -> user.getId() == id).getUserName());
                 }else {
                     setText("");
                 }
@@ -189,7 +189,7 @@ public class TaskController implements Initializable {
                 if (!empty) {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getRouterListId();
-                    setText(findItem(id, DashboardController.getRouterListObservableList(), router -> router.getId() == id).getCode());
+                    setText(findItem(id, LoginController.getRouterListObservableList(), router -> router.getId() == id).getCode());
                 }else {
                     setText("");
                 }
@@ -207,7 +207,7 @@ public class TaskController implements Initializable {
                 if (!empty) {
                     int currentIndex = indexProperty().getValue();
                     int stt = param.getTableView().getItems().get(currentIndex).getStatus();
-                    TaskStatus status = findItem(stt, DashboardController.getTaskStatusObservableList(), taskStatus -> taskStatus.getId() == stt);
+                    TaskStatus status = findItem(stt, LoginController.getTaskStatusObservableList(), taskStatus -> taskStatus.getId() == stt);
                     switch (status.getName()) {
                         case "active" -> {
                             Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Image/active.png")));
@@ -223,6 +223,12 @@ public class TaskController implements Initializable {
                         }
                         case "cancel" -> {
                             Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Image/cancel.png")));
+                            imageView.setImage(image);
+                            setStyle("-fx-alignment: center");
+                            setGraphic(imageView);
+                        }
+                        case "pending" -> {
+                            Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Image/pending.png")));
                             imageView.setImage(image);
                             setStyle("-fx-alignment: center");
                             setGraphic(imageView);

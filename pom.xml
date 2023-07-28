@@ -15,6 +15,7 @@
         <junit.version>5.9.2</junit.version>
     </properties>
     <dependencies>
+
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-controls</artifactId>
@@ -57,7 +58,14 @@
             <artifactId>controlsfx</artifactId>
             <version>11.1.2</version>
         </dependency>
-<!--        <dependency>-->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>17.0.7</version>
+        </dependency>
+
+
+        <!--        <dependency>-->
 <!--            <groupId>org.xerial</groupId>-->
 <!--            <artifactId>sqlite-jdbc</artifactId>-->
 <!--            <version>3.42.0.0</version>-->

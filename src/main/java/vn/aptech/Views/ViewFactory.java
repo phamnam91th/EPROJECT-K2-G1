@@ -28,6 +28,8 @@ public class ViewFactory {
     private AnchorPane taskView;
     private AnchorPane ticketView;
     private AnchorPane reportView;
+    private AnchorPane settingView;
+    private AnchorPane browserView;
 
     // Management view
     private final ObjectProperty<ManagementMenuType> managementSelectMenuItem;
@@ -119,10 +121,40 @@ public class ViewFactory {
         return reportView;
     }
 
+    public AnchorPane getBrowserView() {
+        if (browserView == null) {
+            try {
+                browserView = new FXMLLoader(getClass().getResource("/Fxml/Admin/Browser.fxml")).load();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return browserView;
+    }
+
+    public void showBrowser() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Admin/Browser.fxml"));
+        createStage(loader);
+    }
+
+    public void showTask() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Admin/Task.fxml"));
+        createStage(loader);
+    }
+
+
+
+
     public void showLoading() throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Admin/Loading.fxml"));
         createStage(loader);
     }
+
+    public void showSettingView() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Admin/Setting.fxml"));
+        createStage(loader);
+    }
+
 
 
     // show login window
@@ -237,6 +269,11 @@ public class ViewFactory {
 
     public void closeStage(Stage stage) {
         stage.close();
+    }
+
+    public void exitProgram() {
+        javafx.application.Platform.exit();
+        System.exit(0);
     }
 
     public void minimizeStage(Stage stage) {

@@ -19,6 +19,8 @@ public class AdminMenuController implements Initializable {
     public Button logout_btn;
     public Button task_btn;
     public Label account_lb;
+    public Button setting_btn;
+    public Button browser_btn;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -38,10 +40,22 @@ public class AdminMenuController implements Initializable {
                 throw new RuntimeException(e);
             }
         });
+        setting_btn.setOnAction(actionEvent -> {
+            try {
+                Model.getInstance().getViewFactory().showSettingView();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        browser_btn.setOnAction(actionEvent -> {
+            onBrowser();
+        });
     }
+
     public void onDashboard() {
         Model.getInstance().getViewFactory().getAdminSelectMenuItem().set(AdminMenuOptions.DASHBOARD);
     }
+
     public void onManagement() {
         Model.getInstance().getViewFactory().getAdminSelectMenuItem().set(AdminMenuOptions.MANAGEMENT);
     }
@@ -53,6 +67,7 @@ public class AdminMenuController implements Initializable {
     public void onTicket() {
         Model.getInstance().getViewFactory().getAdminSelectMenuItem().set(AdminMenuOptions.TICKET);
     }
+
     public void onReport() {
         Model.getInstance().getViewFactory().getAdminSelectMenuItem().set(AdminMenuOptions.REPORT);
     }
@@ -61,6 +76,10 @@ public class AdminMenuController implements Initializable {
         Stage stage = (Stage) logout_btn.getScene().getWindow();
         Model.getInstance().getViewFactory().closeStage(stage);
         Model.getInstance().getViewFactory().showLoginWindow();
+    }
+
+    public void onBrowser() {
+        Model.getInstance().getViewFactory().getAdminSelectMenuItem().set(AdminMenuOptions.BROWSER);
     }
 
 

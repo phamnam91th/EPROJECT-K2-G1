@@ -18,6 +18,7 @@ public class AdminController implements Initializable {
                 case TASK -> admin_parent.setCenter(Model.getInstance().getViewFactory().getTaskView());
                 case TICKET -> admin_parent.setCenter(Model.getInstance().getViewFactory().getTicketView());
                 case REPORT -> admin_parent.setCenter(Model.getInstance().getViewFactory().getReportView());
+                case BROWSER -> admin_parent.setCenter(Model.getInstance().getViewFactory().getBrowserView());
                 default -> admin_parent.setCenter(Model.getInstance().getViewFactory().getDashboardView());
             }
         });

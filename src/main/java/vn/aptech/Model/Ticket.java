@@ -153,4 +153,22 @@ public class Ticket {
     public int hashCode() {
         return Objects.hash(id, code, customerName, customerPhone, numberOfTicket, branchId, taskListId, employeeId, status, flag, createAt, updateAt);
     }
+
+    @Override
+    public String toString() {
+        return "Ticket{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", customerName='" + customerName + '\'' +
+                ", customerPhone='" + customerPhone + '\'' +
+                ", numberOfTicket=" + numberOfTicket +
+                ", branchId=" + branchId +
+                ", taskListId=" + taskListId +
+                ", employeeId=" + employeeId +
+                ", status=" + status +
+                ", flag='" + flag + '\'' +
+                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                '}';
+    }
 }

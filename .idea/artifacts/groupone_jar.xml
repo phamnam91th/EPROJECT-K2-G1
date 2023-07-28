@@ -90,6 +90,8 @@
       <element id="file-copy" path="D:/Java/Fx/Window/javafx-sdk-17.0.7/bin/ucrtbase.dll" />
       <element id="file-copy" path="D:/Java/Fx/Window/javafx-sdk-17.0.7/bin/vcruntime140.dll" />
       <element id="file-copy" path="D:/Java/Fx/Window/javafx-sdk-17.0.7/bin/vcruntime140_1.dll" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-web/17.0.7/javafx-web-17.0.7-win.jar" path-in-jar="/" />
+      <element id="extracted-dir" path="$MAVEN_REPOSITORY$/org/openjfx/javafx-web/17.0.7/javafx-web-17.0.7.jar" path-in-jar="/" />
     </root>
   </artifact>
 </component>
