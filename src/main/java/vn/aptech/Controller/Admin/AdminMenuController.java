@@ -28,11 +28,60 @@ public class AdminMenuController implements Initializable {
     }
 
     private void addListeners() {
-        dashboard_btn.setOnAction(actionEvent -> onDashboard());
-        management_btn.setOnAction(actionEvent -> onManagement());
-        task_btn.setOnAction(actionEvent -> onTask());
-        ticket_btn.setOnAction(actionEvent -> onTicket());
-        report_btn.setOnAction(actionEvent -> onReport());
+        dashboard_btn.setOnAction(actionEvent -> {
+            onDashboard();
+            ticket_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            dashboard_btn.setStyle("-fx-background-color: #1e651e; -fx-effect: dropshadow(three-pass-box, #15561e, 5,0,0,6);");
+            management_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            task_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            report_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            setting_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            browser_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+        });
+
+        management_btn.setOnAction(actionEvent -> {
+            onManagement();
+            ticket_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            dashboard_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            management_btn.setStyle("-fx-background-color: #1e651e; -fx-effect: dropshadow(three-pass-box, #15561e, 5,0,0,6);");
+            task_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            report_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            setting_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            browser_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+        });
+
+        task_btn.setOnAction(actionEvent -> {
+            onTask();
+            ticket_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            dashboard_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            management_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            task_btn.setStyle("-fx-background-color: #1e651e; -fx-effect: dropshadow(three-pass-box, #15561e, 5,0,0,6);");
+            report_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            setting_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            browser_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+        });
+
+        ticket_btn.setOnAction(actionEvent -> {
+            onTicket();
+            ticket_btn.setStyle("-fx-background-color: #1e651e; -fx-effect: dropshadow(three-pass-box, #15561e, 5,0,0,6);");
+            dashboard_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            management_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            task_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            report_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            setting_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            browser_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+        });
+
+        report_btn.setOnAction(actionEvent -> {
+            onReport();
+            ticket_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            dashboard_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            management_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            task_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            report_btn.setStyle("-fx-background-color: #1e651e; -fx-effect: dropshadow(three-pass-box, #15561e, 5,0,0,6);");
+            setting_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            browser_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+        });
         logout_btn.setOnAction(actionEvent -> {
             try {
                 onLogout();
@@ -46,9 +95,23 @@ public class AdminMenuController implements Initializable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
+            ticket_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            dashboard_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            management_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            task_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            report_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            setting_btn.setStyle("-fx-background-color: #1e651e; -fx-effect: dropshadow(three-pass-box, #15561e, 5,0,0,6);");
+            browser_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
         });
         browser_btn.setOnAction(actionEvent -> {
             onBrowser();
+            ticket_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            dashboard_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            management_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            task_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            report_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            setting_btn.setStyle("-fx-background-color: #132A13; -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);");
+            browser_btn.setStyle("-fx-background-color: #1e651e; -fx-effect: dropshadow(three-pass-box, #15561e, 5,0,0,6);");
         });
     }
 
@@ -58,6 +121,7 @@ public class AdminMenuController implements Initializable {
 
     public void onManagement() {
         Model.getInstance().getViewFactory().getAdminSelectMenuItem().set(AdminMenuOptions.MANAGEMENT);
+
     }
 
     public void onTask() {

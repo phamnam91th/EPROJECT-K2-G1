@@ -351,9 +351,4 @@ public class TicketController implements Initializable {
         return findItem(idBranch, LoginController.getBranchObservableList(), branch1 -> branch1.getId() == idBranch);
     }
 
-    public static void main(String[] args) {
-        TicketController controller = new TicketController();
-        Branch branch = controller.findBranch(2);
-        System.out.println(branch);
-    }
 }

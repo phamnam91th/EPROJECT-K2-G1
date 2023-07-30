@@ -19,11 +19,10 @@ import javafx.stage.Stage;
 import vn.aptech.Controller.Admin.DashboardController;
 import vn.aptech.Model.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
 import java.util.TimerTask;
 
@@ -190,7 +189,8 @@ public class LoginController extends Thread implements Initializable {
 
     public static void readTimeDelay() {
         try {
-            File file = new File("E:\\PROJECT\\EPROJECT-K2-G1\\src\\main\\resources\\Config\\config.txt");
+            Path path = Paths.get("src/main/resources/Config/config.txt");
+            File file = new File(path.toUri());
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str ;
@@ -269,5 +269,13 @@ public class LoginController extends Thread implements Initializable {
                 }
             };
         }
+    }
+
+    public static void main(String[] args) throws IOException {
+        Path path = Paths.get("src/main/resources/Config/config.txt");
+        File file = new File(path.toUri());
+        FileReader fileReader = new FileReader(file);
+        BufferedReader bufferedReader = new BufferedReader(fileReader);
+        System.out.println(bufferedReader.readLine());
     }
 }

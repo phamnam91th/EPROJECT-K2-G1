@@ -186,47 +186,4 @@ public class Data {
     }
 
 
-
-    // Employee
-
-    // Positions
-
-    // Branch
-
-    // Role
-
-    // User
-
-    // ROuter list
-
-    // Task list
-    public static void main(String[] args) {
-        Data data   = new Data();
-        data.getConnect();
-        try {
-//            String str = "where b.id=1";
-//            Query q = data.getEm().createQuery("select b from branch b "+ str);
-//            List<Branch> branchObservableList = q.getResultList();
-//            branchObservableList.forEach(System.out::println);
-//            ObservableList<Branch> branchObservableList = data.getObservableList("branch");
-//            for (Branch branch : branchObservableList) {
-//                System.out.println(branch);
-//            }
-//            ObservableList<String> list;
-//            list = data.getResult("select s.name from task_status s");
-//            System.out.println(list);
-//            TypedQuery<Long> q = data.em.createQuery("select count(s.status) from task_list s where s.status = 2", Long.class);
-//            Long s = q.getSingleResult();
-//            System.out.println(s);
-//            Long s = data.getResult("select count(s.status) from task_list s where s.status = 2");
-//            System.out.println(s);
-            List<String> name = data.getListResult("select s.code from task_list s where s.status = 2");
-            System.out.println(name);
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            data.closeConnect();
-        }
-    }
-
 }

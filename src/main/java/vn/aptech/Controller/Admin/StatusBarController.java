@@ -24,25 +24,6 @@ public class StatusBarController extends Thread implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println("status bar");
-
-//        Task<Void> task1 = new Task<Void>() {
-//            @Override
-//            protected Void call() throws Exception {
-//                while (true) {
-//
-//                    Platform.runLater(new Runnable() {
-//                        @Override
-//                        public void run() {
-//
-//                        }
-//                    });
-//                    Thread.sleep(30000);
-//                }
-//                return null;
-//            }
-//        };
-//        new Thread(task1).start();
-
         Timenow();
         Datenow();
         minimize_btn.setOnAction(actionEvent -> {

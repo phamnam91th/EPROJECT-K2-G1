@@ -9,21 +9,21 @@ import vn.aptech.Model.Model;
 
 import java.io.*;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ResourceBundle;
-import java.util.stream.Collectors;
+
 
 public class SettingController implements Initializable {
     public TextField dashboard_delay_tf;
     public Button save_btn;
-    private static final String path = "E:\\PROJECT\\EPROJECT-K2-G1\\src\\main\\resources\\Config\\config.txt";
+    private static final Path path = Paths.get("src/main/resources/Config/config.txt");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
         try {
-            File file = new File(path);
+            File file = new File(path.toUri());
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             String str ;
@@ -40,7 +40,7 @@ public class SettingController implements Initializable {
         }
 
         save_btn.setOnAction(actionEvent -> {
-            File file = new File(path);
+            File file = new File(path.toUri());
             String value = dashboard_delay_tf.getText();
             String str = "time_delay:"+value;
             try{

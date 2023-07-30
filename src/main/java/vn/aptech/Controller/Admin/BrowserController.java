@@ -1,5 +1,6 @@
 package vn.aptech.Controller.Admin;
 
+import com.sun.media.jfxmedia.events.PlayerStateEvent;
 import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -7,6 +8,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebHistory;
 import javafx.scene.web.WebView;
+import javafx.scene.media.*;
 
 import java.net.URL;
 import java.util.ArrayList;
@@ -22,6 +24,7 @@ public class BrowserController implements Initializable {
     public Button zoomOut_btn;
     public Button zoomIn_btn;
     public WebView webview_wv;
+    public Button home_btn;
     private WebEngine engine;
     private double webZoom;
     private WebHistory history;
@@ -70,32 +73,29 @@ public class BrowserController implements Initializable {
 
         go_btn.setOnAction(actionEvent -> {
             String urlAddress = address_tf.getText();
-            if(urlAddress.contains("https://") || urlAddress.contains("http://")) {
-                engine.load(urlAddress);
-            } else if(urlAddress.contains("localhost")){
-                urlAddress = "http://" + urlAddress;
-                engine.load(urlAddress);
-            }else  {
-                urlAddress = "https://" + urlAddress;
-                engine.load(urlAddress);
-            }
-
-            listUrl.add(urlAddress);
-            currenPage++;
+            loadPage(urlAddress);
         });
 
-
-
-
-
-
-
-
-
-
-
-
-
+        home_btn.setOnAction(actionEvent -> {
+            String urlAddress = "http://localhost/web";
+            loadPage(urlAddress);
+        });
 
     }
+
+    public void loadPage(String urlAddress) {
+        if(urlAddress.contains("https://") || urlAddress.contains("http://")) {
+            engine.load(urlAddress);
+        } else if(urlAddress.contains("localhost")){
+            urlAddress = "http://" + urlAddress;
+            engine.load(urlAddress);
+        }else  {
+            urlAddress = "https://" + urlAddress;
+            engine.load(urlAddress);
+        }
+
+        listUrl.add(urlAddress);
+        currenPage++;
+    }
+
 }

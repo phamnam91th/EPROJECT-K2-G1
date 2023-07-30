@@ -41,7 +41,4 @@ public class BranchCellController implements Initializable {
 
     }
 
-    public static void main(String[] args) {
-
-    }
 }

@@ -17,6 +17,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -121,13 +122,27 @@ public class TaskController implements Initializable {
             Model.getInstance().getData().getObservableList("select tl from task_list tl order by tl.id DESC").forEach(s -> {
                 LoginController.getTaskListObservableList().add((TaskList) s);
             });
+            s_code_tf.setText("");
+            taskList_tv.setItems(LoginController.getTaskListObservableList());
+            taskList_tv.refresh();
         });
 
         search_btn.setOnAction(actionEvent -> {
-
-
-
+            ObservableList<TaskList> listSearchResult;
+            List<TaskList> lists = Model.getInstance().getData().getListResult(getSearchQuery());
+            listSearchResult = FXCollections.observableArrayList(lists);
+            taskList_tv.setItems(listSearchResult);
         });
+    }
+
+    public String getSearchQuery() {
+        String sql = null;
+        if(s_code_tf.getText() != null) {
+            sql = "select s from task_list s where s.code = '"+ s_code_tf.getText() +"' ";
+
+        }
+
+        return sql;
     }
 
     public void setTasList(TaskList taskList, String type) {
@@ -212,7 +227,7 @@ public class TaskController implements Initializable {
                         case "active" -> {
                             Image image = new Image(Objects.requireNonNull(getClass().getResourceAsStream("/Image/active.png")));
                             imageView.setImage(image);
-                            setStyle("-fx-alignment: center");
+                            setStyle("-fx-alignment: center;");
                             setGraphic(imageView);
                         }
                         case "done" -> {
@@ -282,13 +297,4 @@ public class TaskController implements Initializable {
         colBtn.setCellFactory(cellFactory);
     }
 
-    public static void main(String[] args) {
-//        TaskController controller = new TaskController();
-//        routerListObservableList = FXCollections.observableArrayList();
-//        Model.getInstance().getData().getObservableList("router_list").forEach(s -> {
-//            routerListObservableList.add((RouterList) s);
-//        });
-//        RouterList t =  controller.findItem("HN-TH-09", routerListObservableList, router -> router.getCode().equals("HN-TH-09"));
-//        System.out.println(t);
-    }
 }

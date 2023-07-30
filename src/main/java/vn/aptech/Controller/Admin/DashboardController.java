@@ -11,10 +11,6 @@ import javafx.scene.control.Label;
 import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.text.DecimalFormat;
@@ -63,6 +59,7 @@ public class DashboardController implements Initializable {
         toDay = dateFormat.format(day);
         this.toMonth = toDay.split("-")[1];
         this.toYear = toDay.split("-")[0];
+        System.out.println(day);
         numberDayInMonth = new HashMap<>() {{
             put(1, 31);
             put(2, 28);
@@ -84,7 +81,6 @@ public class DashboardController implements Initializable {
         myPieChart.setTitle("Doanh thu tung co so");
         myPieChart.setClockwise(true);
         myPieChart.setAnimated(true);
-
         myLineChart.setTitle("Doanh thu tung thang nam 2023");
 
         run = true;
@@ -95,6 +91,7 @@ public class DashboardController implements Initializable {
                     tickets = Model.getInstance().getData().getListResult("select t from ticket t inner join ticket_status ts on t.status=ts.id INNER JOIN task_list tl on t.taskListId=tl.id where ts.name='done' and tl.dateApply like '" + toDay + "' ");
                     listInMonth = Model.getInstance().getData().getListResult("select t from ticket t inner join task_list tl on t.taskListId=tl.id inner join ticket_status ts on t.status=ts.id where tl.dateApply like '%-" + toMonth + "-%' and ts.name='done' ");
                     listInYear = Model.getInstance().getData().getListResult("select t from ticket t inner join task_list tl on t.taskListId=tl.id inner join ticket_status ts on t.status=ts.id where tl.dateApply like '" + toYear + "-%' and ts.name='done' ");
+                    System.out.println(listInYear.size());
                     updateInfo();
 //                    series = getChart();
                     Platform.runLater(new Runnable() {
@@ -149,11 +146,14 @@ public class DashboardController implements Initializable {
 
         Long ticketConfirm = Model.getInstance().getData().getSignleResult("select sum(t.numberOfTicket) from ticket t inner join ticket_status ts on t.status=ts.id inner join task_list tl on t.taskListId=tl.id  where (ts.name='confirm' or ts.name='done') and tl.dateApply='" + toDay + "' ");
         this.totalTicketConfirm = String.valueOf(ticketConfirm);
-
+        if(ticketConfirm == null) {
+            totalTicketConfirm = "0";
+        } else {
+            totalTicketPending = String.valueOf(ticketPending);
+        }
     }
 
     public XYChart.Series<String, Number> getChart() {
-
         // Lay ra danh sach ticket da ban trong thang hien tai
 //        List<Ticket> listInMonth = Model.getInstance().getData().getListResult("select t from ticket t inner join task_list tl on t.taskListId=tl.id inner join ticket_status ts on t.status=ts.id where tl.dateApply like '%-" + this.toMonth + "-%' and ts.name='done' ");
 
@@ -222,7 +222,7 @@ public class DashboardController implements Initializable {
             for (Ticket ticket : listInYear) {
                 TaskList taskList = findItem(ticket.getTaskListId(), LoginController.getTaskListObservableList(), t -> t.getId() == ticket.getTaskListId());
                 Date date = taskList.getDateApply();
-                if(i == date.getMonth()) {
+                if(i == (date.getMonth()+1)) {
                     nOT += ticket.getNumberOfTicket();
                 }
             }
@@ -232,6 +232,7 @@ public class DashboardController implements Initializable {
         series.setName("Month");
         Set<Integer> set = ticketSellInYear.keySet();
         for(Integer key: set) {
+//            System.out.println(key + "--" + ticketSellInYear.get(key));
             series.getData().add(new XYChart.Data<>(String.valueOf(key), ticketSellInYear.get(key)));
         }
         return series;
@@ -254,26 +255,6 @@ public class DashboardController implements Initializable {
         return findItem(idBranch, LoginController.getBranchObservableList(), branch1 -> branch1.getId() == idBranch);
     }
 
-
-
-    public static void main(String[] args) {
-//        Date day = new Date(System.currentTimeMillis());
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-//        String s = dateFormat.format(day);
-//        System.out.println(s);
-//        ObservableList<Ticket> tickets = FXCollections.observableArrayList();
-//        tickets = Model.getInstance().getData().getObservableList("select t from ticket t order by t.id DESC");
-//        System.out.println(tickets);
-
-//        Long totalTicket = Model.getInstance().getData().getSignleResult("select count(t.status) from ticket t inner join ticket_status ts on t.status=ts.id  where ts.name='pending' ");
-//        System.out.println(totalTicket);
-        DashboardController controller = new DashboardController();
-        controller.getChart();
-//        Date date = new Date(System.currentTimeMillis());
-//        System.out.println(date);
-//        System.out.println(date.getDate());
-
-    }
 
 
 }

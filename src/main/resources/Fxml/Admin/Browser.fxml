@@ -32,6 +32,15 @@
                               </Button>
                            </children>
                         </HBox>
+                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="101.0">
+                           <children>
+                              <Button fx:id="home_btn" mnemonicParsing="false">
+                                 <graphic>
+                                    <FontAwesomeIcon glyphName="HOME" size="20" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
                         <Button fx:id="reload_btn" mnemonicParsing="false">
                            <graphic>
                               <FontAwesomeIcon glyphName="REFRESH" size="20" />
@@ -40,7 +49,7 @@
                               <Insets left="10.0" />
                            </HBox.margin>
                         </Button>
-                        <TextField fx:id="address_tf" prefHeight="48.0" prefWidth="596.0">
+                        <TextField fx:id="address_tf" prefHeight="48.0" prefWidth="499.0">
                            <HBox.margin>
                               <Insets left="20.0" />
                            </HBox.margin>
@@ -60,7 +69,7 @@
                            <children>
                               <Button fx:id="zoomOut_btn" mnemonicParsing="false">
                                  <graphic>
-                                    <FontAwesomeIcon  glyphName="MINUS" size="20" />
+                                    <FontAwesomeIcon glyphName="MINUS" size="20" />
                                  </graphic>
                               </Button>
                               <Button fx:id="zoomIn_btn" mnemonicParsing="false">

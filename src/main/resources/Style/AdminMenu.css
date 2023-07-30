@@ -41,3 +41,7 @@ FontAwesomeIcon {
 Button:hover {
     -fx-cursor: hand;
 }
+.default {
+    -fx-background-color: #CCC;
+    -fx-effect: dropshadow(three-pass-box, #07230c, 5,0,0,6);
+}
