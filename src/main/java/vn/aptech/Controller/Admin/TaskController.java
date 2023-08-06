@@ -12,7 +12,9 @@ import javafx.scene.image.ImageView;
 import javafx.util.Callback;
 import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.*;
+
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -25,7 +27,6 @@ import java.util.function.Predicate;
 
 public class TaskController implements Initializable {
 
-    public TextField s_code_tf;
     public ChoiceBox<String> s_select_car_cb;
     public ChoiceBox<String> s_select_driver_cb;
     public ChoiceBox<String> s_select_router_cb;
@@ -46,6 +47,7 @@ public class TaskController implements Initializable {
     public TableColumn<TaskList, String> code_col;
     public TableColumn<TaskList, String> driver_name_col;
     public TableColumn<TaskList, Date> date_active_col;
+    public TableColumn<TaskList, Integer> seat_available_col;
     public TableColumn<TaskList, String> status_col;
     public TableColumn<TaskList, String> router_code_col;
     public TableColumn<TaskList, ImageView> action_col;
@@ -58,6 +60,7 @@ public class TaskController implements Initializable {
         id_col.setCellValueFactory(new PropertyValueFactory<>("id"));
         code_col.setCellValueFactory(new PropertyValueFactory<>("code"));
         date_active_col.setCellValueFactory(new PropertyValueFactory<>("dateApply"));
+        seat_available_col.setCellValueFactory(new PropertyValueFactory<>("seatAvailable"));
         showStatusCol();
         showDriverNameCol();
         showRouterCol();
@@ -69,6 +72,10 @@ public class TaskController implements Initializable {
         m_select_status_cb.setItems(LoginController.getTaskStatusListName());
 
         taskList_tv.setItems(LoginController.getTaskListObservableList());
+
+        s_select_car_cb.setItems(LoginController.getCarListName());
+        s_select_router_cb.setItems(LoginController.getRouterListCode());
+        s_select_driver_cb.setItems(LoginController.getUsersListName());
 
 
         LoginController.getTaskListObservableList().addListener((ListChangeListener<TaskList>) change -> taskList_tv.setItems(LoginController.getTaskListObservableList()));
@@ -85,7 +92,7 @@ public class TaskController implements Initializable {
             TaskList task = new TaskList();
             setTasList(task, "new");
             Model.getInstance().getData().add(task);
-            LoginController.getTaskListObservableList().add(0,task);
+            LoginController.getTaskListObservableList().add(0, task);
         });
 
         update_btn.setOnAction(actionEvent -> {
@@ -93,19 +100,19 @@ public class TaskController implements Initializable {
             EntityManager em = Model.getInstance().getData().getEm();
             TaskList task = null;
             int index = LoginController.getTaskListObservableList().indexOf(taskList_tv.getSelectionModel().getSelectedItem());
-            try{
+            try {
                 em.getTransaction().begin();
                 task = em.find(TaskList.class, taskList_tv.getSelectionModel().getSelectedItem().getId());
                 setTasList(task, "update");
                 em.merge(task);
                 em.getTransaction().commit();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 Model.getInstance().getData().closeConnect();
             }
             LoginController.getTaskListObservableList().remove(index);
-            LoginController.getTaskListObservableList().add(index,task);
+            LoginController.getTaskListObservableList().add(index, task);
         });
 
         delete_btn.setOnAction(actionEvent -> {
@@ -115,6 +122,10 @@ public class TaskController implements Initializable {
         });
 
         refresh.setOnAction(actionEvent -> {
+            s_select_driver_cb.setValue(null);
+            s_select_day_dp.setValue(null);
+            s_select_car_cb.setValue(null);
+            s_select_router_cb.setValue(null);
             int n = LoginController.getTaskListObservableList().size();
             if (n > 0) {
                 LoginController.getTaskListObservableList().subList(0, n).clear();
@@ -122,35 +133,58 @@ public class TaskController implements Initializable {
             Model.getInstance().getData().getObservableList("select tl from task_list tl order by tl.id DESC").forEach(s -> {
                 LoginController.getTaskListObservableList().add((TaskList) s);
             });
-            s_code_tf.setText("");
             taskList_tv.setItems(LoginController.getTaskListObservableList());
             taskList_tv.refresh();
         });
 
         search_btn.setOnAction(actionEvent -> {
             ObservableList<TaskList> listSearchResult;
-            List<TaskList> lists = Model.getInstance().getData().getListResult(getSearchQuery());
-            listSearchResult = FXCollections.observableArrayList(lists);
+            String car ;
+            String user ;
+            String router ;
+            String date ;
+
+            if(s_select_car_cb.getValue()!=null) {
+                car = s_select_car_cb.getValue();
+            } else {
+                car = "%";
+            }
+
+            if(s_select_driver_cb.getValue()!=null) {
+                user = s_select_driver_cb.getValue();
+            } else {
+                user = "%";
+            }
+
+            if(s_select_router_cb.getValue()!=null) {
+                router = s_select_router_cb.getValue();
+            } else {
+                router = "%";
+            }
+
+            if(s_select_day_dp.getValue() == null) {
+                date = "%";
+            } else {
+                date = s_select_day_dp.getValue().toString();
+            }
+
+
+            listSearchResult = Model.getInstance().getData().getTaskSearchResult(car,router, user,date);
+            taskList_tv.setItems(null);
             taskList_tv.setItems(listSearchResult);
+            taskList_tv.refresh();
         });
     }
 
-    public String getSearchQuery() {
-        String sql = null;
-        if(s_code_tf.getText() != null) {
-            sql = "select s from task_list s where s.code = '"+ s_code_tf.getText() +"' ";
-
-        }
-
-        return sql;
-    }
 
     public void setTasList(TaskList taskList, String type) {
-        ListCar listCar = findItem(m_select_car_cb.getValue(), LoginController.getListCarObservableList(), car->car.getLicensePlates().equals(m_select_car_cb.getValue()));
+        ListCar listCar = findItem(m_select_car_cb.getValue(), LoginController.getListCarObservableList(), car -> car.getLicensePlates().equals(m_select_car_cb.getValue()));
         taskList.setListCarId(listCar.getId());
         RouterList router = findItem(m_select_router_cb.getValue(), LoginController.getRouterListObservableList(), rt -> rt.getCode().equals(m_select_router_cb.getValue()));
         taskList.setRouterListId(router.getId());
         taskList.setDateApply(Date.valueOf(m_date_active_dp.getValue()));
+        TypeCar typeCar = findItem(listCar.getTypeCarId(), LoginController.getTypeCarObservableList(), t->t.getId()==listCar.getTypeCarId());
+        taskList.setSeatAvailable(typeCar.getNumberOfSeats());
         TaskStatus status = findItem(m_select_status_cb.getValue(), LoginController.getTaskStatusObservableList(), stt -> stt.getName().equals(m_select_status_cb.getValue()));
         taskList.setStatus(status.getId());
         Users user = findItem(m_select_driver_cb.getValue(), LoginController.getUsersObservableList(), item -> item.getUserName().equals(m_select_driver_cb.getValue()));
@@ -160,7 +194,7 @@ public class TaskController implements Initializable {
         taskList.setFlag("0");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        if(type.equals("new")) {
+        if (type.equals("new")) {
             taskList.setCreateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
         } else {
             taskList.setUpdateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
@@ -175,7 +209,7 @@ public class TaskController implements Initializable {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getStatus();
                     setText(findItem(id, LoginController.getTaskStatusObservableList(), status -> status.getId() == id).getName());
-                }else {
+                } else {
                     setText("");
                 }
             }
@@ -190,7 +224,7 @@ public class TaskController implements Initializable {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getUserId();
                     setText(findItem(id, LoginController.getUsersObservableList(), user -> user.getId() == id).getUserName());
-                }else {
+                } else {
                     setText("");
                 }
             }
@@ -205,7 +239,7 @@ public class TaskController implements Initializable {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getRouterListId();
                     setText(findItem(id, LoginController.getRouterListObservableList(), router -> router.getId() == id).getCode());
-                }else {
+                } else {
                     setText("");
                 }
             }
@@ -256,7 +290,7 @@ public class TaskController implements Initializable {
         });
     }
 
-    public <T,V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
+    public <T, V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
         for (T item : itemList) {
             if (predicate.test(item)) {
                 return item;
@@ -271,15 +305,12 @@ public class TaskController implements Initializable {
             public TableCell<TaskList, Void> call(final TableColumn<TaskList, Void> param) {
                 return new TableCell<>() {
                     private final Button btn = new Button();
-
                     {
-
                         btn.setOnAction((ActionEvent event) -> {
                             TaskList data = getTableView().getItems().get(getIndex());
                             System.out.println("selectedData: " + data);
                         });
                     }
-
                     @Override
                     public void updateItem(Void item, boolean empty) {
                         super.updateItem(item, empty);

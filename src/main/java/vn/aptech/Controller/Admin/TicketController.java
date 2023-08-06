@@ -21,9 +21,8 @@ import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
 public class TicketController implements Initializable {
-    public TextField s_code_tf;
-    public ChoiceBox<String> s_customer_name_cb;
-    public ChoiceBox<String> s_customer_phone_cb;
+    public TextField s_customer_phone_tf;
+    public TextField s_customer_name_tf;
     public ChoiceBox<String> s_branch_cb;
     public DatePicker s_day_dp;
     public Button search_btn;
@@ -52,6 +51,7 @@ public class TicketController implements Initializable {
     public TextField customer_name_tf;
     public TextField customer_phone_tf;
     public TextField quantity_tf;
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -88,13 +88,15 @@ public class TicketController implements Initializable {
             });
         });
 
-//        m_branch_cb.setItems(LoginController.getBranchListName());
+
         m_status_cb.setItems(LoginController.getTicketStatusListName());
         System.out.println(taskListPending);
 
-
         m_task_cb.setItems(taskListPending);
         m_employee_apply_cb.setItems(LoginController.getEmployeeListName());
+
+        s_branch_cb.setItems(LoginController.getBranchListName());
+
         ticket_tv.getSelectionModel().selectedItemProperty().addListener((observableValue, ticket, t1) -> {
             customer_name_tf.setText(t1.getCustomerName());
             customer_phone_tf.setText(t1.getCustomerPhone());
@@ -106,10 +108,15 @@ public class TicketController implements Initializable {
         });
 
         save_btn.setOnAction(actionEvent -> {
-            Ticket ticket = new Ticket();
-            setTicket(ticket, "new");
-            Model.getInstance().getData().add(ticket);
-            LoginController.getTicketObservableList().add(0,ticket);
+            TaskList task = findItem(m_task_cb.getValue(), LoginController.getTaskListObservableList(), t->t.getCode().equals(m_task_cb.getValue()));
+            if(Integer.parseInt(quantity_tf.getText()) <= task.getSeatAvailable()) {
+                Ticket ticket = new Ticket();
+                setTicket(ticket, "new");
+                Model.getInstance().getData().add(ticket);
+                LoginController.getTicketObservableList().add(0,ticket);
+            } else {
+                Model.getInstance().getViewFactory().showAlertInfo("Warming", "The number of seats you have selected exceeds the number of seats available.");
+            }
         });
 
         update_btn.setOnAction(actionEvent -> {
@@ -137,6 +144,7 @@ public class TicketController implements Initializable {
             Model.getInstance().getData().getConnect();
             EntityManager em = Model.getInstance().getData().getEm();
             Ticket ticket = null;
+
             int index = LoginController.getTicketObservableList().indexOf(ticket_tv.getSelectionModel().getSelectedItem());
             try{
                 em.getTransaction().begin();
@@ -144,6 +152,17 @@ public class TicketController implements Initializable {
                 TicketStatus status = findItem("confirm", LoginController.getTicketStatusObservableList(), s->s.getName().equals("confirm"));
                 ticket.setStatus(status.getId());
                 em.merge(ticket);
+                em.getTransaction().commit();
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+            TaskList task;
+            try{
+                em.getTransaction().begin();
+                task = em.find(TaskList.class, ticket_tv.getSelectionModel().getSelectedItem().getTaskListId());
+                task.setSeatAvailable(task.getSeatAvailable() - ticket_tv.getSelectionModel().getSelectedItem().getNumberOfTicket());
+                em.merge(task);
                 em.getTransaction().commit();
             }catch (Exception e){
                 e.printStackTrace();
@@ -161,6 +180,10 @@ public class TicketController implements Initializable {
         });
 
         refresh_btn.setOnAction(actionEvent -> {
+            s_customer_name_tf.setText(null);
+            s_customer_phone_tf.setText(null);
+            s_branch_cb.setValue(null);
+            s_day_dp.setValue(null);
             int n = LoginController.getTicketObservableList().size();
             if (n > 0) {
                 LoginController.getTicketObservableList().subList(0, n).clear();
@@ -171,9 +194,45 @@ public class TicketController implements Initializable {
         });
 
         search_btn.setOnAction(actionEvent -> {
+            ObservableList<Ticket> listSearchResult;
+            String customerName;
+            String customerPhone;
+            String branch;
+            String dateApply;
 
+            if(!Objects.equals(s_customer_name_tf.getText(), "")) {
+                customerName = s_customer_name_tf.getText();
+            } else {
+                customerName = "%";
+            }
 
+            if(!Objects.equals(s_customer_phone_tf.getText(), "")) {
+                customerPhone = s_customer_phone_tf.getText();
+            } else {
+                customerPhone = "%";
+            }
 
+            if(s_branch_cb.getValue() != null) {
+                branch = s_branch_cb.getValue();
+            } else {
+                branch = "%";
+            }
+
+            if(s_day_dp.getValue() == null) {
+                dateApply = "%";
+            } else {
+                dateApply = s_day_dp.getValue().toString();
+            }
+
+            System.out.println(customerName);
+            System.out.println(customerPhone);
+            System.out.println(branch);
+            System.out.println(dateApply);
+
+            listSearchResult = Model.getInstance().getData().getTicketSearchResult(customerName,customerPhone, branch,dateApply);
+            ticket_tv.setItems(null);
+            ticket_tv.setItems(listSearchResult);
+            ticket_tv.refresh();
         });
     }
 

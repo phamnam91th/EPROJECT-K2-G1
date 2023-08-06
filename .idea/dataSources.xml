@@ -45,5 +45,12 @@ E:/PROJECT/EPROJECT-K2-G1/src/main/resources/META-INF/persistence.xml</remarks>
       <jdbc-url>jdbc:mysql://103.200.23.160:3306/digishop_project_k2_g1</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="digishop_project_k2_g1@localhost" uuid="b7b0fa45-dc01-4bcf-bf78-f3331c12f8c3">
+      <driver-ref>mysql.8</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
+      <jdbc-url>jdbc:mysql://localhost:3306/digishop_project_k2_g1</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

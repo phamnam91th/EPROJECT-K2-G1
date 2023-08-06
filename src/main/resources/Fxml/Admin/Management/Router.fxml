@@ -11,8 +11,8 @@
 <?import javafx.scene.text.Text?>
 
 <AnchorPane prefHeight="820.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.aptech.Controller.Admin.Management.RouterController">
-    <ListView fx:id="router_lv" layoutX="17.0" layoutY="12.0" prefHeight="799.0" prefWidth="600.0" style="-fx-background-color: #CCC;" />
-    <VBox layoutX="631.0" layoutY="13.0" prefHeight="799.0" prefWidth="454.0" spacing="20.0" style="-fx-background-color: #CCC;">
+    <ListView fx:id="router_lv" layoutX="17.0" layoutY="12.0" prefHeight="799.0" prefWidth="630.0" style="-fx-background-color: #CCC;" />
+    <VBox layoutX="653.0" layoutY="13.0" prefHeight="799.0" prefWidth="430.0" spacing="20.0" style="-fx-background-color: #CCC;">
         <VBox layoutX="10.0" layoutY="353.0" prefHeight="67.0" prefWidth="454.0">
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Code :" />
          <TextField fx:id="code_tf" />

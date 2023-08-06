@@ -28,16 +28,21 @@
          <Text layoutX="31.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email: support@gmail.com" />
         </Pane>
         <Pane prefHeight="400.0" prefWidth="342.0">
-            <TextField fx:id="username_tf" layoutX="86.0" layoutY="108.0" prefHeight="34.0" prefWidth="205.0" promptText="Username" />
-            <Button fx:id="login_btn" layoutX="114.0" layoutY="221.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="120.0" text="Login" />
          <Text layoutX="135.0" layoutY="92.0" strokeType="OUTSIDE" strokeWidth="0.0" text="LOGIN" wrappingWidth="77.0">
             <font>
                <Font name="System Bold" size="24.0" />
             </font>
          </Text>
+            <TextField fx:id="username_tf" layoutX="86.0" layoutY="108.0" prefHeight="34.0" prefWidth="205.0" promptText="Username" />
+         <PasswordField fx:id="password_tf" layoutX="86.0" layoutY="162.0" prefHeight="34.0" prefWidth="205.0" promptText="Password" />
+            <Button fx:id="login_btn" layoutX="114.0" layoutY="221.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="120.0" text="Login" />
          <FontAwesomeIcon fill="#0131b5" glyphName="USER" layoutX="52.0" layoutY="135.0" size="30" />
          <FontAwesomeIcon fill="#0131b5" glyphName="LOCK" layoutX="54.0" layoutY="193.0" size="30" />
-         <Label fx:id="error_lbl" layoutX="48.0" layoutY="355.0" text="Error:" textFill="#f50000" />
+         <Label fx:id="loadingLabel" layoutX="107.0" layoutY="286.0" prefHeight="44.0" prefWidth="135.0" text="LOADING ..." textFill="#015e1d">
+            <font>
+               <Font name="Agency FB Bold" size="36.0" />
+            </font>
+         </Label>
          <Button fx:id="close_btn" layoutX="281.0" layoutY="8.0" minWidth="50.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="50.0" textFill="#e10250">
             <graphic>
                <FontAwesomeIcon glyphName="CLOSE" size="20" />
@@ -48,12 +53,7 @@
                <FontAwesomeIcon glyphName="MINUS" size="20" />
             </graphic>
          </Button>
-         <Label fx:id="loadingLabel" layoutX="107.0" layoutY="286.0" prefHeight="44.0" prefWidth="135.0" text="LOADING ..." textFill="#015e1d">
-            <font>
-               <Font name="Agency FB Bold" size="36.0" />
-            </font>
-         </Label>
-         <PasswordField fx:id="password_tf" layoutX="86.0" layoutY="162.0" prefHeight="34.0" prefWidth="205.0" promptText="Password" />
+         <Label fx:id="error_lbl" layoutX="48.0" layoutY="355.0" text="Error:" textFill="#f50000" />
         </Pane>
     </HBox>
 </AnchorPane>

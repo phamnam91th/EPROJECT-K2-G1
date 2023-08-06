@@ -7,6 +7,7 @@ import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.*;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.*;
@@ -21,9 +22,7 @@ import java.util.function.Predicate;
 
 public class DashboardController implements Initializable {
 
-
     public BarChart<String, Number> myBarChart;
-//    XYChart.Series<String, Number> series;
     public CategoryAxis barCharX;
     public NumberAxis barCharY;
 
@@ -38,19 +37,21 @@ public class DashboardController implements Initializable {
     public Label total_income_lb;
     public Label total_ticket_pending_lb;
     public Label total_ticket_confirm_lb;
+    public Button refresh_btn;
     private boolean run;
     private String activeCar;
     private String offCar;
-    private String toDay;
-    private String toMonth;
-    private String toYear;
+    private final String toDay;
+    private final String toMonth;
+    private final String toYear;
     private String totalTicketPending;
     private String totalTicketConfirm;
     private String totalIncome;
-    private Map<Integer, Integer> numberDayInMonth;
-    public  List<Ticket> tickets;
-    public  List<Ticket> listInMonth;
-    public  List<Ticket> listInYear;
+    private final Map<Integer, Integer> numberDayInMonth;
+    public List<Ticket> tickets;
+    public List<Ticket> listInMonth;
+    public List<Ticket> listInYear;
+    public Thread currentThread;
     private int timeDelay;
 
     public DashboardController() {
@@ -114,14 +115,35 @@ public class DashboardController implements Initializable {
                 return null;
             }
         };
-        new Thread(task1).start();
+//        new Thread(task1).start();
+        currentThread = new Thread(task1);
+        currentThread.start();
+
+        refresh_btn.setOnAction(actionEvent -> {
+//            int delay = LoginController.getDelay();
+//            LoginController.setDelay(1000);
+//            try {
+//                Thread.sleep(1000);
+//            } catch (InterruptedException e) {
+//                throw new RuntimeException(e);
+//            }
+//            LoginController.setDelay(delay);
+            System.out.println("refresh");
+            try {
+                currentThread.interrupt();
+            } catch (Exception e) {
+                Thread t2 = new Thread(task1);
+                currentThread = t2;
+                t2.start();
+            }
+
+        });
 
     }
 
 
     public void updateInfo() {
         double Income = 0;
-//        List<Ticket> tickets = Model.getInstance().getData().getListResult("select t from ticket t inner join ticket_status ts on t.status=ts.id INNER JOIN task_list tl on t.taskListId=tl.id where ts.name='done' and tl.dateApply like '" + toDay + "' ");
         for (Ticket ticket : tickets) {
             TaskList task = findItem(ticket.getTaskListId(), LoginController.getTaskListObservableList(), t -> t.getId() == ticket.getTaskListId());
             RouterList router = findItem(task.getRouterListId(), LoginController.getRouterListObservableList(), r -> r.getId() == task.getRouterListId());
@@ -137,19 +159,17 @@ public class DashboardController implements Initializable {
         this.offCar = String.valueOf(inactive);
 
         Long ticketPending = Model.getInstance().getData().getSignleResult("select sum(t.numberOfTicket) from ticket t inner join ticket_status ts on t.status=ts.id  where ts.name='pending' ");
-
-        if(ticketPending == null) {
+        if (ticketPending == null) {
             totalTicketPending = "0";
         } else {
             totalTicketPending = String.valueOf(ticketPending);
         }
 
         Long ticketConfirm = Model.getInstance().getData().getSignleResult("select sum(t.numberOfTicket) from ticket t inner join ticket_status ts on t.status=ts.id inner join task_list tl on t.taskListId=tl.id  where (ts.name='confirm' or ts.name='done') and tl.dateApply='" + toDay + "' ");
-        this.totalTicketConfirm = String.valueOf(ticketConfirm);
-        if(ticketConfirm == null) {
+        if (ticketConfirm == null) {
             totalTicketConfirm = "0";
         } else {
-            totalTicketPending = String.valueOf(ticketPending);
+            totalTicketConfirm = String.valueOf(ticketConfirm);
         }
     }
 
@@ -169,16 +189,16 @@ public class DashboardController implements Initializable {
 
         // Map luu tru so luong ticket ban duoc moi ngay trong thang
         Map<Integer, Integer> ticketSellInMonth = new HashMap<>();
-        for(int i=1; i<=loop; i++) {
+        for (int i = 1; i <= loop; i++) {
             int nOT = 0;
             for (Ticket ticket : listInMonth) {
                 TaskList taskList = findItem(ticket.getTaskListId(), LoginController.getTaskListObservableList(), t -> t.getId() == ticket.getTaskListId());
                 Date date = taskList.getDateApply();
-                if(i == date.getDate()) {
+                if (i == date.getDate()) {
                     nOT += ticket.getNumberOfTicket();
                 }
             }
-            ticketSellInMonth.put(i,nOT);
+            ticketSellInMonth.put(i, nOT);
         }
 
         // set Chart
@@ -187,7 +207,7 @@ public class DashboardController implements Initializable {
 
 
         Set<Integer> set1 = ticketSellInMonth.keySet();
-        for(Integer key: set1) {
+        for (Integer key : set1) {
             series.getData().add(new XYChart.Data<>(String.valueOf(key), ticketSellInMonth.get(key)));
         }
 
@@ -199,17 +219,17 @@ public class DashboardController implements Initializable {
         LoginController.getBranchObservableList().forEach(s -> {
             AtomicInteger nOT = new AtomicInteger();
             listInMonth.forEach(l -> {
-                if(findBranch(l.getTaskListId()).getId() == s.getId()) {
+                if (findBranch(l.getTaskListId()).getId() == s.getId()) {
                     nOT.addAndGet(l.getNumberOfTicket());
                 }
             });
-            revenues.put(s.getName(),nOT.get());
+            revenues.put(s.getName(), nOT.get());
         });
 
         ObservableList<PieChart.Data> data = FXCollections.observableArrayList();
 
         Set<String> set = revenues.keySet();
-        for(String key: set) {
+        for (String key : set) {
             data.add(new PieChart.Data(key, revenues.get(key)));
         }
         return data;
@@ -217,21 +237,21 @@ public class DashboardController implements Initializable {
 
     public XYChart.Series<String, Number> getLineChart() {
         Map<Integer, Integer> ticketSellInYear = new HashMap<>();
-        for(int i=1; i<=12; i++) {
+        for (int i = 1; i <= 12; i++) {
             int nOT = 0;
             for (Ticket ticket : listInYear) {
                 TaskList taskList = findItem(ticket.getTaskListId(), LoginController.getTaskListObservableList(), t -> t.getId() == ticket.getTaskListId());
                 Date date = taskList.getDateApply();
-                if(i == (date.getMonth()+1)) {
+                if (i == (date.getMonth() + 1)) {
                     nOT += ticket.getNumberOfTicket();
                 }
             }
-            ticketSellInYear.put(i,nOT);
+            ticketSellInYear.put(i, nOT);
         }
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Month");
         Set<Integer> set = ticketSellInYear.keySet();
-        for(Integer key: set) {
+        for (Integer key : set) {
 //            System.out.println(key + "--" + ticketSellInYear.get(key));
             series.getData().add(new XYChart.Data<>(String.valueOf(key), ticketSellInYear.get(key)));
         }
@@ -254,7 +274,6 @@ public class DashboardController implements Initializable {
         int idBranch = router.getStartPoint();
         return findItem(idBranch, LoginController.getBranchObservableList(), branch1 -> branch1.getId() == idBranch);
     }
-
 
 
 }

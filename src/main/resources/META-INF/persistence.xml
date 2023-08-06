@@ -14,6 +14,8 @@
         <class>vn.aptech.Model.Ticket</class>
         <class>vn.aptech.Model.TaskStatus</class>
         <class>vn.aptech.Model.TaskList</class>
+        <class>vn.aptech.Model.ReportByBranch</class>
+        <class>vn.aptech.Model.ReportByCar</class>
         <properties>
 <!--            <property name="toplink.jdbc.url" value="jdbc:mysql://103.200.23.160:3306/digishop_project_k2_g1"/>-->
 <!--            <property name="toplink.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>-->
@@ -25,16 +27,21 @@
 <!--            <property name="hibernate.connection.password" value="TiniWorld1@3"/>-->
 <!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>-->
 <!--            <property name="hibernate.show_sql" value="true"/>-->
-<!--            <property name="hibernate.format_sql" value="true"/>-->
-<!--            <property name="hibernate.use_sql_comments" value="true"/>-->
-<!--            <property name="org.hibernate.SQL" value="debug"/>-->
-<!--            <property name="org.hibernate.type.descriptor.sql.BasicBinder" value="debug"/>-->
+            <property name="hibernate.format_sql" value="true"/>
+            <property name="hibernate.use_sql_comments" value="true"/>
+            <property name="org.hibernate.SQL" value="debug"/>
+            <property name="org.hibernate.type.descriptor.sql.BasicBinder" value="debug"/>
 
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/digishop_project_k2_g1"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>
             <property name="hibernate.connection.username" value="root"/>
             <property name="hibernate.connection.password" value=""/>
             <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
+
+
+
+
 
 <!--            <property name="hibernate.connection.url" value="jdbc:sqlite:database.db"/>-->
 <!--            <property name="hibernate.connection.driver_class" value="org.sqlite.JDBC"/>-->

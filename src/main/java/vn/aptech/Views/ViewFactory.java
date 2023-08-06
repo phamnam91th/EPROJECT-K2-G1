@@ -5,6 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -13,12 +14,14 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import vn.aptech.Controller.Admin.AdminController;
 import vn.aptech.Controller.Admin.ManagementController;
+import vn.aptech.Controller.Client.ClientController;
 
 import java.io.IOException;
 
 public class ViewFactory {
-
+    private Alert alert;
     private AccountType loginAccountType;
+    private boolean loginFlag;
     // loading
     private AnchorPane loadingView;
     // Admin View
@@ -39,7 +42,7 @@ public class ViewFactory {
     private AnchorPane routerView;
 
 
-    private double x = 0 ;
+    private double x = 0;
     private double y = 0;
 
 
@@ -47,6 +50,14 @@ public class ViewFactory {
         this.loginAccountType = AccountType.ADMIN;
         this.adminSelectMenuItem = new SimpleObjectProperty<>();
         this.managementSelectMenuItem = new SimpleObjectProperty<>();
+    }
+
+    public boolean isLoginFlag() {
+        return loginFlag;
+    }
+
+    public void setLoginFlag(boolean loginFlag) {
+        this.loginFlag = loginFlag;
     }
 
     public AccountType getLoginAccountType() {
@@ -170,6 +181,16 @@ public class ViewFactory {
         loader.setController(controller);
         createStage(loader);
     }
+
+    //show client window
+    public void showClientWindow() throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Fxml/Client/Client.fxml"));
+//        ClientController controller = new ClientController();
+//        loader.setController(controller);
+        createStage(loader);
+    }
+
+
     // Loading view
     public AnchorPane getLoadingView() {
         if (loadingView == null) {
@@ -279,5 +300,14 @@ public class ViewFactory {
     public void minimizeStage(Stage stage) {
         stage.setIconified(true);
     }
+
+    public void showAlertInfo(String title, String content) {
+        alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setContentText(content);
+        alert.show();
+    }
+
+
 
 }

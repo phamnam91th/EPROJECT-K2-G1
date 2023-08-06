@@ -1,15 +1,19 @@
 package vn.aptech.Controller.Admin;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.stage.Stage;
+import vn.aptech.Controller.LoginController;
+import vn.aptech.Model.Employee;
 import vn.aptech.Model.Model;
 import vn.aptech.Views.AdminMenuOptions;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Predicate;
 
 public class AdminMenuController implements Initializable {
     public Button dashboard_btn;
@@ -24,6 +28,10 @@ public class AdminMenuController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+        Employee employee = findItem(Model.getInstance().getUsers().getEmployeeId(), LoginController.getEmployeeObservableList(), e -> e.getId() == Model.getInstance().getUsers().getEmployeeId());
+
+        account_lb.setText(employee.getlName() + " " + employee.getfName());
+
         addListeners();
     }
 
@@ -146,5 +154,13 @@ public class AdminMenuController implements Initializable {
         Model.getInstance().getViewFactory().getAdminSelectMenuItem().set(AdminMenuOptions.BROWSER);
     }
 
+    public <T, V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
+        for (T item : itemList) {
+            if (predicate.test(item)) {
+                return item;
+            }
+        }
+        return null;
+    }
 
 }

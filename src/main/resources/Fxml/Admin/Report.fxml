@@ -1,11 +1,71 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-
-<AnchorPane prefHeight="900.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/17.0.6"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="vn.aptech.Controller.Admin.ReportController">
-   <Text layoutX="530.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report"/>
+<AnchorPane prefHeight="900.0" prefWidth="1100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.aptech.Controller.Admin.ReportController">
+    <Text layoutX="485.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="REPORT">
+        <font>
+            <Font name="System Bold" size="34.0" />
+        </font>
+    </Text>
+    <VBox layoutY="84.0" prefHeight="816.0" prefWidth="1100.0">
+        <HBox prefHeight="90.0" prefWidth="1100.0" style="-fx-background-color: #CCA;">
+            <VBox alignment="CENTER" prefHeight="90.0" prefWidth="277.0">
+                <Label text="Select day :"/>
+                <DatePicker fx:id="select_day_dp"/>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="326.0" layoutY="10.0" prefHeight="90.0" prefWidth="277.0">
+                <Button fx:id="report_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="134.0" text="Enter"/>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="86.0" prefWidth="550.0">
+                <Button fx:id="print_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="69.0" text="Print"/>
+            </VBox>
+        </HBox>
+        <AnchorPane prefHeight="734.0" prefWidth="1100.0">
+            <VBox layoutX="53.0" layoutY="136.0" prefHeight="730.0" prefWidth="1047.0" spacing="3.0" style="-fx-background-color: #CCD;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="50.0" AnchorPane.rightAnchor="50.0" AnchorPane.topAnchor="0.0">
+                <Label fx:id="report_status_lb" layoutX="10.0" layoutY="10.0" text=" TICKET">
+                    <font>
+                        <Font name="System Bold Italic" size="18.0" />
+                    </font>
+                </Label>
+                <Label text="---------------------------------------------------------------------------------" />
+                <Label fx:id="tk_pending_lb" text="Ticket pending :" />
+                <Label fx:id="tk_confirm_lb" layoutX="10.0" layoutY="28.0" text="Ticket confirm :" />
+                <Label fx:id="tk_done_lb" layoutX="10.0" layoutY="46.0" text="Ticket done :" />
+                <Label fx:id="tk_cancel_lb" layoutX="10.0" layoutY="124.0" text="Ticket cancel:" />
+            <Label layoutX="10.0" layoutY="40.0" text="------------------------------------" />
+                <Label fx:id="tk_total_lb" text="Total ticket :" />
+                <Label layoutX="10.0" layoutY="40.0" text="---------------------------------------------------------------------------------" />
+                <TableView fx:id="car_report_tv" prefHeight="306.0" prefWidth="1000.0">
+                    <columns>
+                        <TableColumn fx:id="car_name_col" prefWidth="117.0" text="Car" />
+                        <TableColumn fx:id="car_number_of_task_col" minWidth="0.0" prefWidth="146.0" text="Number of task" />
+                        <TableColumn fx:id="car_number_of_ticket_col" minWidth="0.0" prefWidth="130.0" text="Number of ticket" />
+                        <TableColumn fx:id="car_number_of_ticket_done_col" minWidth="0.0" prefWidth="194.0" text="Number of ticket done" />
+                        <TableColumn fx:id="car_number_of_ticket_cancel_col" minWidth="0.0" prefWidth="204.0" text="Number of ticket cancel" />
+                        <TableColumn fx:id="car_total_revenue_col" minWidth="0.0" prefWidth="208.0" text="Total revenue" />
+                    </columns>
+                </TableView>
+                <TableView fx:id="branch_report_tv" prefHeight="200.0" prefWidth="200.0">
+                    <columns>
+                        <TableColumn fx:id="branch_name_col" prefWidth="107.0" text="Branch" />
+                        <TableColumn fx:id="branch_number_of_ticket_col" prefWidth="179.0" text="Number of total ticket" />
+                        <TableColumn fx:id="branch_number_of_ticket_done_col" prefWidth="159.0" text="Number of ticket done" />
+                        <TableColumn fx:id="branch_number_of_ticket_pending_col" prefWidth="166.0" text="Number of ticket pending" />
+                        <TableColumn fx:id="branch_number_of_ticket_cancel_col" prefWidth="191.0" text="Number of ticket cancel" />
+                        <TableColumn fx:id="branch_total_revenue" prefWidth="197.0" text="Total revenue" />
+                    </columns>
+                </TableView>
+            </VBox>
+        </AnchorPane>
+    </VBox>
 </AnchorPane>

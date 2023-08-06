@@ -1,10 +1,7 @@
 package vn.aptech.Controller;
 
-import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Service;
@@ -12,19 +9,18 @@ import javafx.concurrent.Task;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
-import vn.aptech.Controller.Admin.DashboardController;
 import vn.aptech.Model.*;
+import vn.aptech.Views.AccountType;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
-import java.util.TimerTask;
+
 
 public class LoginController extends Thread implements Initializable {
     public ImageView logo;
@@ -34,9 +30,17 @@ public class LoginController extends Thread implements Initializable {
     public Label error_lbl;
     public Button close_btn;
     public Button minimize_btn;
-    private static StringProperty flag = new SimpleStringProperty("false");
     public Label loadingLabel;
-    public static StringProperty load = new SimpleStringProperty();
+    private static String username;
+    private static String password;
+
+    public static String getUsername() {
+        return username;
+    }
+
+    public static String getPassword() {
+        return password;
+    }
 
     private static ObservableList<TaskList> taskListObservableList;
     private static ObservableList<ListCar> listCarObservableList;
@@ -49,6 +53,7 @@ public class LoginController extends Thread implements Initializable {
     private static ObservableList<Positions> positionsObservableList;
     private static ObservableList<Ticket> ticketObservableList;
     private static ObservableList<TicketStatus> ticketStatusObservableList;
+    private static ObservableList<TypeCar> typeCarObservableList;
 
     private static ObservableList<String> taskListName;
     private static ObservableList<String> carListName;
@@ -115,6 +120,10 @@ public class LoginController extends Thread implements Initializable {
         return ticketStatusObservableList;
     }
 
+    public static ObservableList<TypeCar> getTypeCarObservableList() {
+        return typeCarObservableList;
+    }
+
     public static ObservableList<String> getTaskListName() {
         return taskListName;
     }
@@ -163,6 +172,8 @@ public class LoginController extends Thread implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         readTimeDelay();
+
+
         close_btn.setOnAction(actionEvent -> {
             System.exit(0);
         });
@@ -173,7 +184,10 @@ public class LoginController extends Thread implements Initializable {
         error_lbl.setVisible(false);
 
         login_btn.setOnAction(event -> {
+            username = username_tf.getText();
+            password = password_tf.getText();
             loadingLabel.setVisible(true);
+
             LoginService loginService = new LoginService();
             loginService.setOnSucceeded(e -> {
                 loadingLabel.setVisible(false);
@@ -189,7 +203,7 @@ public class LoginController extends Thread implements Initializable {
 
     public static void readTimeDelay() {
         try {
-            Path path = Paths.get("src/main/resources/Config/config.txt");
+            Path path = Paths.get("config.txt");
             File file = new File(path.toUri());
             FileReader fileReader = new FileReader(file);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
@@ -214,7 +228,8 @@ public class LoginController extends Thread implements Initializable {
     }
 
     public void onLogin() throws IOException, InterruptedException {
-        if (flag.get().equals("true")) {
+        if (Model.getInstance().isLoginSuccess()) {
+            error_lbl.setVisible(false);
             taskListObservableList = Model.getInstance().getData().getObservableList("select tl from task_list tl order by tl.id DESC");
             listCarObservableList = Model.getInstance().getData().getObservableList("select lc from list_car lc");
             routerListObservableList = Model.getInstance().getData().getObservableList("select rl from router_list rl");
@@ -226,6 +241,7 @@ public class LoginController extends Thread implements Initializable {
             positionsObservableList = Model.getInstance().getData().getObservableList("select p from positions p");
             ticketObservableList = Model.getInstance().getData().getObservableList("select t from ticket t order by t.id DESC");
             ticketStatusObservableList = Model.getInstance().getData().getObservableList("select ts from ticket_status ts");
+            typeCarObservableList = Model.getInstance().getData().getObservableList("select tc from type_car tc");
             taskListName = FXCollections.observableArrayList(taskListObservableList.stream().map(TaskList::getCode).toList());
             carListName = FXCollections.observableArrayList(listCarObservableList.stream().map(ListCar::getLicensePlates).toList());
             routerListCode = FXCollections.observableArrayList(routerListObservableList.stream().map(RouterList::getCode).toList());
@@ -237,16 +253,26 @@ public class LoginController extends Thread implements Initializable {
             positionsListName = FXCollections.observableArrayList(positionsObservableList.stream().map(Positions::getName).toList());
             ticketListName = FXCollections.observableArrayList(ticketObservableList.stream().map(Ticket::getCode).toList());
             ticketStatusListName = FXCollections.observableArrayList(ticketStatusObservableList.stream().map(TicketStatus::getName).toList());
-            try {
-                Model.getInstance().getViewFactory().showAdminWindow();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+
+            if(Model.getInstance().getAccountType() == AccountType.ADMIN) {
+                try {
+                    Model.getInstance().getViewFactory().showAdminWindow();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            } else {
+                try {
+                    Model.getInstance().getViewFactory().showClientWindow();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             }
 
             Stage stage = (Stage) error_lbl.getScene().getWindow();
             Model.getInstance().getViewFactory().closeStage(stage);
         } else {
             error_lbl.setVisible(true);
+            error_lbl.setText("Error : Login false");
         }
 
 
@@ -258,8 +284,9 @@ public class LoginController extends Thread implements Initializable {
             return new Task<>() {
                 @Override
                 protected Void call() {
-                    // Simulate login process (replace this with your actual login logic)
-                    LoginController.flag.set("true");
+                    System.out.println(LoginController.getUsername());
+                    System.out.println(LoginController.getPassword());
+                    Model.getInstance().isLogin(LoginController.getUsername(), LoginController.getPassword());
                     try {
                         sleep(10);
                     } catch (Exception e) {
@@ -272,8 +299,8 @@ public class LoginController extends Thread implements Initializable {
     }
 
     public static void main(String[] args) throws IOException {
-        Path path = Paths.get("src/main/resources/Config/config.txt");
-        File file = new File(path.toUri());
+//        Path path = Paths.get("config.txt");
+        File file = new File("config.txt");
         FileReader fileReader = new FileReader(file);
         BufferedReader bufferedReader = new BufferedReader(fileReader);
         System.out.println(bufferedReader.readLine());

@@ -28,6 +28,15 @@ public class TaskList {
     @Column(name = "date_apply")
     private Date dateApply;
     @Basic
+    @Column(name = "seat_available")
+    private int seatAvailable;
+    @Basic
+    @Column(name = "start_time")
+    private Timestamp startTime;
+    @Basic
+    @Column(name = "end_time")
+    private Timestamp endTime;
+    @Basic
     @Column(name = "status")
     private int status;
     @Basic
@@ -88,6 +97,30 @@ public class TaskList {
         this.dateApply = dateApply;
     }
 
+    public int getSeatAvailable() {
+        return seatAvailable;
+    }
+
+    public void setSeatAvailable(int seatAvailable) {
+        this.seatAvailable = seatAvailable;
+    }
+
+    public Timestamp getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Timestamp startTime) {
+        this.startTime = startTime;
+    }
+
+    public Timestamp getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Timestamp endTime) {
+        this.endTime = endTime;
+    }
+
     public int getStatus() {
         return status;
     }
@@ -131,5 +164,21 @@ public class TaskList {
     @Override
     public int hashCode() {
         return Objects.hash(id, code, listCarId, routerListId, userId, dateApply, status, flag, createAt, updateAt);
+    }
+
+    @Override
+    public String toString() {
+        return "TaskList{" +
+                "id=" + id +
+                ", code='" + code + '\'' +
+                ", listCarId=" + listCarId +
+                ", routerListId=" + routerListId +
+                ", userId=" + userId +
+                ", dateApply=" + dateApply +
+                ", status=" + status +
+                ", flag='" + flag + '\'' +
+                ", createAt=" + createAt +
+                ", updateAt=" + updateAt +
+                '}';
     }
 }

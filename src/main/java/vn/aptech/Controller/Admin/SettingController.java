@@ -17,7 +17,7 @@ import java.util.ResourceBundle;
 public class SettingController implements Initializable {
     public TextField dashboard_delay_tf;
     public Button save_btn;
-    private static final Path path = Paths.get("src/main/resources/Config/config.txt");
+    private static final Path path = Paths.get("config.txt");
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
