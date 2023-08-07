@@ -42,6 +42,7 @@ public class ClientController implements Initializable {
     public Label end_at_lb;
     public ChoiceBox<String> task_select_cb;
     public Button go_btn;
+    public Button refresh_btn;
     private TaskList taskSelect;
 
     @Override
@@ -82,6 +83,13 @@ public class ClientController implements Initializable {
                 }
                 System.out.println(taskSelect);
             }
+        });
+
+        refresh_btn.setOnAction(actionEvent -> {
+            taskListToDay = Model.getInstance().getData().getObservableList("select tl.code from task_list tl inner join users u on tl.userId = u.id where tl.dateApply = '"+today+"' and u.userName = '"+userName+"' ");
+            tickets = Model.getInstance().getData().getObservableList("select t from ticket t inner join ticket_status ts on t.status=ts.id inner join task_list tl on t.taskListId=tl.id inner join users u on tl.userId=u.id where (ts.name='confirm' or ts.name='done') and tl.dateApply = '"+ today +"' and u.userName = '"+ userName +"' ");
+            list_customer_tv.setItems(tickets);
+            task_select_cb.setItems(taskListToDay);
         });
 
         go_btn.setOnAction(actionEvent -> {

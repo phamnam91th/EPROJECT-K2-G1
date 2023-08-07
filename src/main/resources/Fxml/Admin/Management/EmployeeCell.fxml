@@ -10,7 +10,7 @@
    <children>
       <VBox alignment="CENTER" prefHeight="100.0" prefWidth="59.0">
          <children>
-            <FontAwesomeIcon glyphName="USER" size="20" />
+            <FontAwesomeIcon glyphName="GROUP" size="20" />
          </children>
       </VBox>
       <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="105.0">
