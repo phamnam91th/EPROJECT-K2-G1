@@ -27,10 +27,10 @@
 <!--            <property name="hibernate.connection.password" value="TiniWorld1@3"/>-->
 <!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>-->
 <!--            <property name="hibernate.show_sql" value="true"/>-->
-            <property name="hibernate.format_sql" value="true"/>
-            <property name="hibernate.use_sql_comments" value="true"/>
-            <property name="org.hibernate.SQL" value="debug"/>
-            <property name="org.hibernate.type.descriptor.sql.BasicBinder" value="debug"/>
+<!--            <property name="hibernate.format_sql" value="true"/>-->
+<!--            <property name="hibernate.use_sql_comments" value="true"/>-->
+<!--            <property name="org.hibernate.SQL" value="debug"/>-->
+<!--            <property name="org.hibernate.type.descriptor.sql.BasicBinder" value="debug"/>-->
 
             <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/digishop_project_k2_g1"/>
             <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>

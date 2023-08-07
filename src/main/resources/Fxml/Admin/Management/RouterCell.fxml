@@ -6,37 +6,24 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox maxHeight="40" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
-   <children>
-      <VBox alignment="CENTER" prefHeight="60.0" prefWidth="50.0">
-         <children>
-            <FontAwesomeIcon glyphName="CROP" size="20" />
-         </children>
-      </VBox>
-      <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="105.0">
-         <children>
-            <Label fx:id="code_lb" text="code" />
-         </children>
-      </VBox>
-      <VBox alignment="CENTER_LEFT" layoutX="110.0" layoutY="10.0" prefHeight="60.0" prefWidth="140.0">
-         <children>
-            <Label fx:id="startPoint_lb" prefHeight="18.0" prefWidth="169.0" text="start point" />
-         </children>
-      </VBox>
-      <VBox alignment="CENTER_LEFT" layoutX="210.0" layoutY="10.0" prefHeight="60.0" prefWidth="140.0">
-         <children>
-            <Label fx:id="destination_lb" text="destination" />
-         </children>
-      </VBox>
-      <VBox alignment="CENTER_LEFT" layoutX="310.0" layoutY="10.0" prefHeight="60.0" prefWidth="100.0">
-         <children>
-            <Label fx:id="startAt_lb" text="start at" />
-         </children>
-      </VBox>
-      <VBox alignment="CENTER" layoutX="145.0" layoutY="10.0" prefHeight="60.0" prefWidth="86.0">
-         <children>
-            <Button fx:id="del_btn" mnemonicParsing="false" text="Delete" />
-         </children>
-      </VBox>
-   </children>
+<HBox maxHeight="40" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="40.0" prefWidth="600.0"
+      xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1">
+   <VBox alignment="CENTER" prefHeight="60.0" prefWidth="50.0">
+      <FontAwesomeIcon glyphName="CROP" size="20"/>
+   </VBox>
+   <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="105.0">
+      <Label fx:id="code_lb" text="code"/>
+   </VBox>
+   <VBox alignment="CENTER_LEFT" layoutX="110.0" layoutY="10.0" prefHeight="60.0" prefWidth="140.0">
+      <Label fx:id="startPoint_lb" prefHeight="18.0" prefWidth="169.0" text="start point"/>
+   </VBox>
+   <VBox alignment="CENTER_LEFT" layoutX="210.0" layoutY="10.0" prefHeight="60.0" prefWidth="140.0">
+      <Label fx:id="destination_lb" text="destination"/>
+   </VBox>
+   <VBox alignment="CENTER_LEFT" layoutX="310.0" layoutY="10.0" prefHeight="60.0" prefWidth="100.0">
+      <Label fx:id="startAt_lb" text="start at"/>
+   </VBox>
+   <VBox alignment="CENTER" layoutX="145.0" layoutY="10.0" prefHeight="60.0" prefWidth="86.0">
+      <Button fx:id="del_btn" mnemonicParsing="false" text="Delete"/>
+   </VBox>
 </HBox>

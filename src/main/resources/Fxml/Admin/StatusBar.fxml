@@ -10,33 +10,35 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<AnchorPane prefHeight="50.0" prefWidth="1300.0" style="-fx-background-color: #CCE;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="vn.aptech.Controller.Admin.StatusBarController">
+<AnchorPane prefHeight="50.0" prefWidth="1300.0" style="-fx-background-color: #CCE;"
+            xmlns="http://javafx.com/javafx/17.0.6" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="vn.aptech.Controller.Admin.StatusBarController">
     <HBox alignment="CENTER" layoutX="1152.0" prefHeight="50.0" prefWidth="154.0" spacing="20.0">
         <Button fx:id="minimize_btn" mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0">
             <graphic>
-                <FontAwesomeIcon glyphName="MINUS" size="18" />
+                <FontAwesomeIcon glyphName="MINUS" size="18"/>
             </graphic>
         </Button>
         <Button fx:id="close_btn" mnemonicParsing="false" prefHeight="40.0" prefWidth="50.0">
             <graphic>
-                <FontAwesomeIcon glyphName="CLOSE" size="18" />
+                <FontAwesomeIcon glyphName="CLOSE" size="18"/>
             </graphic>
         </Button>
     </HBox>
-   <ImageView fitHeight="50.0" fitWidth="104.0" layoutX="7.0" pickOnBounds="true" preserveRatio="true">
-      <image>
-         <Image url="@../../Image/logo.png" />
-      </image>
-   </ImageView>
-   <Label fx:id="timeLabel" layoutX="563.0" layoutY="15.0" prefHeight="20.0" prefWidth="85.0" text="00:00:00">
-      <font>
-         <Font name="System Bold" size="14.0" />
-      </font>
-   </Label>
-   <Label fx:id="dateLabel" layoutX="672.0" layoutY="15.0" prefHeight="20.0" prefWidth="91.0" text="01:01:2023">
-      <font>
-         <Font name="System Bold" size="14.0" />
-      </font>
-   </Label>
-   <Text layoutX="653.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="/" />
+    <ImageView fitHeight="50.0" fitWidth="104.0" layoutX="7.0" pickOnBounds="true" preserveRatio="true">
+        <image>
+            <Image url="@../../Image/logo.png"/>
+        </image>
+    </ImageView>
+    <Label fx:id="timeLabel" layoutX="563.0" layoutY="15.0" prefHeight="20.0" prefWidth="85.0" text="00:00:00">
+        <font>
+            <Font name="System Bold" size="14.0"/>
+        </font>
+    </Label>
+    <Label fx:id="dateLabel" layoutX="672.0" layoutY="15.0" prefHeight="20.0" prefWidth="91.0" text="01:01:2023">
+        <font>
+            <Font name="System Bold" size="14.0"/>
+        </font>
+    </Label>
+    <Text layoutX="653.0" layoutY="29.0" strokeType="OUTSIDE" strokeWidth="0.0" text="/"/>
 </AnchorPane>

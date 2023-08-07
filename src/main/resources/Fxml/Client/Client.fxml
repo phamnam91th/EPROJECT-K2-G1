@@ -72,28 +72,26 @@
             </VBox>
         </HBox>
         <AnchorPane prefHeight="738.0" prefWidth="1077.0">
-            <children>
-                <TableView fx:id="list_customer_tv" layoutX="6.0" layoutY="49.0" prefHeight="681.0" prefWidth="1087.0">
-                    <columns>
-                        <TableColumn fx:id="id_col" prefWidth="89.0" text="ID" />
-                        <TableColumn fx:id="customer_code_col" minWidth="4.0" prefWidth="139.0" text="CUSTOMER CODE" />
-                        <TableColumn fx:id="task_code_col" minWidth="4.0" prefWidth="238.0" text="TASK CODE" />
-                        <TableColumn fx:id="customer_name_col" minWidth="4.0" prefWidth="159.0" text="CUSTOMER NAME" />
-                        <TableColumn fx:id="customer_phone_col" minWidth="4.0" prefWidth="157.0" text="CUSTOMER PHONE" />
-                        <TableColumn fx:id="quantity_col" minWidth="4.0" prefWidth="128.0" text="QUANTITY" />
-                        <TableColumn fx:id="status_col" minWidth="4.0" prefWidth="94.0" text="STATUS" />
-                        <TableColumn fx:id="action_col" minWidth="4.0" prefWidth="82.0" text="ACTION" />
-                    </columns>
-                </TableView>
-            <ChoiceBox fx:id="task_select_cb" layoutX="131.0" layoutY="11.0" prefHeight="25.0" prefWidth="270.0" />
-            <Label layoutX="65.0" layoutY="15.0" text="Select Task:" />
-            <Button fx:id="go_btn" layoutX="425.0" layoutY="11.0" mnemonicParsing="false" prefWidth="80.0" text="Go" />
+            <TableView fx:id="list_customer_tv" layoutX="6.0" layoutY="49.0" prefHeight="681.0" prefWidth="1087.0">
+                <columns>
+                    <TableColumn fx:id="id_col" prefWidth="89.0" text="ID"/>
+                    <TableColumn fx:id="customer_code_col" minWidth="4.0" prefWidth="139.0" text="CUSTOMER CODE"/>
+                    <TableColumn fx:id="task_code_col" minWidth="4.0" prefWidth="238.0" text="TASK CODE"/>
+                    <TableColumn fx:id="customer_name_col" minWidth="4.0" prefWidth="159.0" text="CUSTOMER NAME"/>
+                    <TableColumn fx:id="customer_phone_col" minWidth="4.0" prefWidth="157.0" text="CUSTOMER PHONE"/>
+                    <TableColumn fx:id="quantity_col" minWidth="4.0" prefWidth="128.0" text="QUANTITY"/>
+                    <TableColumn fx:id="status_col" minWidth="4.0" prefWidth="94.0" text="STATUS"/>
+                    <TableColumn fx:id="action_col" minWidth="4.0" prefWidth="82.0" text="ACTION"/>
+                </columns>
+            </TableView>
+            <ChoiceBox fx:id="task_select_cb" layoutX="131.0" layoutY="11.0" prefHeight="25.0" prefWidth="270.0"/>
+            <Label layoutX="65.0" layoutY="15.0" text="Select Task:"/>
+            <Button fx:id="go_btn" layoutX="425.0" layoutY="11.0" mnemonicParsing="false" prefWidth="80.0" text="Go"/>
             <Button fx:id="refresh_btn" layoutX="1035.0" layoutY="10.0" mnemonicParsing="false">
-               <graphic>
-                  <FontAwesomeIcon glyphName="REFRESH" size="20" />
-               </graphic>
+                <graphic>
+                    <FontAwesomeIcon glyphName="REFRESH" size="20"/>
+                </graphic>
             </Button>
-            </children>
         </AnchorPane>
     </VBox>
 </AnchorPane>
