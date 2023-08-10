@@ -114,34 +114,42 @@
          <VBox layoutX="260.0" layoutY="10.0" prefHeight="193.0" prefWidth="270.0">
             <VBox prefHeight="115.0" prefWidth="417.0">
                <VBox.margin>
-                  <Insets left="20.0"/>
+                  <Insets left="20.0" />
                </VBox.margin>
                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Slect Status :">
                   <VBox.margin>
-                     <Insets top="10.0"/>
+                     <Insets top="10.0" />
                   </VBox.margin>
                </Text>
-               <ChoiceBox fx:id="m_select_status_cb" prefHeight="26.0" prefWidth="333.0"/>
+               <ChoiceBox fx:id="m_select_status_cb" prefHeight="26.0" prefWidth="333.0" />
             </VBox>
             <VBox layoutX="10.0" layoutY="10.0" prefHeight="109.0" prefWidth="417.0">
                <VBox.margin>
-                  <Insets left="20.0"/>
+                  <Insets left="20.0" />
                </VBox.margin>
             </VBox>
          </VBox>
          <VBox alignment="CENTER" prefHeight="150.0" prefWidth="158.0" spacing="20.0">
-            <Button fx:id="save_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Save" />
-            <Button fx:id="update_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Update" />
-            <Button fx:id="delete_btn" layoutX="74.0" layoutY="95.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Delete" />
+            <Button fx:id="save_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Add new">
+               <graphic>
+                  <FontAwesomeIcon glyphName="PLUS" size="20" />
+               </graphic></Button>
+            <Button fx:id="update_btn" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Update">
+               <graphic>
+                  <FontAwesomeIcon glyphName="CLOUD_UPLOAD" size="20" />
+               </graphic></Button>
+            <Button fx:id="delete_btn" layoutX="74.0" layoutY="95.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Delete">
+               <graphic>
+                  <FontAwesomeIcon glyphName="REMOVE" size="20" />
+               </graphic></Button>
          </VBox>
-         <VBox alignment="TOP_CENTER" layoutX="820.0" layoutY="10.0" prefHeight="150.0" prefWidth="134.0"
-               spacing="20.0">
+         <VBox alignment="TOP_CENTER" layoutX="820.0" layoutY="10.0" prefHeight="150.0" prefWidth="134.0" spacing="20.0">
             <Button fx:id="refresh" mnemonicParsing="false" prefHeight="30.0" prefWidth="104.0" text="Refresh">
                <VBox.margin>
-                  <Insets top="9.0"/>
+                  <Insets top="9.0" />
                </VBox.margin>
                <graphic>
-                  <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" size="20"/>
+                  <FontAwesomeIcon fill="WHITE" glyphName="REFRESH" selectionFill="#009e2f" size="20" />
                </graphic>
             </Button>
          </VBox>

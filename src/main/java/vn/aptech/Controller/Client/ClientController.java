@@ -9,11 +9,13 @@ import javafx.event.EventType;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
 import javafx.util.Callback;
 import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.*;
 
 import javax.persistence.EntityManager;
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
@@ -43,6 +45,7 @@ public class ClientController implements Initializable {
     public ChoiceBox<String> task_select_cb;
     public Button go_btn;
     public Button refresh_btn;
+    public Button logout_btn;
     private TaskList taskSelect;
 
     @Override
@@ -167,6 +170,14 @@ public class ClientController implements Initializable {
         close_btn.setOnAction(actionEvent -> {
             Model.getInstance().getViewFactory().exitProgram();
         });
+
+        logout_btn.setOnAction(actionEvent -> {
+            try {
+                onLogout();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     private void showStatusCol() {
@@ -250,6 +261,12 @@ public class ClientController implements Initializable {
             }
         }
         return null;
+    }
+
+    public void onLogout() throws IOException {
+        Stage stage = (Stage) logout_btn.getScene().getWindow();
+        Model.getInstance().getViewFactory().closeStage(stage);
+        Model.getInstance().getViewFactory().showLoginWindow();
     }
 
     public static void main(String[] args) {

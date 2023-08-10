@@ -82,7 +82,7 @@ public class TicketController implements Initializable {
             taskListPending.clear();
             LoginController.getTaskListObservableList().forEach(s -> {
                 String status = findItem(s.getStatus(), LoginController.getTaskStatusObservableList(), i -> i.getId() == s.getStatus()).getName();
-                if(status.equals("pending")) {
+                if (status.equals("pending")) {
                     taskListPending.add(s.getCode());
                 }
             });
@@ -101,19 +101,18 @@ public class TicketController implements Initializable {
             customer_name_tf.setText(t1.getCustomerName());
             customer_phone_tf.setText(t1.getCustomerPhone());
             quantity_tf.setText(String.valueOf(t1.getNumberOfTicket()));
-//            m_branch_cb.setValue(findBranch(t1.getTaskListId()).getName());
             m_status_cb.setValue(findItem(t1.getStatus(), LoginController.getTicketStatusObservableList(), ticketStatus -> ticketStatus.getId() == t1.getStatus()).getName());
             m_task_cb.setValue(findItem(t1.getTaskListId(), LoginController.getTaskListObservableList(), taskList -> taskList.getId() == t1.getTaskListId()).getCode());
             m_employee_apply_cb.setValue(findItem(t1.getEmployeeId(), LoginController.getEmployeeObservableList(), employee -> employee.getId() == t1.getEmployeeId()).getCode());
         });
 
         save_btn.setOnAction(actionEvent -> {
-            TaskList task = findItem(m_task_cb.getValue(), LoginController.getTaskListObservableList(), t->t.getCode().equals(m_task_cb.getValue()));
-            if(Integer.parseInt(quantity_tf.getText()) <= task.getSeatAvailable()) {
+            TaskList task = findItem(m_task_cb.getValue(), LoginController.getTaskListObservableList(), t -> t.getCode().equals(m_task_cb.getValue()));
+            if (Integer.parseInt(quantity_tf.getText()) <= task.getSeatAvailable()) {
                 Ticket ticket = new Ticket();
                 setTicket(ticket, "new");
                 Model.getInstance().getData().add(ticket);
-                LoginController.getTicketObservableList().add(0,ticket);
+                LoginController.getTicketObservableList().add(0, ticket);
             } else {
                 Model.getInstance().getViewFactory().showAlertInfo("Warming", "The number of seats you have selected exceeds the number of seats available.");
             }
@@ -124,19 +123,19 @@ public class TicketController implements Initializable {
             EntityManager em = Model.getInstance().getData().getEm();
             Ticket ticket = null;
             int index = LoginController.getTicketObservableList().indexOf(ticket_tv.getSelectionModel().getSelectedItem());
-            try{
+            try {
                 em.getTransaction().begin();
                 ticket = em.find(Ticket.class, ticket_tv.getSelectionModel().getSelectedItem().getId());
                 setTicket(ticket, "update");
                 em.merge(ticket);
                 em.getTransaction().commit();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 Model.getInstance().getData().closeConnect();
             }
             LoginController.getTicketObservableList().remove(index);
-            LoginController.getTicketObservableList().add(index,ticket);
+            LoginController.getTicketObservableList().add(index, ticket);
         });
 
         // thay doi trang thai status
@@ -146,31 +145,31 @@ public class TicketController implements Initializable {
             Ticket ticket = null;
 
             int index = LoginController.getTicketObservableList().indexOf(ticket_tv.getSelectionModel().getSelectedItem());
-            try{
+            try {
                 em.getTransaction().begin();
                 ticket = em.find(Ticket.class, ticket_tv.getSelectionModel().getSelectedItem().getId());
-                TicketStatus status = findItem("confirm", LoginController.getTicketStatusObservableList(), s->s.getName().equals("confirm"));
+                TicketStatus status = findItem("confirm", LoginController.getTicketStatusObservableList(), s -> s.getName().equals("confirm"));
                 ticket.setStatus(status.getId());
                 em.merge(ticket);
                 em.getTransaction().commit();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
             }
 
             TaskList task;
-            try{
+            try {
                 em.getTransaction().begin();
                 task = em.find(TaskList.class, ticket_tv.getSelectionModel().getSelectedItem().getTaskListId());
                 task.setSeatAvailable(task.getSeatAvailable() - ticket_tv.getSelectionModel().getSelectedItem().getNumberOfTicket());
                 em.merge(task);
                 em.getTransaction().commit();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 Model.getInstance().getData().closeConnect();
             }
             LoginController.getTicketObservableList().remove(index);
-            LoginController.getTicketObservableList().add(index,ticket);
+            LoginController.getTicketObservableList().add(index, ticket);
         });
 
         delete_btn.setOnAction(actionEvent -> {
@@ -200,36 +199,31 @@ public class TicketController implements Initializable {
             String branch;
             String dateApply;
 
-            if(!Objects.equals(s_customer_name_tf.getText(), "")) {
+            if (!Objects.equals(s_customer_name_tf.getText(), "")) {
                 customerName = s_customer_name_tf.getText();
             } else {
                 customerName = "%";
             }
 
-            if(!Objects.equals(s_customer_phone_tf.getText(), "")) {
+            if (!Objects.equals(s_customer_phone_tf.getText(), "")) {
                 customerPhone = s_customer_phone_tf.getText();
             } else {
                 customerPhone = "%";
             }
 
-            if(s_branch_cb.getValue() != null) {
+            if (s_branch_cb.getValue() != null) {
                 branch = s_branch_cb.getValue();
             } else {
                 branch = "%";
             }
 
-            if(s_day_dp.getValue() == null) {
+            if (s_day_dp.getValue() == null) {
                 dateApply = "%";
             } else {
                 dateApply = s_day_dp.getValue().toString();
             }
 
-            System.out.println(customerName);
-            System.out.println(customerPhone);
-            System.out.println(branch);
-            System.out.println(dateApply);
-
-            listSearchResult = Model.getInstance().getData().getTicketSearchResult(customerName,customerPhone, branch,dateApply);
+            listSearchResult = Model.getInstance().getData().getTicketSearchResult(customerName, customerPhone, branch, dateApply);
             ticket_tv.setItems(null);
             ticket_tv.setItems(listSearchResult);
             ticket_tv.refresh();
@@ -244,7 +238,7 @@ public class TicketController implements Initializable {
         TaskList taskList = findItem(m_task_cb.getValue(), LoginController.getTaskListObservableList(), task -> task.getCode().equals(m_task_cb.getValue()));
         ticket.setTaskListId(taskList.getId());
 
-        Employee employee = findItem(m_employee_apply_cb.getValue(), LoginController.getEmployeeObservableList(), em -> em.getCode().equals(m_employee_apply_cb.getValue()));
+        Employee employee = findItem(LoginController.getUsername(), LoginController.getEmployeeObservableList(), em -> em.getCode().equals(m_employee_apply_cb.getValue()));
         ticket.setEmployeeId(employee.getId());
 
         ticket.setBranchId(findBranch(taskList.getId()).getId());
@@ -256,7 +250,7 @@ public class TicketController implements Initializable {
         ticket.setFlag("0");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        if(type.equals("new")) {
+        if (type.equals("new")) {
             ticket.setCreateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
         } else {
             ticket.setUpdateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
@@ -269,7 +263,7 @@ public class TicketController implements Initializable {
         ObservableList<String> taskListActive = FXCollections.observableArrayList();
         LoginController.getTaskListObservableList().forEach(s -> {
             String status = findItem(s.getStatus(), LoginController.getTaskStatusObservableList(), i -> i.getId() == s.getStatus()).getName();
-            if(status.equals("pending")) {
+            if (status.equals("pending")) {
                 taskListActive.add(s.getCode());
             }
         });
@@ -284,7 +278,7 @@ public class TicketController implements Initializable {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getTaskListId();
                     setText(findItem(id, LoginController.getTaskListObservableList(), router -> router.getId() == id).getCode());
-                }else {
+                } else {
                     setText("");
                 }
             }
@@ -299,12 +293,13 @@ public class TicketController implements Initializable {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getEmployeeId();
                     setText(findItem(id, LoginController.getEmployeeObservableList(), router -> router.getId() == id).getCode() + "-" + findItem(id, LoginController.getEmployeeObservableList(), router -> router.getId() == id).getlName());
-                }else {
+                } else {
                     setText("");
                 }
             }
         });
     }
+
     private void showStatusCol() {
         tv_status_col.setCellFactory(param -> new TableCell<>() {
             @Override
@@ -313,12 +308,13 @@ public class TicketController implements Initializable {
                     int currentIndex = indexProperty().getValue();
                     int id = param.getTableView().getItems().get(currentIndex).getStatus();
                     setText(findItem(id, LoginController.getTicketStatusObservableList(), router -> router.getId() == id).getName());
-                }else {
+                } else {
                     setText("");
                 }
             }
         });
     }
+
     private void showBranchCol() {
         tv_branch_col.setCellFactory(param -> new TableCell<>() {
             @Override
@@ -328,12 +324,13 @@ public class TicketController implements Initializable {
                     int taskListId = param.getTableView().getItems().get(currentIndex).getTaskListId();
                     Branch branch = findBranch(taskListId);
                     setText(branch.getName());
-                }else {
+                } else {
                     setText("");
                 }
             }
         });
     }
+
     private void showDayApplyCol() {
         tv_day_apply_col.setCellFactory(param -> new TableCell<>() {
             @Override
@@ -343,12 +340,13 @@ public class TicketController implements Initializable {
                     int taskListId = param.getTableView().getItems().get(currentIndex).getTaskListId();
                     TaskList task = findItem(taskListId, LoginController.getTaskListObservableList(), taskList -> taskList.getId() == taskListId);
                     setText(task.getDateApply().toString());
-                }else {
+                } else {
                     setText("");
                 }
             }
         });
     }
+
     private void showActionCol() {
         tv_action_col.setCellFactory(param -> new TableCell<>() {
             private final ImageView imageView1 = new ImageView();
@@ -393,7 +391,7 @@ public class TicketController implements Initializable {
         });
     }
 
-    public <T,V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
+    public <T, V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
         for (T item : itemList) {
             if (predicate.test(item)) {
                 return item;
