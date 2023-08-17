@@ -29,6 +29,16 @@ public class ReportByCar {
     @Column(name = "total_revenue")
     private Double totalRevenue;
 
+    private String total;
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
     public int getId() {
         return id;
     }

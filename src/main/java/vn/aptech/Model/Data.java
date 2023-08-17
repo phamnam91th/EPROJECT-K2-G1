@@ -6,9 +6,6 @@ import javafx.collections.ObservableList;
 import java.lang.Object;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
-import java.util.List;
-import java.util.Objects;
 import javax.persistence.*;
 import javax.xml.bind.DatatypeConverter;
 

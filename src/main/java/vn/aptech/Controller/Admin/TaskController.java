@@ -1,6 +1,5 @@
 package vn.aptech.Controller.Admin;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,12 +13,10 @@ import vn.aptech.Controller.LoginController;
 import vn.aptech.Model.*;
 
 import javax.persistence.EntityManager;
-import javax.persistence.Query;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.List;
 import java.util.Objects;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
@@ -68,14 +65,14 @@ public class TaskController implements Initializable {
 
         m_select_car_cb.setItems(LoginController.getCarListName());
         m_select_router_cb.setItems(LoginController.getRouterListCode());
-        m_select_driver_cb.setItems(LoginController.getUsersListName());
+        m_select_driver_cb.setItems(LoginController.getDriverListName());
         m_select_status_cb.setItems(LoginController.getTaskStatusListName());
 
         taskList_tv.setItems(LoginController.getTaskListObservableList());
 
         s_select_car_cb.setItems(LoginController.getCarListName());
         s_select_router_cb.setItems(LoginController.getRouterListCode());
-        s_select_driver_cb.setItems(LoginController.getUsersListName());
+        s_select_driver_cb.setItems(LoginController.getDriverListName());
 
 
         LoginController.getTaskListObservableList().addListener((ListChangeListener<TaskList>) change -> taskList_tv.setItems(LoginController.getTaskListObservableList()));

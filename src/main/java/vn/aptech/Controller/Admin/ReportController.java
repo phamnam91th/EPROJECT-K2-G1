@@ -21,6 +21,7 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 import java.util.function.Predicate;
 
@@ -38,21 +39,16 @@ public class ReportController implements Initializable {
     public TableColumn<ReportByCar, Integer> car_number_of_ticket_done_col;
     public TableColumn<ReportByCar, Integer> car_number_of_ticket_cancel_col;
     public TableColumn<ReportByCar, Double> car_total_revenue_col;
-    public TableView<ReportByBranch> branch_report_tv;
-    public TableColumn<ReportByBranch, String> branch_name_col;
-    public TableColumn<ReportByBranch, Integer> branch_number_of_ticket_col;
-    public TableColumn<ReportByBranch, Integer> branch_number_of_ticket_done_col;
-    public TableColumn<ReportByBranch, Integer> branch_number_of_ticket_pending_col;
-    public TableColumn<ReportByBranch, Integer> branch_number_of_ticket_cancel_col;
-    public TableColumn<ReportByBranch, Double> branch_total_revenue;
     public DatePicker select_day_dp;
     public Button print_btn;
     public Label report_status_lb;
+    public Label total_lb;
     private Date select_day;
 
     private static ObservableList<String> selectReportList;
     private static ObservableList<ReportByCar> reportByCarObservableList;
     private static ObservableList<ReportByBranch> reportByBranchObservableList;
+    private static double allTotal;
 
 
     @Override
@@ -85,6 +81,7 @@ public class ReportController implements Initializable {
 
     public void showReport() {
         select_day = Date.valueOf(select_day_dp.getValue());
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
 
         Long ticketPending = Model.getInstance().getData().getSignleResult("select sum(t.numberOfTicket) from ticket t inner join ticket_status ts on t.status=ts.id inner join task_list tl on t.taskListId=tl.id  where ts.name='pending' and tl.dateApply='"+ select_day +"'  ");
         Long ticketConfirm = Model.getInstance().getData().getSignleResult("select sum(t.numberOfTicket) from ticket t inner join ticket_status ts on t.status=ts.id inner join task_list tl on t.taskListId=tl.id  where ts.name='confirm' and tl.dateApply='"+ select_day +"'  ");
@@ -111,7 +108,6 @@ public class ReportController implements Initializable {
         tk_cancel_lb.setText("Ticket cancel :" + ticketCancel);
         tk_total_lb.setText("Ticket total :" + totalTicket);
 
-
         reportByCarObservableList = getReportByCarObservableList();
 
         showCarNameCol();
@@ -120,9 +116,10 @@ public class ReportController implements Initializable {
         car_number_of_ticket_col.setCellValueFactory(new PropertyValueFactory<>("numberOfTicket"));
         car_number_of_ticket_done_col.setCellValueFactory(new PropertyValueFactory<>("numberOfTicketDone"));
         car_number_of_ticket_cancel_col.setCellValueFactory(new PropertyValueFactory<>("numberOfTicketCancel"));
-        car_total_revenue_col.setCellValueFactory(new PropertyValueFactory<>("totalRevenue"));
+        car_total_revenue_col.setCellValueFactory(new PropertyValueFactory<>("total"));
 
         car_report_tv.setItems(reportByCarObservableList);
+        total_lb.setText(decimalFormat.format(allTotal));
     }
 
     private void showCarNameCol() {
@@ -193,6 +190,9 @@ public class ReportController implements Initializable {
                 content.showText(String.format("%-17s",rp.getTotalRevenue()));
                 content.newLine();
             }
+            content.newLine();
+            content.showText("Total : ");
+            content.showText(total_lb.getText());
 
             content.endText();
             content.close();
@@ -210,9 +210,9 @@ public class ReportController implements Initializable {
         ObservableList<ReportByCar> reportByCars = FXCollections.observableArrayList();
         ObservableList<Ticket> tickets = FXCollections.observableArrayList();
         tickets = Model.getInstance().getData().getObservableList("select t from ticket t inner join task_list tl on t.taskListId = tl.id where tl.dateApply = '"+ select_day.toString() + "'" );
-
+        allTotal = 0;
+        DecimalFormat decimalFormat = new DecimalFormat("###,###");
         for(String car: LoginController.getCarListName()) {
-            System.out.println(car);
             ReportByCar report = new ReportByCar();
             ListCar listCar = findItem(car, LoginController.getListCarObservableList(), c -> c.getLicensePlates().equals(car));
             int carId = listCar.getId();
@@ -222,7 +222,6 @@ public class ReportController implements Initializable {
             int numberOfTicketCancel = 0;
             double totalRevenue = 0;
             for(Ticket ticket: tickets) {
-                System.out.println(ticket);
                 TaskList task = findItem(ticket.getTaskListId(), LoginController.getTaskListObservableList(), t -> t.getId() == ticket.getTaskListId());
                 RouterList router = findItem(task.getRouterListId(), LoginController.getRouterListObservableList(), r -> r.getId() == task.getRouterListId());
                 if(findCar(ticket.getTaskListId()).getLicensePlates().equals(car)) {
@@ -237,13 +236,16 @@ public class ReportController implements Initializable {
                     }
                 }
             }
+
             report.setCarId(carId);
             report.setNumberOfTask(numberOfTask);
             report.setNumberOfTicket(numberOfTicket);
             report.setNumberOfTicketDone(numberOfTicketDone);
             report.setNumberOfTicketCancel(numberOfTicketCancel);
             report.setTotalRevenue(totalRevenue);
+            report.setTotal(decimalFormat.format(totalRevenue));
             reportByCars.add(report);
+            allTotal += totalRevenue;
         }
         return reportByCars;
     }

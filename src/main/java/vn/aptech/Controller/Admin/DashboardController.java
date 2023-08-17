@@ -25,9 +25,6 @@ public class DashboardController implements Initializable {
     public BarChart<String, Number> myBarChart;
     public CategoryAxis barCharX;
     public NumberAxis barCharY;
-
-    public CategoryAxis x;
-    public NumberAxis y;
     public PieChart myPieChart;
     public LineChart<String, Number> myLineChart;
     public CategoryAxis xLine;
@@ -52,7 +49,6 @@ public class DashboardController implements Initializable {
     public List<Ticket> listInMonth;
     public List<Ticket> listInYear;
     public Thread currentThread;
-    private int timeDelay;
 
     public DashboardController() {
         Date day = new Date(System.currentTimeMillis());
@@ -79,22 +75,25 @@ public class DashboardController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        myPieChart.setTitle("Doanh thu tung co so");
+        myBarChart.setTitle("Revenue by day of current month");
+        myPieChart.setTitle("Revenue by branch");
+        myLineChart.setTitle("Monthly revenue of " + toYear);
         myPieChart.setClockwise(true);
         myPieChart.setAnimated(true);
-        myLineChart.setTitle("Doanh thu tung thang nam 2023");
+        System.out.println(LoginController.getTaskListObservableList());
+
+        listInMonth = Model.getInstance().getData().getListResult("select t from ticket t inner join task_list tl on t.taskListId=tl.id inner join ticket_status ts on t.status=ts.id where tl.dateApply like '%-" + toMonth + "-%' and ts.name='done' ");
+        listInYear = Model.getInstance().getData().getListResult("select t from ticket t inner join task_list tl on t.taskListId=tl.id inner join ticket_status ts on t.status=ts.id where tl.dateApply like '" + toYear + "-%' and ts.name='done' ");
 
         run = true;
+
         Task<Void> task1 = new Task<Void>() {
             @Override
             protected Void call() throws Exception {
                 while (run) {
                     tickets = Model.getInstance().getData().getListResult("select t from ticket t inner join ticket_status ts on t.status=ts.id INNER JOIN task_list tl on t.taskListId=tl.id where ts.name='done' and tl.dateApply like '" + toDay + "' ");
-                    listInMonth = Model.getInstance().getData().getListResult("select t from ticket t inner join task_list tl on t.taskListId=tl.id inner join ticket_status ts on t.status=ts.id where tl.dateApply like '%-" + toMonth + "-%' and ts.name='done' ");
-                    listInYear = Model.getInstance().getData().getListResult("select t from ticket t inner join task_list tl on t.taskListId=tl.id inner join ticket_status ts on t.status=ts.id where tl.dateApply like '" + toYear + "-%' and ts.name='done' ");
                     System.out.println(listInYear.size());
                     updateInfo();
-//                    series = getChart();
                     Platform.runLater(new Runnable() {
                         @Override
                         public void run() {
@@ -111,23 +110,15 @@ public class DashboardController implements Initializable {
                         }
                     });
                     Thread.sleep(LoginController.getDelay());
+//                    Thread.sleep(30000);
                 }
                 return null;
             }
         };
-//        new Thread(task1).start();
         currentThread = new Thread(task1);
         currentThread.start();
 
         refresh_btn.setOnAction(actionEvent -> {
-//            int delay = LoginController.getDelay();
-//            LoginController.setDelay(1000);
-//            try {
-//                Thread.sleep(1000);
-//            } catch (InterruptedException e) {
-//                throw new RuntimeException(e);
-//            }
-//            LoginController.setDelay(delay);
             System.out.println("refresh");
             try {
                 currentThread.interrupt();
@@ -136,9 +127,7 @@ public class DashboardController implements Initializable {
                 currentThread = t2;
                 t2.start();
             }
-
         });
-
     }
 
 
@@ -174,9 +163,6 @@ public class DashboardController implements Initializable {
     }
 
     public XYChart.Series<String, Number> getChart() {
-        // Lay ra danh sach ticket da ban trong thang hien tai
-//        List<Ticket> listInMonth = Model.getInstance().getData().getListResult("select t from ticket t inner join task_list tl on t.taskListId=tl.id inner join ticket_status ts on t.status=ts.id where tl.dateApply like '%-" + this.toMonth + "-%' and ts.name='done' ");
-
         // tinh so ngay co trong thang hien tai
         int loop = 0;
         Set<Integer> set = this.numberDayInMonth.keySet();
@@ -205,15 +191,15 @@ public class DashboardController implements Initializable {
         XYChart.Series<String, Number> series = new XYChart.Series<>();
         series.setName("Customer");
 
-
         Set<Integer> set1 = ticketSellInMonth.keySet();
         for (Integer key : set1) {
             series.getData().add(new XYChart.Data<>(String.valueOf(key), ticketSellInMonth.get(key)));
         }
-
         return series;
     }
 
+
+    //show pie chart
     public ObservableList<PieChart.Data> getPieChart() {
         Map<String, Integer> revenues = new HashMap<>();
         LoginController.getBranchObservableList().forEach(s -> {
@@ -235,6 +221,8 @@ public class DashboardController implements Initializable {
         return data;
     }
 
+
+    // show line chart
     public XYChart.Series<String, Number> getLineChart() {
         Map<Integer, Integer> ticketSellInYear = new HashMap<>();
         for (int i = 1; i <= 12; i++) {
@@ -274,6 +262,5 @@ public class DashboardController implements Initializable {
         int idBranch = router.getStartPoint();
         return findItem(idBranch, LoginController.getBranchObservableList(), branch1 -> branch1.getId() == idBranch);
     }
-
 
 }

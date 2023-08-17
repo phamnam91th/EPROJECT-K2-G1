@@ -64,6 +64,8 @@ public class LoginController extends Thread implements Initializable {
     private static ObservableList<String> positionsListName;
     private static ObservableList<String> ticketListName;
     private static ObservableList<String> ticketStatusListName;
+    private static ObservableList<String> driverListName;
+
     private static int delay;
 
     public static int getDelay() {
@@ -166,6 +168,9 @@ public class LoginController extends Thread implements Initializable {
         return ticketStatusListName;
     }
 
+    public static ObservableList<String> getDriverListName() {
+        return driverListName;
+    }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -251,6 +256,7 @@ public class LoginController extends Thread implements Initializable {
             positionsListName = FXCollections.observableArrayList(positionsObservableList.stream().map(Positions::getName).toList());
             ticketListName = FXCollections.observableArrayList(ticketObservableList.stream().map(Ticket::getCode).toList());
             ticketStatusListName = FXCollections.observableArrayList(ticketStatusObservableList.stream().map(TicketStatus::getName).toList());
+            driverListName = Model.getInstance().getData().getObservableList("select e.code from employee e inner join positions p on e.positionsId = p.id where p.name = 'driver' ");
 
             if(Model.getInstance().getAccountType() == AccountType.ADMIN) {
                 try {
@@ -265,15 +271,12 @@ public class LoginController extends Thread implements Initializable {
                     throw new RuntimeException(e);
                 }
             }
-
             Stage stage = (Stage) error_lbl.getScene().getWindow();
             Model.getInstance().getViewFactory().closeStage(stage);
         } else {
             error_lbl.setVisible(true);
             error_lbl.setText("Error : Login false");
         }
-
-
     }
 
     private static class LoginService extends Service<Void> {
@@ -296,11 +299,4 @@ public class LoginController extends Thread implements Initializable {
         }
     }
 
-    public static void main(String[] args) throws IOException {
-//        Path path = Paths.get("config.txt");
-        File file = new File("config.txt");
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bufferedReader = new BufferedReader(fileReader);
-        System.out.println(bufferedReader.readLine());
-    }
 }

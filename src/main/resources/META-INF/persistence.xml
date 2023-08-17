@@ -39,7 +39,12 @@
             <property name="hibernate.show_sql" value="true"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
 
-
+<!--            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/digishop_project_k2_g1"/>-->
+<!--            <property name="hibernate.connection.driver_class" value="com.mysql.cj.jdbc.Driver"/>-->
+<!--            <property name="hibernate.connection.username" value="viper"/>-->
+<!--            <property name="hibernate.connection.password" value="TiniWorld1@3"/>-->
+<!--            <property name="hibernate.show_sql" value="true"/>-->
+<!--            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>-->
 
 
 
