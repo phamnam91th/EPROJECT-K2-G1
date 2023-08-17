@@ -17,6 +17,7 @@ public class Model {
         // private constructor
     }
 
+
     public static Model getInstance() {
         if (instance == null) {
             synchronized (Model.class) {
