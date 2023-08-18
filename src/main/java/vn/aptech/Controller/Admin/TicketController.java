@@ -46,7 +46,6 @@ public class TicketController implements Initializable {
     public Button delete_btn;
     public Button refresh_btn;
     public Button confirm_btn;
-    public Button done_btn;
     public Button cancel_btn;
     public TextField customer_name_tf;
     public TextField customer_phone_tf;
@@ -108,14 +107,19 @@ public class TicketController implements Initializable {
 
         save_btn.setOnAction(actionEvent -> {
             TaskList task = findItem(m_task_cb.getValue(), LoginController.getTaskListObservableList(), t -> t.getCode().equals(m_task_cb.getValue()));
-            if (Integer.parseInt(quantity_tf.getText()) <= task.getSeatAvailable()) {
-                Ticket ticket = new Ticket();
-                setTicket(ticket, "new");
-                Model.getInstance().getData().add(ticket);
-                LoginController.getTicketObservableList().add(0, ticket);
-            } else {
-                Model.getInstance().getViewFactory().showAlertInfo("Warming", "The number of seats you have selected exceeds the number of seats available.");
+            try{
+                if (Integer.parseInt(quantity_tf.getText()) <= task.getSeatAvailable()) {
+                    Ticket ticket = new Ticket();
+                    setTicket(ticket, "new");
+                    Model.getInstance().getData().add(ticket);
+                    LoginController.getTicketObservableList().add(0, ticket);
+                } else {
+                    Model.getInstance().getViewFactory().showAlertInfo("Warming", "The number of seats you have selected exceeds the number of seats available.");
+                }
+            }catch (Exception e) {
+                Model.getInstance().getViewFactory().showAlertInfo("Format error", "Please input again");
             }
+
         });
 
         update_btn.setOnAction(actionEvent -> {
@@ -242,8 +246,15 @@ public class TicketController implements Initializable {
         ticket.setEmployeeId(employee.getId());
 
         ticket.setBranchId(findBranch(taskList.getId()).getId());
-        ticket.setNumberOfTicket(Integer.parseInt(quantity_tf.getText()));
+        int quantity = 0;
+        try{
+            quantity = Integer.parseInt(quantity_tf.getText());
+        }catch (Exception e) {
+            System.out.println("error");
+            Model.getInstance().getViewFactory().showAlertInfo("Format error", "Please input again");
+        }
 
+        ticket.setNumberOfTicket(quantity);
         TicketStatus status = findItem(m_status_cb.getValue(), LoginController.getTicketStatusObservableList(), s -> s.getName().equals(m_status_cb.getValue()));
         ticket.setStatus(status.getId());
 

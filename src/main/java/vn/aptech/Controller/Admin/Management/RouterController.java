@@ -57,7 +57,7 @@ public class RouterController implements Initializable {
 
         save_btn.setOnAction(actionEvent -> {
             RouterList router = new RouterList();
-            setRouter(router,"new");
+            setRouter(router, "new");
             Model.getInstance().getData().add(router);
             LoginController.getRouterListObservableList().add(router);
         });
@@ -75,15 +75,15 @@ public class RouterController implements Initializable {
             Model.getInstance().getData().getConnect();
             EntityManager em = Model.getInstance().getData().getEm();
             RouterList router = null;
-            try{
+            try {
                 em.getTransaction().begin();
                 router = em.find(RouterList.class, router_lv.getSelectionModel().getSelectedItem().getId());
                 setRouter(router, "update");
                 em.merge(router);
                 em.getTransaction().commit();
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
-            }finally {
+            } finally {
                 Model.getInstance().getData().closeConnect();
             }
             LoginController.getRouterListObservableList().remove(router_lv.getSelectionModel().getSelectedItem());
@@ -94,28 +94,34 @@ public class RouterController implements Initializable {
 
     public void setRouter(RouterList router, String type) {
         router.setCode(code_tf.getText());
-        router.setStartPoint(findItem(startPoint_cb.getValue(), LoginController.getBranchObservableList(), car->car.getName().equals(startPoint_cb.getValue())).getId());
-        router.setDestination(findItem(destination_cb.getValue(), LoginController.getBranchObservableList(), car->car.getName().equals(destination_cb.getValue())).getId());
+        router.setStartPoint(findItem(startPoint_cb.getValue(), LoginController.getBranchObservableList(), car -> car.getName().equals(startPoint_cb.getValue())).getId());
+        router.setDestination(findItem(destination_cb.getValue(), LoginController.getBranchObservableList(), car -> car.getName().equals(destination_cb.getValue())).getId());
         String[] startTime = startAt_tf.getText().split(":");
-        Time st = new Time(Integer.parseInt(startTime[0]),Integer.parseInt(startTime[1]),Integer.parseInt(startTime[2]));
+        Time st = new Time(Integer.parseInt(startTime[0]), Integer.parseInt(startTime[1]), Integer.parseInt(startTime[2]));
         router.setStartTime(st);
         String[] endTime = endAt_tf.getText().split(":");
-        Time et = new Time(Integer.parseInt(endTime[0]),Integer.parseInt(endTime[1]),Integer.parseInt(endTime[2]));
+        Time et = new Time(Integer.parseInt(endTime[0]), Integer.parseInt(endTime[1]), Integer.parseInt(endTime[2]));
         router.setEndTime(et);
-        router.setPrice(Double.parseDouble(price_tf.getText()));
+        try {
+            double price = Double.parseDouble(price_tf.getText());
+            router.setPrice(price);
+        } catch (Exception e) {
+            Model.getInstance().getViewFactory().showAlertInfo("Format price error", "please input again");
+        }
+
         router.setFlag("0");
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        if(type.equals("new")) {
+        if (type.equals("new")) {
             router.setCreateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
-        }else {
+        } else {
             router.setUpdateAt(Timestamp.valueOf(dateFormat.format(timestamp)));
         }
 
     }
 
 
-    public <T,V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
+    public <T, V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
         for (T item : itemList) {
             if (predicate.test(item)) {
                 return item;

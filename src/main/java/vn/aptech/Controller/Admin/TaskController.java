@@ -179,7 +179,14 @@ public class TaskController implements Initializable {
         taskList.setListCarId(listCar.getId());
         RouterList router = findItem(m_select_router_cb.getValue(), LoginController.getRouterListObservableList(), rt -> rt.getCode().equals(m_select_router_cb.getValue()));
         taskList.setRouterListId(router.getId());
-        taskList.setDateApply(Date.valueOf(m_date_active_dp.getValue()));
+        Date date = null;
+        try{
+            date = Date.valueOf(m_date_active_dp.getValue());
+            taskList.setDateApply(date);
+        }catch (Exception e){
+            Model.getInstance().getViewFactory().showAlertInfo("Format date error", "Please input again");
+        }
+
         TypeCar typeCar = findItem(listCar.getTypeCarId(), LoginController.getTypeCarObservableList(), t->t.getId()==listCar.getTypeCarId());
         taskList.setSeatAvailable(typeCar.getNumberOfSeats());
         TaskStatus status = findItem(m_select_status_cb.getValue(), LoginController.getTaskStatusObservableList(), stt -> stt.getName().equals(m_select_status_cb.getValue()));

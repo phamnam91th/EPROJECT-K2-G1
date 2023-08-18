@@ -17,6 +17,10 @@ import vn.aptech.Controller.Admin.ManagementController;
 import vn.aptech.Controller.Client.ClientController;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ViewFactory {
     private Alert alert;
@@ -306,6 +310,41 @@ public class ViewFactory {
         alert.setTitle(title);
         alert.setContentText(content);
         alert.show();
+    }
+
+    public boolean isIntNumber(String number) {
+        boolean flag = false;
+        try {
+            int a = Integer.parseInt(number);
+            flag = true;
+        } catch (Exception e) {
+            System.out.println("value not is number ");
+//            showAlertInfo("Please enter again", "Value must is number");
+        }
+        return flag;
+    }
+    public boolean isDoubleNumber(String number) {
+        boolean flag = false;
+        try {
+            double a = Double.parseDouble(number);
+            flag = true;
+        } catch (Exception e) {
+            System.out.println("value not is number ");
+//            showAlertInfo("Please enter again", "Value must is number");
+        }
+        return flag;
+    }
+
+    public boolean isDayFormat(String day) {
+        Pattern pattern = Pattern.compile("^(0?[1-9]|1[0-2])/(0?[1-9]|[12][0-9]|3[01])/\\d{4}$");
+        Matcher matcher = pattern.matcher(day);
+        return matcher.find();
+    }
+
+    public static void main(String[] args) {
+        ViewFactory viewFactory = new ViewFactory();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        System.out.println(viewFactory.isDayFormat("12/14/2023"));
     }
 
 

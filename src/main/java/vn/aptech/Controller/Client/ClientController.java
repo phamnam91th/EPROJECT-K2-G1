@@ -36,7 +36,8 @@ public class ClientController implements Initializable {
     public TableColumn<Ticket, String> customer_phone_col;
     public TableColumn<Ticket, Integer> quantity_col;
     public TableColumn<Ticket, String> status_col;
-    public TableColumn<Ticket, Void> action_col;
+    public TableColumn action_confirm_col;
+    public TableColumn action_cancel_col;
     public TableColumn<Ticket, String> task_code_col;
     public static ObservableList<Ticket> tickets;
     public static ObservableList<String> taskListToDay;
@@ -46,6 +47,7 @@ public class ClientController implements Initializable {
     public Button go_btn;
     public Button refresh_btn;
     public Button logout_btn;
+
     private TaskList taskSelect;
 
     @Override
@@ -66,7 +68,8 @@ public class ClientController implements Initializable {
         quantity_col.setCellValueFactory(new PropertyValueFactory<>("numberOfTicket"));
         showStatusCol();
         showTaskCol();
-        showActionCol();
+        showActionConfirmCol();
+        showActionCancelCol();
 
         list_customer_tv.setItems(tickets);
         task_select_cb.setItems(taskListToDay);
@@ -210,7 +213,7 @@ public class ClientController implements Initializable {
         });
     }
 
-    private void showActionCol() {
+    private void showActionConfirmCol() {
         Callback<TableColumn<Ticket, Void>, TableCell<Ticket, Void>> cellFactory = new Callback<>() {
             @Override
             public TableCell<Ticket, Void> call(final TableColumn<Ticket, Void> param) {
@@ -251,7 +254,51 @@ public class ClientController implements Initializable {
                 };
             }
         };
-        action_col.setCellFactory(cellFactory);
+        action_confirm_col.setCellFactory(cellFactory);
+    }
+
+    private void showActionCancelCol() {
+        Callback<TableColumn<Ticket, Void>, TableCell<Ticket, Void>> cellFactory = new Callback<>() {
+            @Override
+            public TableCell<Ticket, Void> call(final TableColumn<Ticket, Void> param) {
+                return new TableCell<>() {
+                    private final Button btn = new Button();
+                    {
+                        btn.setOnAction((ActionEvent event) -> {
+                            Model.getInstance().getData().getConnect();
+                            EntityManager em = Model.getInstance().getData().getEm();
+                            Ticket ticket = null;
+                            int index = tickets.indexOf(getTableView().getItems().get(getIndex()));
+                            try{
+                                em.getTransaction().begin();
+                                ticket = em.find(Ticket.class, getTableView().getItems().get(getIndex()).getId());
+                                TicketStatus ts = findItem("cancel", LoginController.getTicketStatusObservableList(), s->s.getName().equals("cancel"));
+                                ticket.setStatus(ts.getId());
+                                em.merge(ticket);
+                                em.getTransaction().commit();
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }finally {
+                                Model.getInstance().getData().closeConnect();
+                            }
+                            tickets.remove(index);
+                            tickets.add(index,ticket);
+                        });
+                    }
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                            btn.setText("Cancel");
+                        }
+                    }
+                };
+            }
+        };
+        action_cancel_col.setCellFactory(cellFactory);
     }
 
     public <T,V> T findItem(V nameOrId, ObservableList<T> itemList, Predicate<T> predicate) {
